@@ -19,22 +19,22 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 	private CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	private CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
-	private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
-	private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
-	private CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
-	private CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
-	private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
-	private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
+	// private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
+	// private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
+	// private CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
+	// private CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
+	// private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
+	// private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
 
 	private CANPIDController frontRightAngleController = new CANPIDController(frontRightAngle);
-	private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
-	private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
-	private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
+	// private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
+	// private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
+	// private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
 
 	private CANEncoder frontRightAngleEncoder = new CANEncoder(frontRightAngle);
-	private CANEncoder frontLeftAngleEncoder = new CANEncoder(frontLeftAngle);
-	private CANEncoder backLeftAngleEncoder = new CANEncoder(backLeftAngle);
-	private CANEncoder backRightAngleEncoder = new CANEncoder(backRightAngle);
+	// private CANEncoder frontLeftAngleEncoder = new CANEncoder(frontLeftAngle);
+	// private CANEncoder backLeftAngleEncoder = new CANEncoder(backLeftAngle);
+	// private CANEncoder backRightAngleEncoder = new CANEncoder(backRightAngle);
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -43,9 +43,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	 */
 	public SwerveDriveModule[] mSwerveModules = new SwerveDriveModule[] {
 		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightAngleEncoder, 0),
-		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, 0),
-		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, 0),
-		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, 0)
+		// new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, 0),
+		// new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, 0),
+		// new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, 0)
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
@@ -54,12 +54,12 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		zeroGyro();
 
 		mSwerveModules[0].getDriveMotor().setInverted(true);
-		mSwerveModules[1].getDriveMotor().setInverted(true);
-		mSwerveModules[2].getDriveMotor().setInverted(true);
-		mSwerveModules[3].getDriveMotor().setInverted(true);
+		// mSwerveModules[1].getDriveMotor().setInverted(true);
+		// mSwerveModules[2].getDriveMotor().setInverted(true);
+		// mSwerveModules[3].getDriveMotor().setInverted(true);
 
-		mSwerveModules[0].getAngleMotor().setInverted(true);
-		mSwerveModules[3].getAngleMotor().setInverted(true);
+		// mSwerveModules[0].getAngleMotor().setInverted(true);
+		// mSwerveModules[3].getAngleMotor().setInverted(true);
 
 		for (SwerveDriveModule module : mSwerveModules) {
 			module.setTargetAngle(0);

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,28 +80,33 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
+      
         break;
     }
   }
 
+  @Override
+  public void teleopInit(){
+
+  }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    System.out.println();
     //Step 1: Drive motor functionality
-    // drive.mSwerveModules[0].getDriveMotor().set(0.4);
+    // drive.mSwerveModules[0].getDriveMotor().set(0.2);
 
     //Step 2: Angle motor functionality
     // drive.mSwerveModules[0].getAngleMotor().set(0.4);
 
     //Step 3: Both motors moving simultaneously
-    // drive.mSwerveModules[0].getDriveMotor().set(0.4);
-    // drive.mSwerveModules[0].getAngleMotor().set(0.4);
+    // drive.mSwerveModules[0].getDriveMotor().set(0.1);
+    // drive.mSwerveModules[0].getAngleMotor().set(0.1);
 
     //Step 4: Motor moving wheel to specific angle using encoder
-    // drive.mSwerveModules[0].setTargetAngle(30);
+    // drive.mSwerveModules[0].setTargetAngle(0);
     //Step 5: Full swerve functionality with joystick
     // drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval());
     //Step 6: Trapezoidal motion profile for drive motor
@@ -112,5 +118,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+  @Override
+  public void disabledInit(){
+
+  }
+  @Override
+  public void disabledPeriodic(){
+
   }
 }
