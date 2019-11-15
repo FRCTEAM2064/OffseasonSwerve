@@ -1,59 +1,39 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
-import frc.drive.HolonomicDrivetrain;
+import frc.robot.Robot;
+import frc.subsystems.DrivetrainSubsystem;
+import frc.common.math.Rotation2;
+import frc.common.math.Vector2;
 
 public class HolonomicDriveCommand extends Command {
-	private final HolonomicDrivetrain mDrivetrain;
+    public HolonomicDriveCommand() {
+        requires(DrivetrainSubsystem.getInstance());
+    }
 
-	public HolonomicDriveCommand(HolonomicDrivetrain drivetrain) {
-		mDrivetrain = drivetrain;
+    @Override
+    protected void execute() {
+        boolean ignoreScalars = Robot.getOi().primaryController.getLeftBumperButton().get();
 
-		requires(drivetrain);
-	}
+        double forward = Robot.getOi().primaryController.getLeftYAxis().get(true);
+        double strafe = Robot.getOi().primaryController.getLeftXAxis().get(true);
+        double rotation = Robot.getOi().primaryController.getRightXAxis().get(true, ignoreScalars);
 
-	private double deadband(double input) {
-		if (Math.abs(input) < 0.05) return 0;
-		return input;
-	}
+        boolean robotOriented = Robot.getOi().primaryController.getXButton().get();
+        boolean reverseRobotOriented = Robot.getOi().primaryController.getYButton().get();
 
-	@Override
-	protected void execute() {
-		double forward = -OI.getlYval();
-		double strafe = OI.getlXval();
-		double rotation = OI.getrXval();
+        Vector2 translation = new Vector2(forward, strafe);
 
-		if (OI.quickRotLeft()) {
-			rotation = -1;
-		} else if (OI.quickRotRight()) {
-			rotation = 1;
-		}
+        if (reverseRobotOriented) {
+            robotOriented = true;
+            translation = translation.rotateBy(Rotation2.fromDegrees(180.0));
+        }
 
-		forward = deadband(forward);
-		strafe = deadband(strafe);
-		rotation = deadband(rotation);
+        DrivetrainSubsystem.getInstance().holonomicDrive(translation, rotation, !robotOriented);
+    }
 
-		SmartDashboard.putNumber("Forward", forward);
-		SmartDashboard.putNumber("Strafe", strafe);
-		SmartDashboard.putNumber("Rotation", rotation);
-
-		mDrivetrain.holonomicDrive(forward, strafe, rotation);
-	}
-
-	@Override
-	protected void end() {
-		mDrivetrain.stopDriveMotors();
-	}
-
-	@Override
-	protected void interrupted() {
-		end();
-	}
-
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 }

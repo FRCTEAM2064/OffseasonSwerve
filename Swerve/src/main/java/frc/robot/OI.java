@@ -1,58 +1,177 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.autonomous.AutonomousSelector;
+import frc.commands.*;
+import frc.subsystems.*;
+import frc.common.commands.ZeroFieldOrientedCommand;
+import frc.common.input.DPadButton;
+import frc.common.input.XboxController;
 
-/**
- * Add your docs here.
- */
 public class OI {
-    private static Joystick ljoy = new Joystick(0);
-    private static Joystick rjoy = new Joystick(1);
-    private static Joystick ojoy = new Joystick(2);
+    public final XboxController primaryController = new XboxController(0);
 
-    private static JoystickButton lb1 = new JoystickButton(ljoy, 1);
-    private static JoystickButton lb2 = new JoystickButton(ljoy, 2);
-    private static JoystickButton lb3 = new JoystickButton(ljoy, 3);
-    private static JoystickButton lb4 = new JoystickButton(ljoy, 4);
+    public final XboxController secondaryController = new XboxController(1);
 
-    private static JoystickButton rb1 = new JoystickButton(rjoy, 1);
-    private static JoystickButton rb2 = new JoystickButton(rjoy, 2);
-    private static JoystickButton rb3 = new JoystickButton(rjoy, 3);
-    private static JoystickButton rb4 = new JoystickButton(rjoy, 4);
+    public OI() {
+        primaryController.getLeftXAxis().setInverted(true);
+        primaryController.getRightXAxis().setInverted(true);
 
-
-    /**
-     * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
-     */
-    public static double getlYval(){
-        return -ljoy.getY();
-    }
-    /**
-     * @return left joystick moving right and left axis val. right = 1; left = -1
-     */
-    public static double getlXval(){
-        return ljoy.getX();
-    }
-    /**
-     * @return right joystick moving right and left axis val. right = 1; left = -1
-     */
-    public static double getrXval(){
-        return rjoy.getX();
+        primaryController.getRightXAxis().setScale(0.45);
     }
 
-    public static boolean quickRotLeft(){
-        return rb2.get();
-    }
-    
-    public static boolean quickRotRight(){
-        return rb4.get();
+    public void bindButtons(AutonomousSelector autonomousSelector) {
+        primaryController.getRightTriggerAxis().whenPressed(new ExtendHatchPlacerCommand());
+        {
+            CommandGroup group = new CommandGroup();
+            group.addSequential(new ReleaseHatchPanelCommand());
+            group.addSequential(new InstantCommand(() -> HatchPlacerSubsystem.getInstance().extendPlacer()));
+            group.addSequential(new WaitCommand(0.25));
+            group.addSequential(new RetractHatchPlacerCommand());
+            group.addSequential(new InstantCommand(() -> HatchPlacerSubsystem.getInstance().retractPlacer()));
+            primaryController.getRightTriggerAxis().whenReleased(group);
+        }
+
+        primaryController.getAButton().whileHeld(new SetRobotPitchCommand(Math.toRadians(12.0)));
+
+        {
+            Command doTheThingCommand = new DoTheThingCommand(true, true);
+            primaryController.getRightBumperButton().whenPressed(doTheThingCommand);
+            primaryController.getRightBumperButton().whenReleased(new RetractHatchPlacerCommand());
+            primaryController.getRightBumperButton().whenReleased(new InstantCommand(doTheThingCommand::cancel));
+            primaryController.getRightBumperButton().whenReleased(new ConditionalCommand(new InstantCommand(() -> {
+                autonomousSelector.getHybridQueue().remove().start();
+            })) {
+                @Override
+                protected boolean condition() {
+                    System.out.printf("Checking %d%n", autonomousSelector.getHybridQueue().size());
+                    return DriverStation.getInstance().isAutonomous() && !autonomousSelector.getHybridQueue().isEmpty();
+                }
+            });
+        }
+        {
+            Command doTheThingCommand = new DoTheThingCommand(false, true);
+            primaryController.getLeftBumperButton().whenPressed(doTheThingCommand);
+            primaryController.getLeftBumperButton().whenReleased(new RetractHatchPlacerCommand());
+            primaryController.getLeftBumperButton().whenReleased(new InstantCommand(doTheThingCommand::cancel));
+            primaryController.getLeftBumperButton().whenReleased(new ConditionalCommand(new InstantCommand(() -> {
+                autonomousSelector.getHybridQueue().remove().start();
+            })) {
+                @Override
+                protected boolean condition() {
+                    System.out.printf("Checking %d%n", autonomousSelector.getHybridQueue().size());
+                    return DriverStation.getInstance().isAutonomous() && !autonomousSelector.getHybridQueue().isEmpty();
+                }
+            });
+        }
+
+        primaryController.getDPadButton(DPadButton.Direction.UP).whenPressed(
+                new SetHatchFloorGathererAngleCommand(HatchFloorGathererSubsystem.getInstance().getMaxAngle()));
+        primaryController.getDPadButton(DPadButton.Direction.RIGHT).whenPressed(new SetHatchFloorGathererAngleCommand(Math.toRadians(90.0)));
+        primaryController.getDPadButton(DPadButton.Direction.DOWN).whenPressed(new SetHatchFloorGathererAngleCommand(0.0));
+        primaryController.getDPadButton(DPadButton.Direction.LEFT).whenPressed(new RetractKickstandCommand());
+
+        // Field oriented zero
+        primaryController.getBackButton().whenPressed(new ZeroFieldOrientedCommand(DrivetrainSubsystem.getInstance()));
+
+        // Climbing
+        primaryController.getStartButton().whenPressed(new InstantCommand(new Runnable() {
+            private SendableChooser<Integer> climbModeSendable = new SendableChooser<>();
+
+            {
+                ShuffleboardTab climbTab = Shuffleboard.getTab("Climbing");
+
+                climbModeSendable.setName("Climb Mode");
+                climbModeSendable.setDefaultOption("Normal", 0);
+                climbModeSendable.addOption("Overhang", 1);
+                climbModeSendable.addOption("MadTown", 2);
+                climbTab.add(climbModeSendable);
+            }
+
+            @Override
+            public void run() {
+                switch (climbModeSendable.getSelected()) {
+                    case 0:
+                        new ClimbCommand().start();
+                        break;
+                    case 1:
+                        new OverhangCommand(Math.toRadians(80.0), false).start();
+                        break;
+                    case 2:
+                        new OverhangCommand(CargoArmSubsystem.getInstance().getMaxAngle(), true).start();
+                        break;
+                }
+            }
+        }));
+        primaryController.getYButton().whenPressed(new AbortClimbCommand());
+
+
+        // Cargo arm top position
+        secondaryController.getDPadButton(DPadButton.Direction.UP).whenPressed(
+                new SetArmAngleCommand(CargoArmSubsystem.CARGO_SHIP_SCORE_ANGLE));
+        // Cargo arm cargo ship height
+        secondaryController.getDPadButton(DPadButton.Direction.LEFT).whenPressed(
+                new SetArmAngleCommand(CargoArmSubsystem.CARGO_SHIP_SCORE_ANGLE));
+        // Cargo arm rocket & climb height
+        secondaryController.getDPadButton(DPadButton.Direction.RIGHT).whenPressed(
+                new SetArmAngleCommand(CargoArmSubsystem.ROCKET_SCORE_ANGLE));
+        // Cargo arm bottom position
+        secondaryController.getDPadButton(DPadButton.Direction.DOWN).whenPressed(new SetArmAngleCommand(CargoArmSubsystem.BOTTOM_ANGLE));
+
+        {
+            CommandGroup group = new CommandGroup();
+            group.addSequential(new ReleaseHatchPanelCommand());
+            group.addSequential(new ExtendHatchPlacerCommand());
+            secondaryController.getRightTriggerAxis().whenPressed(group);
+
+        }
+
+        {
+            CommandGroup group = new CommandGroup();
+            group.addParallel(new GrabOnHasHatchPanelCommand());
+            group.addSequential(new RumbleWhileHasHatchPanelCommand());
+            secondaryController.getRightTriggerAxis().whileHeld(group);
+
+        }
+        {
+            CommandGroup group = new CommandGroup();
+            group.addSequential(new GrabHatchPanelCommand());
+            group.addSequential(new WaitCommand(0.1));
+            group.addSequential(new RetractHatchPlacerCommand());
+            secondaryController.getRightTriggerAxis().whenReleased(group);
+        }
+
+        secondaryController.getRightBumperButton().whileHeld(new GrabHatchFromFloorPart1Command());
+        secondaryController.getRightBumperButton().whenReleased(new GrabHatchFromFloorPart2Command());
+
+        secondaryController.getLeftTriggerAxis().whileHeld(new Command() {
+            @Override
+            protected void execute() {
+                if (CargoGrabberSubsystem.getInstance().hasLeftCargo() || CargoGrabberSubsystem.getInstance().hasRightCargo()) {
+                    secondaryController.getRawJoystick().setRumble(GenericHID.RumbleType.kLeftRumble, 1.0);
+                } else {
+                    secondaryController.getRawJoystick().setRumble(GenericHID.RumbleType.kLeftRumble, 0.0);
+                }
+            }
+
+            @Override
+            protected void end() {
+                secondaryController.getRawJoystick().setRumble(GenericHID.RumbleType.kLeftRumble, 0.0);
+            }
+
+            @Override
+            protected boolean isFinished() {
+                return false;
+            }
+        });
+
+        secondaryController.getAButton().whenPressed(new SetHatchFloorGathererAngleCommand(
+                HatchFloorGathererSubsystem.getInstance().getMaxAngle()));
     }
 }
+
