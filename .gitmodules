@@ -1,0 +1,3 @@
+[submodule "another"]
+	path = another
+	url = https://github.com/FRCTeam2910/Common.git
