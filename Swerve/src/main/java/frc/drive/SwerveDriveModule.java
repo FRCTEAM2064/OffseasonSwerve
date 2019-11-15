@@ -5,6 +5,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.commands.SwerveModuleCommand;
 import frc.robot.RobotMap;
@@ -26,9 +27,9 @@ public class SwerveDriveModule extends Subsystem {
 
 	private final CANPIDController mAngleController;
 
-	private final CANEncoder mAngleEnc;
+	private final AnalogInput mAngleEnc;
 
-	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor, CANPIDController angleController, CANEncoder angleEnc, double zeroOffset) {
+	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor, CANPIDController angleController, AnalogInput angleEnc, double zeroOffset) {
 		mModuleNumber = moduleNumber;
 
 		mAngleMotor = angleMotor;
@@ -65,7 +66,7 @@ public class SwerveDriveModule extends Subsystem {
 		driveMotor.setSmartCurrentLimit(50);
 		// driveMotor.EnableCurrentLimit(true);
 	
-		angleEnc.setPositionConversionFactor(RobotMap.encUnitsPerRot); //Assuming the encoder returns 1/1024 as a dec for one encoder unit
+		// angleEnc.setPositionConversionFactor(RobotMap.encUnitsPerRot); //Assuming the encoder returns 1/1024 as a dec for one encoder unit
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class SwerveDriveModule extends Subsystem {
 		targetAngle += mZeroOffset;
 
 		// double currentAngle = mAngleMotor.getPosition() * (360.0 / 1024.0);
-		double currentAngle = mAngleEnc.getPosition() * (360.0 / RobotMap.encUnitsPerRot);
+		double currentAngle = mAngleEnc.getValue() * (360.0 / RobotMap.encUnitsPerRot);
 		double currentAngleMod = currentAngle % 360;
 		if (currentAngleMod < 0) currentAngleMod += 360;
 

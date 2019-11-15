@@ -6,6 +6,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.RobotMap;
 
@@ -19,22 +20,22 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 	private CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	private CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
-	// private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
-	// private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
-	// private CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
-	// private CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
-	// private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
-	// private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
+	private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
+	private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
+	private CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
+	private CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
+	private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
+	private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
 
 	private CANPIDController frontRightAngleController = new CANPIDController(frontRightAngle);
-	// private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
-	// private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
-	// private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
+	private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
+	private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
+	private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
 
-	private CANEncoder frontRightAngleEncoder = new CANEncoder(frontRightAngle);
-	// private CANEncoder frontLeftAngleEncoder = new CANEncoder(frontLeftAngle);
-	// private CANEncoder backLeftAngleEncoder = new CANEncoder(backLeftAngle);
-	// private CANEncoder backRightAngleEncoder = new CANEncoder(backRightAngle);
+	private AnalogInput frontRightAngleEncoder = new AnalogInput(RobotMap.frontRightEncoderID);
+	private AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
+	private AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
+	private AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
