@@ -1,7 +1,6 @@
 package frc.drive;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -27,15 +26,15 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
 	private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
 
-	private CANPIDController frontRightAngleController = new CANPIDController(frontRightAngle);
-	private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
-	private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
-	private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
+	// private CANPIDController frontRightAngleController = new CANPIDController(frontRightAngle);
+	// private CANPIDController frontLeftAngleController = new CANPIDController(frontLeftAngle);
+	// private CANPIDController backLeftAngleController = new CANPIDController(backLeftAngle);
+	// private CANPIDController backRightAngleController = new CANPIDController(backRightAngle);
 
-	private AnalogInput frontRightAngleEncoder = new AnalogInput(RobotMap.frontRightEncoderID);
-	private AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
-	private AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
-	private AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
+	public AnalogInput frontRightAngleEncoder = new AnalogInput(RobotMap.frontRightEncoderID);
+	public AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
+	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
+	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -43,10 +42,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	 * 3 is Back Right
 	 */
 	public SwerveDriveModule[] mSwerveModules = new SwerveDriveModule[] {
-		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightAngleEncoder, 0),
-		// new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, 0),
-		// new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, 0),
-		// new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, 0)
+		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, /*frontRightAngleController,*/ frontRightAngleEncoder, 0),
+		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, /*frontLeftAngleController,*/ frontLeftAngleEncoder, 0),
+		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, /*backLeftAngleController,*/ backLeftAngleEncoder, 0),
+		new SwerveDriveModule(3, backRightAngle, backRightDrive, /*backRightAngleController,*/ backRightAngleEncoder, 0)
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);

@@ -48,6 +48,10 @@ public class OI {
         return rjoy.getX();
     }
 
+    public static double getrYval(){
+        return rjoy.getY();
+    }
+
     public static boolean quickRotLeft(){
         return rb2.get();
     }

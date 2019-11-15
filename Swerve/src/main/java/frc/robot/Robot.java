@@ -86,14 +86,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-
+    System.out.println("Channel Number: " + drive.frontLeftAngleEncoder.getChannel());
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println();
+    System.out.println(drive.frontLeftAngleEncoder.getValue());
+    drive.mSwerveModules[1].getAngleMotor().set(OI.getrYval());
+    // System.out.println(drive.frontRightAngleEncoder.getValue());
     //Step 1: Drive motor functionality
     // drive.mSwerveModules[0].getDriveMotor().set(0.2);
 

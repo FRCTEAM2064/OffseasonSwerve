@@ -23,7 +23,7 @@ public class RobotMap {
     public static int backRightDriveID = 6;
 
     public static int frontLeftEncoderID = 0;
-    public static int frontRightEncoderID = 3;
+    public static int frontRightEncoderID = 4;
     public static int backLeftEncoderID = 1;
     public static int backRightEncoderID = 2;
 }

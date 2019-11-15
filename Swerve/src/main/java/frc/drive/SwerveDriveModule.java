@@ -1,6 +1,5 @@
 package frc.drive;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -25,17 +24,17 @@ public class SwerveDriveModule extends Subsystem {
 	private final CANSparkMax mAngleMotor;
 	private final CANSparkMax mDriveMotor;
 
-	private final CANPIDController mAngleController;
+	// private final CANPIDController mAngleController;
 
 	private final AnalogInput mAngleEnc;
 
-	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor, CANPIDController angleController, AnalogInput angleEnc, double zeroOffset) {
+	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,/*CANPIDController angleController,*/ AnalogInput angleEnc, double zeroOffset) {
 		mModuleNumber = moduleNumber;
 
 		mAngleMotor = angleMotor;
 		mDriveMotor = driveMotor;
 
-		mAngleController = angleController;
+		// mAngleController = angleController;
 
 		mAngleEnc = angleEnc;
 
@@ -48,9 +47,9 @@ public class SwerveDriveModule extends Subsystem {
 		// angleMotor.reverseSensor(true);
 		angleMotor.setInverted(true);
 		// angleMotor.setPID(20, 0, 200); // P: 20, I: 0, D: 200
-		angleController.setP(20);
-		angleController.setI(0);
-		angleController.setD(200);
+		// angleController.setP(20);
+		// angleController.setI(0);
+		// angleController.setD(200);
 		// angleMotor.set(0);
 		angleMotor.set(0);
 		// angleMotor.enableControl();
@@ -123,7 +122,7 @@ public class SwerveDriveModule extends Subsystem {
 		targetAngle += currentAngle - currentAngleMod;
 
 		// double currentError = mAngleMotor.getError();
-		double currentError = Math.abs(targetAngle * (RobotMap.encUnitsPerRot/360.0) - mAngleEnc.getPosition());
+		double currentError = Math.abs(targetAngle * (RobotMap.encUnitsPerRot/360.0) - mAngleEnc.getValue());
 		if (Math.abs(currentError - mLastError) < 7.5 &&
 				Math.abs(currentAngle - targetAngle) > 5) {
 			if (mStallTimeBegin == Long.MAX_VALUE) mStallTimeBegin = System.currentTimeMillis();
@@ -140,7 +139,7 @@ public class SwerveDriveModule extends Subsystem {
 		// targetAngle *= 1024.0 / 360.0;
 		targetAngle *= RobotMap.encUnitsPerRot / 360.0;
 		// mAngleMotor.setSetpoint(targetAngle);
-		mAngleController.setReference(targetAngle, ControlType.kPosition);
+		// mAngleController.setReference(targetAngle, ControlType.kPosition);
 	}
 
 	public void setTargetSpeed(double speed) {
