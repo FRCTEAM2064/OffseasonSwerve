@@ -53,7 +53,7 @@ public class OI {
     }
 
     public static boolean quickRotLeft(){
-        return rb2.get();
+        return rb3.get();
     }
     
     public static boolean quickRotRight(){

@@ -54,12 +54,12 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		zeroGyro();
 
 		mSwerveModules[0].getDriveMotor().setInverted(true);
-		// mSwerveModules[1].getDriveMotor().setInverted(true);
-		// mSwerveModules[2].getDriveMotor().setInverted(true);
-		// mSwerveModules[3].getDriveMotor().setInverted(true);
+		mSwerveModules[1].getDriveMotor().setInverted(true);
+		mSwerveModules[2].getDriveMotor().setInverted(true);
+		mSwerveModules[3].getDriveMotor().setInverted(true);
 
-		// mSwerveModules[0].getAngleMotor().setInverted(true);
-		// mSwerveModules[3].getAngleMotor().setInverted(true);
+		mSwerveModules[0].getAngleMotor().setInverted(true);
+		mSwerveModules[3].getAngleMotor().setInverted(true);
 
 		for (SwerveDriveModule module : mSwerveModules) {
 			module.setTargetAngle(0);
