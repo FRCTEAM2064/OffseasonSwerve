@@ -155,6 +155,6 @@ public class SwerveDriveModule extends Subsystem {
             angle += 2.0 * Math.PI;
         }
 
-        return angle;
+        return angle * 180/(Math.PI);
     }
 }

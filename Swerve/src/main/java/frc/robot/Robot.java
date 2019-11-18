@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.drive.SwerveDriveModule;
 import frc.drive.SwerveDriveSubsystem;
 
 /**
@@ -102,7 +103,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.mSwerveModules[1].getAngleMotor().set(OI.getrYval()); 
     if (OI.quickRotLeft()){
-      System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
+      // System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
+      System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder));
       // System.out.println("RobotController voltage: " + RobotController.getVoltage5V());
     }
 
