@@ -67,9 +67,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.setTargetAngle(0);
 		}
 		frontRightAngleController.disable();
-		frontLeftAngleController
-		backRightAngleController
-		backLeftAngleController
+		frontLeftAngleController.disable();
+		backRightAngleController.disable();
+		backLeftAngleController.disable();
 	}
 
 	public AHRS getNavX() {
