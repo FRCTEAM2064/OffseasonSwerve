@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,7 +39,7 @@ public class Robot extends TimedRobot {
     drive = new SwerveDriveSubsystem();
 
     // drive.frontRightAngleController.enable();
-    // drive.frontLeftAngleController.enable();
+    drive.frontLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.backLeftAngleController.enable();
   }
@@ -82,7 +81,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        // Put custom auto code here
+        drive.frontLeftAngleController.
         break;
       case kDefaultAuto:
       default:
@@ -101,7 +100,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    drive.mSwerveModules[1].getAngleMotor().set(OI.getrYval()); 
+    
     if (OI.quickRotLeft()){
       // System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
       System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder));

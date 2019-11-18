@@ -1,7 +1,6 @@
 package frc.drive;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -171,6 +170,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		frontLeftAngleController.disable();
 		backRightAngleController.disable();
 		backLeftAngleController.disable();
+		
 	}
 
 	public AHRS getNavX() {
