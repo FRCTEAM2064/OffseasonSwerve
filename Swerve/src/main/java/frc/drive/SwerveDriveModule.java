@@ -6,6 +6,7 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.RobotController;
 import frc.commands.SwerveModuleCommand;
 import frc.robot.RobotMap;
 import frc.util.MotorStallException;
@@ -19,7 +20,7 @@ public class SwerveDriveModule extends Subsystem {
 
 	private final int mModuleNumber;
 
-	private final double mZeroOffset;
+	private final double angleOffset;
 
 	private final CANSparkMax mAngleMotor;
 	private final CANSparkMax mDriveMotor;
@@ -28,7 +29,7 @@ public class SwerveDriveModule extends Subsystem {
 
 	private final AnalogInput mAngleEnc;
 
-	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,CANPIDController angleController, AnalogInput angleEnc, double zeroOffset) {
+	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,CANPIDController angleController, AnalogInput angleEnc, double angleOffset) {
 		mModuleNumber = moduleNumber;
 
 		mAngleMotor = angleMotor;
@@ -38,7 +39,7 @@ public class SwerveDriveModule extends Subsystem {
 
 		mAngleEnc = angleEnc;
 
-		mZeroOffset = zeroOffset;
+		this.angleOffset = angleOffset;
 
 		//angleMotor.changeControlMode(CANSparkMax.TalonControlMode.Position);
 		
@@ -93,7 +94,7 @@ public class SwerveDriveModule extends Subsystem {
 		mLastTargetAngle = targetAngle;
 
 		targetAngle %= 360;
-		targetAngle += mZeroOffset;
+		targetAngle += angleOffset;
 
 		// double currentAngle = mAngleMotor.getPosition() * (360.0 / 1024.0);
 		double currentAngle = mAngleEnc.getValue() * (360.0 / RobotMap.encUnitsPerRot);
@@ -145,4 +146,15 @@ public class SwerveDriveModule extends Subsystem {
 	public void setTargetSpeed(double speed) {
 		mDriveMotor.set(speed);
 	}
+
+	
+    public static double readAngle(AnalogInput angleEncoder) {
+        double angle = (1.0 - angleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI + angleOffset;
+        angle %= 2.0 * Math.PI;
+        if (angle < 0.0) {
+            angle += 2.0 * Math.PI;
+        }
+
+        return angle;
+    }
 }

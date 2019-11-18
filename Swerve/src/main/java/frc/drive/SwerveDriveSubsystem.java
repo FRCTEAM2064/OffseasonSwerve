@@ -7,6 +7,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.RobotMap;
 
@@ -32,7 +35,53 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
 	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
 
-	private PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightAngleEncoder.readAngle(), output)
+	private PIDSource frontRightEncoderValue = new PIDSource(){
+	
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			pidSource = 
+		}
+	
+		@Override
+		public double pidGet() {
+			return SwerveDriveModule.readAngle(frontRightAngleEncoder);
+		}
+	
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return null;
+		}
+	};
+	private PIDOutput frontRightAngleOutput = new PIDOutput(){
+	
+		@Override
+		public void pidWrite(double output) {
+			frontRightAngle.set(output);
+		}
+	};
+	private PIDOutput frontLeftAngleOutput = new PIDOutput(){
+	
+		@Override
+		public void pidWrite(double output) {
+			frontLeftAngle.set(output);
+		}
+	};
+	private PIDOutput backRightAngleOutput = new PIDOutput(){
+	
+		@Override
+		public void pidWrite(double output) {
+			backRightAngle.set(output);
+		}
+	};
+	private PIDOutput backLeftAngleOutput = new PIDOutput(){
+	
+		@Override
+		public void pidWrite(double output) {
+			backLeftAngle.set(output);
+		}
+	};
+
+	private PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, SwerveDriveModule.readAngle(frontRightAngleEncoder), frontRightAngleOutput);
 	private PIDController frontLeftAngleController = new PIDController(frontLeftAngle);
 	private PIDController backLeftAngleController = new PIDController(backLeftAngle);
 	private PIDController backRightAngleController = new PIDController(backRightAngle);
