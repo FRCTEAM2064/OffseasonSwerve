@@ -39,8 +39,7 @@ public class Robot extends TimedRobot {
     drive = new SwerveDriveSubsystem();
 
     // drive.frontRightAngleController.enable();
-    
-    drive.frontLeftAngleController.enable();
+    // drive.frontLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.backLeftAngleController.enable();
   }
@@ -82,8 +81,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.frontLeftAngleController.setSetpoint(360*5);
-        
+        drive.frontLeftAngleController.setSetpoint(180);
+
+
+        drive.frontLeftAngleController.disable();
         break;
       case kDefaultAuto:
       default:
