@@ -27,15 +27,16 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
 	private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
 
-	private PIDController frontRightAngleController = new PIDController(Kp, Ki, Kd, source, output)
-	private PIDController frontLeftAngleController = new PIDController(frontLeftAngle);
-	private PIDController backLeftAngleController = new PIDController(backLeftAngle);
-	private PIDController backRightAngleController = new PIDController(backRightAngle);
-
 	public AnalogInput frontRightAngleEncoder = new AnalogInput(RobotMap.frontRightEncoderID);
 	public AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
 	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
 	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
+
+	private PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightAngleEncoder.readAngle(), output)
+	private PIDController frontLeftAngleController = new PIDController(frontLeftAngle);
+	private PIDController backLeftAngleController = new PIDController(backLeftAngle);
+	private PIDController backRightAngleController = new PIDController(backRightAngle);
+
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
