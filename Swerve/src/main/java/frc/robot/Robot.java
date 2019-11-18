@@ -81,10 +81,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.frontLeftAngleController.setSetpoint(180);
-
-
-        drive.frontLeftAngleController.disable();
+        // drive.frontLeftAngleController.setSetpoint(180);
         break;
       case kDefaultAuto:
       default:
@@ -95,7 +92,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-
+    drive.frontLeftAngleController.disable();
     // System.out.println("Channel Number: " + drive.frontLeftAngleEncoder.getChannel());
   }
   /**
