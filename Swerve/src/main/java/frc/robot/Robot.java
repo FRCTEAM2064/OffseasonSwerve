@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     drive = new SwerveDriveSubsystem();
 
     // drive.frontRightAngleController.enable();
+    
     drive.frontLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.backLeftAngleController.enable();
@@ -81,7 +82,8 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.frontLeftAngleController.
+        drive.frontLeftAngleController.setSetpoint(360*5);
+        
         break;
       case kDefaultAuto:
       default:
@@ -100,7 +102,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
+    drive.getSwerveModule(1).getAngleMotor().set(OI.getrYval());
     if (OI.quickRotLeft()){
       // System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
       System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder));
