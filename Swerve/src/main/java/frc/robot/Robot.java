@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -95,7 +96,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.mSwerveModules[1].getAngleMotor().set(OI.getrYval()); 
     if (OI.quickRotLeft()){
-      System.out.println(drive.frontLeftAngleEncoder.pidGet());
+      System.out.println("Encoder position: " + drive.mSwerveModules[1].getAngleMotor().getEncoder().getPosition());
+      // System.out.println("RobotController voltage: " + RobotController.getVoltage5V());
     }
 
     // System.out.println(drive.frontRightAngleEncoder.getValue());
