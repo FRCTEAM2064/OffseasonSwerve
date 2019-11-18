@@ -39,7 +39,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSource = 
+			pidSource = PIDSourceType.kDisplacement;
 		}
 	
 		@Override
@@ -49,7 +49,58 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public PIDSourceType getPIDSourceType() {
-			return null;
+			return PIDSourceType.kDisplacement;
+		}
+	};
+	private PIDSource frontLeftEncoderValue = new PIDSource(){
+	
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			pidSource = PIDSourceType.kDisplacement;
+		}
+	
+		@Override
+		public double pidGet() {
+			return SwerveDriveModule.readAngle(frontLeftAngleEncoder);
+		}
+	
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+	};
+	private PIDSource backRightEncoderValue = new PIDSource(){
+	
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			pidSource = PIDSourceType.kDisplacement;
+		}
+	
+		@Override
+		public double pidGet() {
+			return SwerveDriveModule.readAngle(backRightAngleEncoder);
+		}
+	
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+	};
+	private PIDSource backLeftEncoderValue = new PIDSource(){
+	
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			pidSource = PIDSourceType.kDisplacement;
+		}
+	
+		@Override
+		public double pidGet() {
+			return SwerveDriveModule.readAngle(backLeftAngleEncoder);
+		}
+	
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
 		}
 	};
 	private PIDOutput frontRightAngleOutput = new PIDOutput(){
@@ -81,10 +132,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 	};
 
-	private PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, SwerveDriveModule.readAngle(frontRightAngleEncoder), frontRightAngleOutput);
-	private PIDController frontLeftAngleController = new PIDController(frontLeftAngle);
-	private PIDController backLeftAngleController = new PIDController(backLeftAngle);
-	private PIDController backRightAngleController = new PIDController(backRightAngle);
+	public PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightEncoderValue, frontRightAngleOutput);
+	public PIDController frontLeftAngleController = new PIDController(0.5, 0.0, 0.0001, frontLeftEncoderValue, frontLeftAngleOutput);
+	public PIDController backLeftAngleController = new PIDController(0.5, 0.0, 0.0001, backRightEncoderValue, backRightAngleOutput);
+	public PIDController backRightAngleController = new PIDController(0.5, 0.0, 0.0001, backLeftEncoderValue, backLeftAngleOutput);
 
 	/*
 	 * 0 is Front Right

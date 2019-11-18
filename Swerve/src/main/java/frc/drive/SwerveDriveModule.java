@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.commands.SwerveModuleCommand;
@@ -20,16 +21,16 @@ public class SwerveDriveModule extends Subsystem {
 
 	private final int mModuleNumber;
 
-	private final double angleOffset;
+	private static double angleOffset;
 
 	private final CANSparkMax mAngleMotor;
 	private final CANSparkMax mDriveMotor;
 
-	private final CANPIDController mAngleController;
+	private final PIDController mAngleController;
 
 	private final AnalogInput mAngleEnc;
 
-	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,CANPIDController angleController, AnalogInput angleEnc, double angleOffset) {
+	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,PIDController angleController, AnalogInput angleEnc, double angleOffset) {
 		mModuleNumber = moduleNumber;
 
 		mAngleMotor = angleMotor;
@@ -48,10 +49,9 @@ public class SwerveDriveModule extends Subsystem {
 		// angleMotor.reverseSensor(true);
 		angleMotor.setInverted(true);
 		// angleMotor.setPID(20, 0, 200); // P: 20, I: 0, D: 200
-		angleController.setP(20);
-		angleController.setI(0);
-		angleController.setD(200);
-		angleMotor.set(0);
+		//Already done in SwerveDriveSubsystem
+
+		// angleMotor.set(0);
 		angleMotor.set(0);
 		// angleMotor.enableControl();
 		
@@ -140,7 +140,7 @@ public class SwerveDriveModule extends Subsystem {
 		// targetAngle *= 1024.0 / 360.0;
 		targetAngle *= RobotMap.encUnitsPerRot / 360.0;
 		// mAngleMotor.setSetpoint(targetAngle);
-		mAngleController.setReference(targetAngle, ControlType.kPosition);
+		mAngleController.setSetpoint(targetAngle);
 	}
 
 	public void setTargetSpeed(double speed) {

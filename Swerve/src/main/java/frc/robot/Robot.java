@@ -37,6 +37,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new SwerveDriveSubsystem();
+
+    // drive.frontRightAngleController.enable();
+    // drive.frontLeftAngleController.enable();
+    // drive.backRightAngleController.enable();
+    // drive.backLeftAngleController.enable();
   }
 
   /**
@@ -87,6 +92,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
+
     // System.out.println("Channel Number: " + drive.frontLeftAngleEncoder.getChannel());
   }
   /**
@@ -96,7 +102,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.mSwerveModules[1].getAngleMotor().set(OI.getrYval()); 
     if (OI.quickRotLeft()){
-      System.out.println("Encoder position: " + drive.mSwerveModules[1].getAngleMotor().getEncoder().getPosition());
+      System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
       // System.out.println("RobotController voltage: " + RobotController.getVoltage5V());
     }
 
