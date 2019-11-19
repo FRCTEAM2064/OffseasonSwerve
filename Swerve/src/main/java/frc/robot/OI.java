@@ -28,12 +28,12 @@ public class OI {
     private static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     private static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
-
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */
     public static double getlYval(){
-        return -ljoy.getY();
+        if (Math.abs(-ljoy.getY()) < 0.05) return 0;
+        else return -ljoy.getY();
     }
     /**
      * @return left joystick moving right and left axis val. right = 1; left = -1
@@ -49,7 +49,8 @@ public class OI {
     }
 
     public static double getrYval(){
-        return rjoy.getY();
+        if (Math.abs(rjoy.getY()) < 0.05) return 0;
+        else return rjoy.getY();
     }
 
     public static boolean quickRotLeft(){

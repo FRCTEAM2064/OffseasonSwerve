@@ -132,7 +132,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	};
 
 	public PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightEncoderValue, frontRightAngleOutput);
-	public PIDController frontLeftAngleController = new PIDController(0.5, 0.0, 0.0001, frontLeftEncoderValue, frontLeftAngleOutput);
+	public PIDController frontLeftAngleController = new PIDController(0.8, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
 	public PIDController backLeftAngleController = new PIDController(0.5, 0.0, 0.0001, backRightEncoderValue, backRightAngleOutput);
 	public PIDController backRightAngleController = new PIDController(0.5, 0.0, 0.0001, backLeftEncoderValue, backLeftAngleOutput);
 
@@ -144,7 +144,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	 */
 	public SwerveDriveModule[] mSwerveModules = new SwerveDriveModule[] {
 		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightAngleEncoder, 0),
-		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, 0),
+		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, -1 * Math.toRadians(347.40)), //TODO: Might be 13 less?
 		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, 0),
 		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, 0)
 	};
