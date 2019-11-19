@@ -94,7 +94,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit(){
     drive.frontLeftAngleController.disable();
-    // System.out.println("Channel Number: " + drive.frontLeftAngleEncoder.getChannel());
   }
   /**
    * This function is called periodically during operator control.
@@ -103,22 +102,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.getSwerveModule(1).getAngleMotor().set(OI.getrYval());
     if (OI.quickRotLeft()){
-      // System.out.println("Encoder position: " + drive.frontLeftAngleEncoder.getVoltage());
-      System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder));
-      // System.out.println("RobotController voltage: " + RobotController.getVoltage5V());
+      System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder)*180/(Math.PI));
     }
-
-    // System.out.println(drive.frontRightAngleEncoder.getValue());
-    //Step 1: Drive motor functionality
-    // drive.mSwerveModules[0].getDriveMotor().set(0.2);
-
-    //Step 2: Angle motor functionality
-    // drive.mSwerveModules[0].getAngleMotor().set(0.4);
-
-    //Step 3: Both motors moving simultaneously
-    // drive.mSwerveModules[0].getDriveMotor().set(0.1);
-    // drive.mSwerveModules[0].getAngleMotor().set(0.1);
-
+    
     //Step 4: Motor moving wheel to specific angle using encoder
     // drive.mSwerveModules[0].setTargetAngle(0);
     //Step 5: Full swerve functionality with joystick
