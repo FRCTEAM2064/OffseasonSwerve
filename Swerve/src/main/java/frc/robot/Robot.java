@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  public SwerveDriveSubsystem drive;
+  public static SwerveDriveSubsystem drive;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
     drive = new SwerveDriveSubsystem();
 
     // drive.frontRightAngleController.enable();
-    drive.frontLeftAngleController.enable();
+    // drive.frontLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.backLeftAngleController.enable();
   }
@@ -81,9 +81,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.frontLeftAngleController.enable();
-        drive.frontLeftAngleController.setSetpoint(Math.toRadians(180));
-        System.out.println(Math.toDegrees(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder)));
+        drive.backLeftAngleController.enable();
+        drive.backLeftAngleController.setSetpoint(Math.toRadians(90));
+        System.out.println(Math.toDegrees(SwerveDriveModule.readBackLeftAngle()));
         break;
       case kDefaultAuto:
       default:
@@ -95,15 +95,18 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit(){
     drive.frontLeftAngleController.disable();
+    drive.frontRightAngleController.disable();
+    drive.backRightAngleController.disable();
+    drive.backLeftAngleController.disable();
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    drive.getSwerveModule(1).getAngleMotor().set(OI.getrYval());
+    drive.getSwerveModule(2).getAngleMotor().set(OI.getrYval());
     if (OI.quickRotLeft()){
-      System.out.println(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder)*180/(Math.PI));
+      System.out.println((SwerveDriveModule.readBackLeftAngle())*180/(Math.PI));
     }
     
     //Step 4: Motor moving wheel to specific angle using encoder
