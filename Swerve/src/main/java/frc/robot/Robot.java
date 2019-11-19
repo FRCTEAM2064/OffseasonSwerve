@@ -83,6 +83,7 @@ public class Robot extends TimedRobot {
       case kCustomAuto:
         drive.frontLeftAngleController.enable();
         drive.frontLeftAngleController.setSetpoint(Math.toRadians(180));
+        System.out.println(Math.toDegrees(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder)));
         break;
       case kDefaultAuto:
       default:
