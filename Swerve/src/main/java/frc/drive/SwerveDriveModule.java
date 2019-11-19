@@ -86,11 +86,14 @@ public class SwerveDriveModule extends Subsystem {
 		return mLastTargetAngle;
 	}
 
+	public PIDController getPIDController(){
+		return mAngleController;
+	}
 	public void robotDisabledInit() {
 		mStallTimeBegin = Long.MAX_VALUE;
 	}
 
-	public void setTargetAngle(double targetAngle) {
+	/*public void setTargetAngle(double targetAngle) {
 		mLastTargetAngle = targetAngle;
 
 		targetAngle %= 360;
@@ -141,7 +144,7 @@ public class SwerveDriveModule extends Subsystem {
 		targetAngle *= RobotMap.encUnitsPerRot / 360.0;
 		// mAngleMotor.setSetpoint(targetAngle);
 		mAngleController.setSetpoint(targetAngle);
-	}
+	}*/
 
 	public void setTargetSpeed(double speed) {
 		mDriveMotor.set(speed);

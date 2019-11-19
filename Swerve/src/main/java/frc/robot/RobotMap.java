@@ -10,9 +10,7 @@ package frc.robot;
 /**
  * Add your docs here.
  */
-public class RobotMap {
-    public static double encUnitsPerRot = 1024.0;
-    
+public class RobotMap {    
     public static int frontRightAngleID = 7;
     public static int frontRightDriveID = 8;
     public static int frontLeftAngleID = 2;

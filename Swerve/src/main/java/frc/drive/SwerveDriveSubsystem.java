@@ -164,7 +164,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 
 		for (SwerveDriveModule module : mSwerveModules) {
-			module.setTargetAngle(0);
+			// module.setTargetAngle(0);
+			// module.getPIDController().setSetpoint(0); TODO: Doesn't work yet
 		}
 		frontRightAngleController.disable();
 		frontLeftAngleController.disable();
@@ -241,9 +242,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			if (Math.abs(forward) > 0.05 ||
 			    Math.abs(strafe) > 0.05 ||
 			    Math.abs(rotation) > 0.05) {
-				mSwerveModules[i].setTargetAngle(angles[i] + 180);
+				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
 			} else {
-				mSwerveModules[i].setTargetAngle(mSwerveModules[i].getTargetAngle());
+				mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
 			}
 			mSwerveModules[i].setTargetSpeed(speeds[i]);
 		}
