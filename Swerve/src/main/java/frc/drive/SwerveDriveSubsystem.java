@@ -130,9 +130,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			backLeftAngle.set(output);
 		}
 	};
-
-	public PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightEncoderValue, frontRightAngleOutput);
 	public PIDController frontLeftAngleController = new PIDController(0.8, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
+	
+	public PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightEncoderValue, frontRightAngleOutput);
 	public PIDController backLeftAngleController = new PIDController(0.5, 0.0, 0.0001, backRightEncoderValue, backRightAngleOutput);
 	public PIDController backRightAngleController = new PIDController(0.5, 0.0, 0.0001, backLeftEncoderValue, backLeftAngleOutput);
 
@@ -172,9 +172,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		backRightAngleController.disable();
 		backLeftAngleController.disable();
 		
-		frontLeftAngleController.setInputRange(0, 360);
-		frontLeftAngleController.setOutputRange(0, 0.2);
-		frontLeftAngleController.setAbsoluteTolerance(3.0);
+		frontLeftAngleController.setInputRange(0, 2*Math.PI);
+		frontLeftAngleController.setOutputRange(0, 0.5);
+		frontLeftAngleController.setAbsoluteTolerance(Math.toRadians(3.0));
 		frontLeftAngleController.setContinuous();
 
 	}

@@ -1,17 +1,12 @@
 package frc.drive;
 
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.commands.SwerveModuleCommand;
-import frc.robot.RobotMap;
-import frc.util.MotorStallException;
-
 public class SwerveDriveModule extends Subsystem {
 	private static final long STALL_TIMEOUT = 2000;
 
@@ -157,7 +152,6 @@ public class SwerveDriveModule extends Subsystem {
         if (angle < 0.0) {
             angle += 2.0 * Math.PI;
         }
-
         return angle;
     }
 }
