@@ -173,7 +173,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		backLeftAngleController.disable();
 		
 		frontLeftAngleController.setInputRange(0, 2*Math.PI);
-		frontLeftAngleController.setOutputRange(0, 0.5);
+		frontLeftAngleController.setOutputRange(-0.5, 0.5);
 		frontLeftAngleController.setAbsoluteTolerance(Math.toRadians(3.0));
 		frontLeftAngleController.setContinuous();
 
