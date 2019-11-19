@@ -130,6 +130,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			backLeftAngle.set(output);
 		}
 	};
+	//Testing PID values on front left controller first before applying them to the other angle motors
 	public PIDController frontLeftAngleController = new PIDController(0.8, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
 	
 	public PIDController frontRightAngleController = new PIDController(0.5, 0.0, 0.0001, frontRightEncoderValue, frontRightAngleOutput);
@@ -164,6 +165,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 
 		for (SwerveDriveModule module : mSwerveModules) {
+			module.getPIDController().setInputRange(0, 2 * Math.PI);
+			module.getPIDController().setAbsoluteTolerance(Math.toRadians(3.0));
+			module.getPIDController().setOutputRange(-0.5, 0.5);
+			module.getPIDController().setContinuous(true);
 			// module.setTargetAngle(0);
 			// module.getPIDController().setSetpoint(0); TODO: Doesn't work yet
 		}
@@ -171,12 +176,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		frontLeftAngleController.disable();
 		backRightAngleController.disable();
 		backLeftAngleController.disable();
-		
-		frontLeftAngleController.setInputRange(0, 2*Math.PI);
-		frontLeftAngleController.setOutputRange(-0.5, 0.5);
-		frontLeftAngleController.setAbsoluteTolerance(Math.toRadians(3.0));
-		frontLeftAngleController.setContinuous();
-
 	}
 
 	public AHRS getNavX() {
