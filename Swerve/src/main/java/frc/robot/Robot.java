@@ -37,11 +37,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new SwerveDriveSubsystem();
-
-    // drive.frontRightAngleController.enable();
-    // drive.frontLeftAngleController.enable();
-    // drive.backRightAngleController.enable();
-    // drive.backLeftAngleController.enable();
   }
 
   /**

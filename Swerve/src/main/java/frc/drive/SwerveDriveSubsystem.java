@@ -163,19 +163,14 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		mSwerveModules[0].getAngleMotor().setInverted(true);
 		mSwerveModules[3].getAngleMotor().setInverted(true);
 
-
 		for (SwerveDriveModule module : mSwerveModules) {
+			module.getPIDController().enable();
 			module.getPIDController().setInputRange(0, 2 * Math.PI);
 			module.getPIDController().setAbsoluteTolerance(Math.toRadians(3.0));
 			module.getPIDController().setOutputRange(-0.5, 0.5);
 			module.getPIDController().setContinuous(true);
 			// module.setTargetAngle(0);
-			// module.getPIDController().setSetpoint(0);
 		}
-		frontRightAngleController.disable();
-		frontLeftAngleController.disable();
-		backRightAngleController.disable();
-		backLeftAngleController.disable();
 	}
 
 	public AHRS getNavX() {
