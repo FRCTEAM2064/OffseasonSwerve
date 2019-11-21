@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.commands.HolonomicDriveCommand;
 import frc.drive.SwerveDriveModule;
 import frc.drive.SwerveDriveSubsystem;
 
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static SwerveDriveSubsystem drive;
+  HolonomicDriveCommand driveCommand;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -37,6 +39,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new SwerveDriveSubsystem();
+    drive.backLeftAngleController.enable();
+    drive.backRightAngleController.enable();
+    drive.frontLeftAngleController.enable();
+    drive.frontRightAngleController.enable();
+
+    driveCommand = new HolonomicDriveCommand(drive);
   }
 
   /**
@@ -67,6 +75,10 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    drive.backLeftAngleController.enable();
+    drive.backRightAngleController.enable();
+    drive.frontLeftAngleController.enable();
+    drive.frontRightAngleController.enable();
   }
 
   /**
@@ -74,11 +86,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.backLeftAngleController.enable();
         drive.backLeftAngleController.setSetpoint(Math.toRadians(90));
-        System.out.println(Math.toDegrees(SwerveDriveModule.readBackLeftAngle()));
+        drive.backRightAngleController.setSetpoint(Math.toRadians(90));
+        drive.frontLeftAngleController.setSetpoint(Math.toRadians(90));
+        drive.frontRightAngleController.setSetpoint(Math.toRadians(90));
         break;
       case kDefaultAuto:
       default:
@@ -89,20 +103,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    drive.frontLeftAngleController.disable();
-    drive.frontRightAngleController.disable();
-    drive.backRightAngleController.disable();
-    drive.backLeftAngleController.disable();
+    // drive.frontLeftAngleController.disable();
+    // drive.frontRightAngleController.disable();
+    // drive.backRightAngleController.disable();
+    // drive.backLeftAngleController.disable();
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    drive.getSwerveModule(2).getAngleMotor().set(OI.getrYval());
-    if (OI.quickRotLeft()){
-      System.out.println((SwerveDriveModule.readBackLeftAngle())*180/(Math.PI));
-    }
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval());
     
     //Step 4: Motor moving wheel to specific angle using encoder
     // drive.mSwerveModules[0].setTargetAngle(0);

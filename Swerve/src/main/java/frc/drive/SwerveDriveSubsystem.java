@@ -156,8 +156,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		zeroGyro();
 
 		mSwerveModules[0].getDriveMotor().setInverted(true);
-		mSwerveModules[1].getDriveMotor().setInverted(true);
-		mSwerveModules[2].getDriveMotor().setInverted(true);
+		mSwerveModules[1].getDriveMotor().setInverted(false);
+		mSwerveModules[2].getDriveMotor().setInverted(false);
 		mSwerveModules[3].getDriveMotor().setInverted(true);
 
 		mSwerveModules[0].getAngleMotor().setInverted(true);
@@ -169,7 +169,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.getPIDController().setAbsoluteTolerance(Math.toRadians(3.0));
 			module.getPIDController().setOutputRange(-0.5, 0.5);
 			module.getPIDController().setContinuous(true);
-			// module.setTargetAngle(0);
+			// module.getPIDController().setSetpoint(0);
 		}
 	}
 
@@ -216,12 +216,17 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 				Math.atan2(a, d) * 180 / Math.PI,
 				Math.atan2(a, c) * 180 / Math.PI
 		};
-
+/*
+	 * 0 is Front Right
+	 * 1 is Front Left
+	 * 2 is Back Left
+	 * 3 is Back Right
+*/
 		double[] speeds = new double[]{
-				Math.sqrt(b * b + c * c),
-				Math.sqrt(b * b + d * d),
-				Math.sqrt(a * a + d * d),
-				Math.sqrt(a * a + c * c)
+				Math.sqrt(b * b + c * c), //Front right
+				Math.sqrt(b * b + d * d), //Front left
+				Math.sqrt(a * a + d * d), //Back left
+				Math.sqrt(a * a + c * c) //Back right
 		};
 
 		double max = speeds[0];
@@ -237,8 +242,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			    Math.abs(strafe) > 0.05 ||
 			    Math.abs(rotation) > 0.05) {
 				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
+				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
 			} else {
-				mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
+				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
 			}
 			mSwerveModules[i].setTargetSpeed(speeds[i]);
 		}

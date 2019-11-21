@@ -49,7 +49,7 @@ public class SwerveDriveModule extends Subsystem {
 		//Already done in SwerveDriveSubsystem
 
 		// angleMotor.set(0);
-		angleMotor.set(0);
+		// angleMotor.set(0);
 		// angleMotor.enableControl();
 		
 		// driveMotor.enableBrakeMode(true);

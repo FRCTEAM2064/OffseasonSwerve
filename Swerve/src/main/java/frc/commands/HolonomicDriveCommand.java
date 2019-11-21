@@ -26,9 +26,9 @@ public class HolonomicDriveCommand extends Command {
 		double rotation = OI.getrXval();
 
 		if (OI.quickRotLeft()) {
-			rotation = -1;
+			rotation = -0.6;
 		} else if (OI.quickRotRight()) {
-			rotation = 1;
+			rotation = 0.6;
 		}
 
 		forward = deadband(forward);

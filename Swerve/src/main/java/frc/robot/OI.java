@@ -39,7 +39,7 @@ public class OI {
      * @return left joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getlXval(){
-        return ljoy.getX();
+        return -ljoy.getX();
     }
     /**
      * @return right joystick moving right and left axis val. right = 1; left = -1
