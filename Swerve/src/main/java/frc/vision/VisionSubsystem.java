@@ -7,6 +7,7 @@
 
 package frc.vision;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,7 +16,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class VisionSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  
+  public NetworkTable
+  public Limelight firstLime;
 
   public VisionSubsystem(){
 
