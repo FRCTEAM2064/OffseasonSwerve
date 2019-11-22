@@ -43,7 +43,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public double pidGet() {
-			return SwerveDriveModule.readFrontRightAngle();
+			return SwerveDriveModule.readAngle(frontRightAngleEncoder, RobotMap.frontRightAngleOffset);
 		}
 	
 		@Override
@@ -60,7 +60,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public double pidGet() {
-			return SwerveDriveModule.readFrontLeftAngle();
+			return SwerveDriveModule.readAngle(frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset);
 		}
 	
 		@Override
@@ -77,7 +77,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public double pidGet() {
-			return SwerveDriveModule.readBackRightAngle();
+			return SwerveDriveModule.readAngle(backRightAngleEncoder, RobotMap.backRightAngleOffset);
 		}
 	
 		@Override
@@ -94,7 +94,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	
 		@Override
 		public double pidGet() {
-			return SwerveDriveModule.readBackLeftAngle();
+			return SwerveDriveModule.readAngle(backLeftAngleEncoder, RobotMap.backLeftAngleOffset);
 		}
 	
 		@Override

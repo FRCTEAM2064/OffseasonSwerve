@@ -147,41 +147,13 @@ public class SwerveDriveModule extends Subsystem {
 		mDriveMotor.set(speed);
 	}
 
-	
-    public static double readFrontLeftAngle() {
-		double angle = ((Robot.drive.frontLeftAngleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
-		angle += RobotMap.frontLeftAngleOffset;
+	public static double readAngle(AnalogInput encoder, double angleOffset){
+		double angle = ((encoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
+		angle += angleOffset;
 		angle %= 2.0 * Math.PI;
         if (angle < 0.0) {
 			angle += 2.0 * Math.PI;
         }
         return angle;
 	}
-	public static double readFrontRightAngle() {
-		double angle = ((Robot.drive.frontRightAngleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
-		angle += RobotMap.frontRightAngleOffset;
-		angle %= 2.0 * Math.PI;
-        if (angle < 0.0) {
-			angle += 2.0 * Math.PI;
-        }
-        return angle;
-	}
-	public static double readBackLeftAngle() {
-		double angle = ((Robot.drive.backLeftAngleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
-		angle += RobotMap.backLeftAngleOffset;
-		angle %= 2.0 * Math.PI;
-        if (angle < 0.0) {
-			angle += 2.0 * Math.PI;
-        }
-        return angle;
-	}
-	public static double readBackRightAngle() {
-		double angle = ((Robot.drive.backRightAngleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
-		angle += RobotMap.backRightAngleOffset;
-		angle %= 2.0 * Math.PI;
-        if (angle < 0.0) {
-			angle += 2.0 * Math.PI;
-        }
-        return angle;
-    }
 }
