@@ -7,7 +7,6 @@
 
 package frc.vision;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,11 +15,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class VisionSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public NetworkTable
+  private static final String CARGO_LIMELIGHT_TABLE_NAME = "limelight-cargo";
+
+
   public Limelight firstLime;
 
   public VisionSubsystem(){
-
+    first = new Limelight()
   }
   @Override
   public void initDefaultCommand() {
