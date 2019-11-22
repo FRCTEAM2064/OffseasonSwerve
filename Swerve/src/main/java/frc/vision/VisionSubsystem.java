@@ -9,6 +9,8 @@ package frc.vision;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.vision.Limelight.CamMode;
+import frc.vision.Limelight.LedMode;
 
 /**
  * Add your docs here.
@@ -16,13 +18,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class VisionSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private static final String FIRST_LIMELIGHT_TABLE_NAME = "limelight-cargo";
+  private static final String FIRST_LIMELIGHT_TABLE_NAME = "limelight-first";
 
 
   public Limelight firstLime;
 
   public VisionSubsystem(){
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable(FIRST_LIMELIGHT_TABLE_NAME));
+    firstLime.setCamMode(CamMode.VISION);
+    firstLime.setLedMode(LedMode.ON);
   }
   @Override
   public void initDefaultCommand() {

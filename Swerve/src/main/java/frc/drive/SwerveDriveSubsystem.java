@@ -167,7 +167,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.getPIDController().enable();
 			module.getPIDController().setInputRange(0, 2 * Math.PI);
 			module.getPIDController().setAbsoluteTolerance(Math.toRadians(3.0));
-			module.getPIDController().setOutputRange(-0.5, 0.5);
+			module.getPIDController().setOutputRange(-0.8, 0.8);
 			module.getPIDController().setContinuous(true);
 			// module.getPIDController().setSetpoint(0);
 		}
