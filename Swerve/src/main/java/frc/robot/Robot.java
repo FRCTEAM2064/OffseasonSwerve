@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.commands.HolonomicDriveCommand;
 import frc.drive.SwerveDriveSubsystem;
+import frc.vision.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static SwerveDriveSubsystem drive;
+  public static VisionSubsystem vision;
   HolonomicDriveCommand driveCommand;
   /**
    * This function is run when the robot is first started up and should be
@@ -38,6 +40,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new SwerveDriveSubsystem();
+    vision = new VisionSubsystem();
     drive.backLeftAngleController.enable();
     drive.backRightAngleController.enable();
     drive.frontLeftAngleController.enable();
@@ -74,10 +77,6 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    drive.backLeftAngleController.enable();
-    drive.backRightAngleController.enable();
-    drive.frontLeftAngleController.enable();
-    drive.frontRightAngleController.enable();
   }
 
   /**
@@ -88,10 +87,7 @@ public class Robot extends TimedRobot {
     
     switch (m_autoSelected) {
       case kCustomAuto:
-        drive.backLeftAngleController.setSetpoint(Math.toRadians(90));
-        drive.backRightAngleController.setSetpoint(Math.toRadians(90));
-        drive.frontLeftAngleController.setSetpoint(Math.toRadians(90));
-        drive.frontRightAngleController.setSetpoint(Math.toRadians(90));
+
         break;
       case kDefaultAuto:
       default:
@@ -102,22 +98,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    // drive.frontLeftAngleController.disable();
-    // drive.frontRightAngleController.disable();
-    // drive.backRightAngleController.disable();
-    // drive.backLeftAngleController.disable();
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval());
-    
-    //Step 4: Motor moving wheel to specific angle using encoder
-    // drive.mSwerveModules[0].setTargetAngle(0);
-    //Step 5: Full swerve functionality with joystick
-    // drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval());
+    System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
+    System.out.println("Y coordinate" + vision.firstLime.getTargetPosition().y);
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval());
     //Step 6: Trapezoidal motion profile for drive motor
     
   }

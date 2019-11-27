@@ -27,6 +27,7 @@ public class VisionSubsystem extends Subsystem {
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable(FIRST_LIMELIGHT_TABLE_NAME));
     firstLime.setCamMode(CamMode.VISION);
     firstLime.setLedMode(LedMode.ON);
+    firstLime.setPipeline(0);
   }
   @Override
   public void initDefaultCommand() {
