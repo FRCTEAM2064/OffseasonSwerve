@@ -17,6 +17,7 @@ public final class Limelight {
 
     private final NetworkTableEntry tcornx;
     private final NetworkTableEntry tcorny;
+    private final NetworkTableEntry camtran;
 
     private final NetworkTableEntry ledMode;
     private final NetworkTableEntry camMode;
@@ -36,6 +37,7 @@ public final class Limelight {
 
         tcornx = table.getEntry("tcornx");
         tcorny = table.getEntry("tcorny");
+        camtran = table.getEntry("camtran");
 
         ledMode = table.getEntry("ledMode");
         camMode = table.getEntry("camMode");
@@ -60,15 +62,22 @@ public final class Limelight {
         return ts.getDouble(0);
     }
 
-    public double[][] getCorners() {
+    public boolean getCorners(int numOfCorners, double[][] corners) {
         double[] x = tcornx.getDoubleArray(new double[]{0.0, 0.0});
         double[] y = tcorny.getDoubleArray(new double[]{0.0, 0.0});
-        double[][] corners = new double[x.length][2];
+        if (x.length != numOfCorners) {
+            return false;
+        }
         for (int i = 0; i < x.length; i++) {
             corners[i][0] = x[i];
             corners[i][1] = y[i];
         }
-        return corners;
+        return true;
+    }
+
+    public Number[] getPosition() {
+        Number[] defaultValue = {0, 0};
+        return camtran.getNumberArray(defaultValue);
     }
 
     public void setCamMode(CamMode mode) {
@@ -122,10 +131,6 @@ public final class Limelight {
                 stream.setNumber(2);
                 break;
         }
-    }
-
-    public NetworkTable getTable() {
-        return table;
     }
 
     public enum CamMode {

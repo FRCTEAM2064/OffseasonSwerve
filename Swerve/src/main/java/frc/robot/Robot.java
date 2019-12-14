@@ -98,15 +98,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
+    vision.rotateToTarget.enable();
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
-    // System.out.println("Y coordinate" + vision.firstLime.getTargetPosition().y);
-    System.out.println("Position: " + vision.firstLime.getPosition());
+    
+    System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
+    // vision.rotateToTarget.setSetpoint(0);
     // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval());
     //Step 6: Trapezoidal motion profile for drive motor
     
