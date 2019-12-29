@@ -9,14 +9,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.common.input.JoystickAxis;
 
 /**
  * Add your docs here.
  */
 public class OI {
-    private static Joystick ljoy = new Joystick(0);
-    private static Joystick rjoy = new Joystick(1);
-    private static Joystick ojoy = new Joystick(2);
+    private static final Joystick ljoy= new Joystick(0);
+    private static final Joystick rjoy = new Joystick(1);
+    private static final Joystick ojoy = new Joystick(2);
 
     private static JoystickButton lb1 = new JoystickButton(ljoy, 1);
     private static JoystickButton lb2 = new JoystickButton(ljoy, 2);
@@ -28,6 +29,10 @@ public class OI {
     private static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     private static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
+
+    private static JoystickAxis forwardAxis = new JoystickAxis(ljoy, 1);
+    private static JoystickAxis strafeAxis = new JoystickAxis(ljoy, 0);
+    private static JoystickAxis rotationAxis = new JoystickAxis(rjoy, 1);
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */

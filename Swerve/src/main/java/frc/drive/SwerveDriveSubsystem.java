@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
+import frc.common.drivers.NavX;
 import frc.robot.RobotMap;
 
 public class SwerveDriveSubsystem extends HolonomicDrivetrain {
@@ -20,7 +21,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// private static final double RATIO = Math.sqrt(Math.pow(WHEELBASE, 2) + Math.pow(TRACKWIDTH, 2));
 	//Value ratio is never used
 
-	private CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
+	private
+	 CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	private CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
 	private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
 	private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
@@ -102,11 +104,19 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			return PIDSourceType.kDisplacement;
 		}
 	};
-	private PIDOutput frontRightAngleOutput = new PIDOutput(){
+	private PIDSource gyroscopeValue = new PIDSource(){
+		@Override
+		public void setPIDSourceType(PIDSourceType arg0) {	
+		}
 	
 		@Override
-		public void pidWrite(double output) {
-			frontRightAngle.set(output);
+			public double pidGet() {
+				return mNavX.getYaw() + 180;
+			}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
 		}
 	};
 	private PIDOutput frontLeftAngleOutput = new PIDOutput(){
@@ -136,7 +146,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0, backLeftEncoderValue, backLeftAngleOutput);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0, backRightEncoderValue, backRightAngleOutput);
-
+	public PIDController fieldOrientedController = new PIDController (0.12, 0.0, 0.0, gyroscopeValue, gyroscopeOutput);
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left

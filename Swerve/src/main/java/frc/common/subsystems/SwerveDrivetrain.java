@@ -3,6 +3,7 @@ package frc.common.subsystems;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.common.drivers.Gyroscope;
 import frc.common.drivers.SwerveModule;
 import frc.common.math.MathUtils;
 import frc.common.math.RigidTransform2;
