@@ -7,10 +7,11 @@ import frc.drive.HolonomicDrivetrain;
 
 public class HolonomicDriveCommand extends Command {
 	private final HolonomicDrivetrain mDrivetrain;
+	private final boolean iFO;
 
-	public HolonomicDriveCommand(HolonomicDrivetrain drivetrain) {
+	public HolonomicDriveCommand(HolonomicDrivetrain drivetrain, boolean isFieldOriented) {
 		mDrivetrain = drivetrain;
-
+		iFO = isFieldOriented;
 		requires(drivetrain);
 	}
 
@@ -39,7 +40,7 @@ public class HolonomicDriveCommand extends Command {
 		SmartDashboard.putNumber("Strafe", strafe);
 		SmartDashboard.putNumber("Rotation", rotation);
 
-		mDrivetrain.holonomicDrive(forward, strafe, rotation);
+		mDrivetrain.holonomicDrive(forward, strafe, rotation, iFO);
 	}
 
 	@Override

@@ -4,14 +4,21 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
-import frc.common.drivers.NavX;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import frc.common.drivers.Gyroscope;
 import frc.robot.RobotMap;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.SwerveModifier;
 
 public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// private static final double WHEELBASE = 12.5;
@@ -21,8 +28,9 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// private static final double RATIO = Math.sqrt(Math.pow(WHEELBASE, 2) + Math.pow(TRACKWIDTH, 2));
 	//Value ratio is never used
 
-	private
-	 CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
+	public double adjustmentAngle = 0.0;
+
+	private CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	private CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
 	private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
 	private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
@@ -35,7 +43,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
 	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
 	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
-
 	private PIDSource frontRightEncoderValue = new PIDSource(){
 	
 		@Override
@@ -104,19 +111,26 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			return PIDSourceType.kDisplacement;
 		}
 	};
-	private PIDSource gyroscopeValue = new PIDSource(){
-		@Override
-		public void setPIDSourceType(PIDSourceType arg0) {	
-		}
+	// private PIDSource gyroscopeValue = new PIDSource(){
+	// 	@Override
+	// 	public void setPIDSourceType(PIDSourceType arg0) {	
+	// 	}
+	
+	// 	@Override
+	// 		public double pidGet() {
+	// 			return mNavX.getYaw() + 180;
+	// 		}
+
+	// 	@Override
+	// 	public PIDSourceType getPIDSourceType() {
+	// 		return PIDSourceType.kDisplacement;
+	// 	}
+	// };
+	private PIDOutput frontRightAngleOutput = new PIDOutput(){
 	
 		@Override
-			public double pidGet() {
-				return mNavX.getYaw() + 180;
-			}
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
+		public void pidWrite(double output) {
+			frontRightAngle.set(output);
 		}
 	};
 	private PIDOutput frontLeftAngleOutput = new PIDOutput(){
@@ -140,13 +154,23 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			backLeftAngle.set(output);
 		}
 	};
+	// private void setAdjustmentAngle(double input){
+	// 	adjustmentAngle = input;
+	// }
+	// private PIDOutput gyroscopeOutput = new PIDOutput(){
+	
+	// 	@Override
+	// 	public void pidWrite(double input) {
+	// 		setAdjustmentAngle(input);
+	// 	}
+	// };
 	//Testing PID values on front left controller first before applying them to the other angle motors
 	
 	public PIDController frontRightAngleController = new PIDController(0.18, 0.0, 0.0, frontRightEncoderValue, frontRightAngleOutput);
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0, backLeftEncoderValue, backLeftAngleOutput);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0, backRightEncoderValue, backRightAngleOutput);
-	public PIDController fieldOrientedController = new PIDController (0.12, 0.0, 0.0, gyroscopeValue, gyroscopeOutput);
+	// public PIDController fieldOrientedController = new PIDController (0.12, 0.0, 0.0, gyroscopeValue, gyroscopeOutput);
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -161,6 +185,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
+	public ADXRS450_Gyro temp_gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
 
 	public SwerveDriveSubsystem() {
 		zeroGyro();
@@ -181,6 +206,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.getPIDController().enable();
 			// module.getPIDController().setSetpoint(0);
 		}
+		// fieldOrientedController.setInputRange(0, 360);
+		// fieldOrientedController.setAbsoluteTolerance(3.0);
+		// fieldOrientedController.setOutputRange(-0.5, 0.5);
+		// fieldOrientedController.setContinuous(true);
 	}
 
 	public AHRS getNavX() {
@@ -188,7 +217,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	}
 
 	public double getGyroAngle() {
-		return (mNavX.getAngle() - getAdjustmentAngle());
+		return temp_gyro.getAngle();
+		// return (mNavX.getAngle() - getAdjustmentAngle());
 	}
 
 	public double getGyroRate() {
@@ -204,10 +234,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	}
 
 	@Override
-	public void holonomicDrive(double forward, double strafe, double rotation) {
+	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
 		forward *= getSpeedMultiplier();
 		strafe *= getSpeedMultiplier();
-		if (isFieldOriented()) {
+		if (iFO) {
 			double angleRad = Math.toRadians(getGyroAngle());
 			double temp = forward * Math.cos(angleRad) +
 					strafe * Math.sin(angleRad);
@@ -266,4 +296,21 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.setTargetSpeed(0);
 		}
 	}
+
+	//Test code for trajectory library
+	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+	Waypoint[] points = new Waypoint[] {
+		new Waypoint(-4, -1, Pathfinder.d2r(-45)),
+		new Waypoint(-2, -2, 0),
+		new Waypoint(0, 0, 0)
+	};
+
+	Trajectory trajectory = Pathfinder.generate(points, config);
+	// Wheelbase Width(left to right) = 0.5m, Wheelbase length(front to back) = 0.6m, Swerve Mode = Default
+	SwerveModifier modifier = new SwerveModifier(trajectory).modify(0.5, 0.6, SwerveModifier.Mode.SWERVE_DEFAULT);
+	
+	Trajectory fl = modifier.getFrontLeftTrajectory();
+	Trajectory fr = modifier.getFrontRightTrajectory();
+	Trajectory bl = modifier.getBackLeftTrajectory();
+	Trajectory br = modifier.getBackRightTrajectory();
 }

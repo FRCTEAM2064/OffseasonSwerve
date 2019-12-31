@@ -14,18 +14,18 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 
 	public abstract double getGyroAngle();
 
-	public abstract void holonomicDrive(double forward, double strafe, double rotation);
+	public abstract void holonomicDrive(double forward, double strafe, double rotation, boolean isFieldOriented);
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new HolonomicDriveCommand(this));
+		setDefaultCommand(new HolonomicDriveCommand(this, false));
 	}
 
 	public boolean isFieldOriented() {
 		return mFieldOriented;
 	}
 
-	public void setAdjustmentAngle(double adjustmentAngle) {
+	private void setAdjustmentAngle(double adjustmentAngle) {
 		mAdjustmentAngle = adjustmentAngle;
 	}
 

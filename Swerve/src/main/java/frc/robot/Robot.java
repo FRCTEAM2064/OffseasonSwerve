@@ -41,12 +41,14 @@ public class Robot extends TimedRobot {
 
     drive = new SwerveDriveSubsystem();
     vision = new VisionSubsystem();
+    
+    drive.temp_gyro.reset();
     // drive.backLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.frontLeftAngleController.enable();
     // drive.frontRightAngleController.enable();
 
-    driveCommand = new HolonomicDriveCommand(drive);
+    driveCommand = new HolonomicDriveCommand(drive, true);
   }
 
   /**
@@ -107,7 +109,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval());
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
     //Step 6: Trapezoidal motion profile for drive motor
     
   }

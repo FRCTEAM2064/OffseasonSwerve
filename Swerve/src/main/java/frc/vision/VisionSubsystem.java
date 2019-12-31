@@ -58,7 +58,7 @@ public class VisionSubsystem extends Subsystem {
     
       @Override
       public void pidWrite(double output) {
-        Robot.drive.holonomicDrive(0, 0, output);
+        Robot.drive.holonomicDrive(0, 0, output, true);
       }
     };
 
