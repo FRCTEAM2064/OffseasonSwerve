@@ -14,7 +14,10 @@ import frc.common.input.JoystickAxis;
 /**
  * Add your docs here.
  */
+
 public class OI {
+    public static double previous_angle = 0;
+
     private static Joystick ljoy= new Joystick(0);
     private static Joystick rjoy = new Joystick(1);
     private static Joystick ojoy = new Joystick(2);
@@ -33,24 +36,26 @@ public class OI {
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */
     public static double getlYval(){
-        if (Math.abs(-ljoy.getY()) < 0.05) return 0;
+        if (Math.abs(-ljoy.getY()) < 0.02) return 0;
         else return -ljoy.getY();
     }
     /**
      * @return left joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getlXval(){
-        return -ljoy.getX();
+        if (Math.abs(-ljoy.getX()) < 0.02) return 0;
+        else return -ljoy.getX();
     }
     /**
      * @return right joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getrXval(){
-        return rjoy.getX();
+        if (Math.abs(rjoy.getX()) < 0.02) return 0;
+        else return -rjoy.getX();
     }
 
     public static double getrYval(){
-        if (Math.abs(rjoy.getY()) < 0.05) return 0;
+        if (Math.abs(rjoy.getY()) < 0.02) return 0;
         else return rjoy.getY();
     }
 
@@ -60,5 +65,29 @@ public class OI {
     
     public static boolean quickRotRight(){
         return rb4.get();
+    }
+
+    public static double getrAngle(){
+        if (getrYval() == 0 && getrXval() == 0){
+            return previous_angle;
+        }
+        double current_angle = Math.toDegrees(Math.atan2(getrYval(), getrXval())) + 90;
+        if (current_angle > 180){
+            current_angle -= 360;
+        }
+        previous_angle = current_angle;
+        return current_angle;
+    }
+    /**
+     * @param setpoint : The final 
+     * returns +1 or -1 depending on if 
+     * the shortest direction is counterclockwise 
+     * or clockwise, respectively
+     */
+    public static double shortestPathDirection(double current_angle, double setpoint){
+        double difference_without_discont = Math.abs(setpoint - current_angle);
+        double difference_with_discont = Math.abs(360 - difference_without_discont);
+        if (!(difference_without_discont > difference_with_discont)) return -1;
+        return 1;
     }
 }

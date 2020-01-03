@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
     drive = new SwerveDriveSubsystem();
     vision = new VisionSubsystem();
     
-    drive.temp_gyro.reset();
+    drive.mNavX.reset();
     // drive.backLeftAngleController.enable();
     // drive.backRightAngleController.enable();
     // drive.frontLeftAngleController.enable();
@@ -109,9 +109,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false);
+    System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
+    System.out.println(drive.mNavX.pidGet()); //TODO: Check if this will be more accurate
     //Step 6: Trapezoidal motion profile for drive motor
-    
+    // System.out.println(OI.getrAngle());
   }
 
   /**
@@ -119,6 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
   }
   @Override
   public void disabledInit(){

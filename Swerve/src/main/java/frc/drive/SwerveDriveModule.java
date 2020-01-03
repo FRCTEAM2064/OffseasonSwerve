@@ -86,9 +86,18 @@ public class SwerveDriveModule extends Subsystem {
 	public PIDController getPIDController(){
 		return mAngleController;
 	}
+
+	public AnalogInput getEncoder(){
+		return mAngleEnc;
+	}
+	
+	public double getOffset(){
+		return angleOffset;
+	}
 	public void robotDisabledInit() {
 		mStallTimeBegin = Long.MAX_VALUE;
 	}
+
 
 	/*public void setTargetAngle(double targetAngle) {
 		mLastTargetAngle = targetAngle;

@@ -4,7 +4,6 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PIDController;
@@ -14,6 +13,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.common.drivers.Gyroscope;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -171,6 +171,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0, backLeftEncoderValue, backLeftAngleOutput);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0, backRightEncoderValue, backRightAngleOutput);
 	// public PIDController fieldOrientedController = new PIDController (0.12, 0.0, 0.0, gyroscopeValue, gyroscopeOutput);
+	
+	
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -179,13 +181,13 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	 */
 	public SwerveDriveModule[] mSwerveModules = new SwerveDriveModule[] {
 		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightAngleEncoder, RobotMap.frontRightAngleOffset),
-		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset), //TODO: Might be 13 less? 
+		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset),
 		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, RobotMap.backLeftAngleOffset),
 		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, RobotMap.backRightAngleOffset)
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
-	public ADXRS450_Gyro temp_gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
+	// public ADXRS450_Gyro temp_gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
 
 	public SwerveDriveSubsystem() {
 		zeroGyro();
@@ -217,8 +219,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	}
 
 	public double getGyroAngle() {
-		return temp_gyro.getAngle();
-		// return (mNavX.getAngle() - getAdjustmentAngle());
+		// return temp_gyro.getAngle();
+		return (mNavX.getAngle() - getAdjustmentAngle());
 	}
 
 	public double getGyroRate() {
@@ -278,15 +280,23 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 
 		for (int i = 0; i < 4; i++) {
+			boolean reversed = false;
 			if (Math.abs(forward) > 0.05 ||
 			    Math.abs(strafe) > 0.05 ||
 			    Math.abs(rotation) > 0.05) {
-				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
-				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
+					if(OI.shortestPathDirection(mSwerveModules[i].readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180)) == -1){
+						reversed = true;
+						mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
+					}
+					else{
+						mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
+					}
+					// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
 			} else {
 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
 			}
-			mSwerveModules[i].setTargetSpeed(speeds[i]);
+			if (reversed) mSwerveModules[i].setTargetSpeed(-speeds[i]);
+			else mSwerveModules[i].setTargetSpeed(speeds[i]);
 		}
 	}
 
