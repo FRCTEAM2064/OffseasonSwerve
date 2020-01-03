@@ -299,7 +299,63 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			else mSwerveModules[i].setTargetSpeed(speeds[i]);
 		}
 	}
+// 	TODO: Drive code that previously worked
+//  @Override
+// 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
+// 		forward *= getSpeedMultiplier();
+// 		strafe *= getSpeedMultiplier();
+// 		if (iFO) {
+// 			double angleRad = Math.toRadians(getGyroAngle());
+// 			double temp = forward * Math.cos(angleRad) +
+// 					strafe * Math.sin(angleRad);
+// 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
+// 			forward = temp;
+// 		}
 
+// 		double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
+// 		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
+// 		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
+// 		double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
+
+// 		double[] angles = new double[]{
+// 				Math.atan2(b, c) * 180 / Math.PI,
+// 				Math.atan2(b, d) * 180 / Math.PI,
+// 				Math.atan2(a, d) * 180 / Math.PI,
+// 				Math.atan2(a, c) * 180 / Math.PI
+// 		};
+// /*
+// 	 * 0 is Front Right
+// 	 * 1 is Front Left
+// 	 * 2 is Back Left
+// 	 * 3 is Back Right
+// */
+// 		double[] speeds = new double[]{
+// 				Math.sqrt(b * b + c * c), //Front right
+// 				Math.sqrt(b * b + d * d), //Front left
+// 				Math.sqrt(a * a + d * d), //Back left
+// 				Math.sqrt(a * a + c * c) //Back right
+// 		};
+
+// 		double max = speeds[0];
+
+// 		for (double speed : speeds) {
+// 			if (speed > max) {
+// 				max = speed;
+// 			}
+// 		}
+
+// 		for (int i = 0; i < 4; i++) {
+// 			if (Math.abs(forward) > 0.05 ||
+// 			    Math.abs(strafe) > 0.05 ||
+// 			    Math.abs(rotation) > 0.05) {
+// 				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
+// 				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
+// 			} else {
+// 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
+// 			}
+// 			mSwerveModules[i].setTargetSpeed(speeds[i]);
+// 		}
+// 	}
 	@Override
 	public void stopDriveMotors() {
 		for (SwerveDriveModule module : mSwerveModules) {
