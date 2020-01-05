@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import frc.common.drivers.Gyroscope;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
