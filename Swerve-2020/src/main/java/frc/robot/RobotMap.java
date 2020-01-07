@@ -29,4 +29,6 @@ public class RobotMap {
     public static double frontLeftAngleOffset = -Math.toRadians(18);
     public static double backLeftAngleOffset = -Math.toRadians(209.1);
     public static double backRightAngleOffset = Math.toRadians(25.6);
+
+    public static double maxSwerveSpeed = 0.8;
 }

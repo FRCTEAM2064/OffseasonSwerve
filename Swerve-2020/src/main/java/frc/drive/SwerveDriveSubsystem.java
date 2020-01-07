@@ -1,17 +1,15 @@
 package frc.drive;
 
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -41,74 +39,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
 	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
 	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
-	private PIDSource frontRightEncoderValue = new PIDSource(){
-	
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSource = PIDSourceType.kDisplacement;
-		}
-	
-		@Override
-		public double pidGet() {
-			return SwerveDriveModule.readAngle(frontRightAngleEncoder, RobotMap.frontRightAngleOffset);
-		}
-	
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-	};
-	private PIDSource frontLeftEncoderValue = new PIDSource(){
-	
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSource = PIDSourceType.kDisplacement;
-		}
-	
-		@Override
-		public double pidGet() {
-			return SwerveDriveModule.readAngle(frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset);
-		}
-	
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-	};
-	private PIDSource backRightEncoderValue = new PIDSource(){
-	
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSource = PIDSourceType.kDisplacement;
-		}
-	
-		@Override
-		public double pidGet() {
-			return SwerveDriveModule.readAngle(backRightAngleEncoder, RobotMap.backRightAngleOffset);
-		}
-	
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-	};
-	private PIDSource backLeftEncoderValue = new PIDSource(){
-	
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSource = PIDSourceType.kDisplacement;
-		}
-	
-		@Override
-		public double pidGet() {
-			return SwerveDriveModule.readAngle(backLeftAngleEncoder, RobotMap.backLeftAngleOffset);
-		}
-	
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-	};
+
+
 	// private PIDSource gyroscopeValue = new PIDSource(){
 	// 	@Override
 	// 	public void setPIDSourceType(PIDSourceType arg0) {	
@@ -124,34 +56,76 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// 		return PIDSourceType.kDisplacement;
 	// 	}
 	// };
-	private PIDOutput frontRightAngleOutput = new PIDOutput(){
+
+	DoubleSupplier frontRightEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
 	
 		@Override
-		public void pidWrite(double output) {
-			frontRightAngle.set(output);
+		public double getAsDouble() {
+			// TODO Auto-generated method stub
+			return SwerveDriveModule.readAngle(frontRightAngleEncoder, RobotMap.frontRightAngleOffset);
 		}
-	};
-	private PIDOutput frontLeftAngleOutput = new PIDOutput(){
+	}; 
+	
+	DoubleSupplier frontLeftEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
 	
 		@Override
-		public void pidWrite(double output) {
-			frontLeftAngle.set(output);
+		public double getAsDouble() {
+			// TODO Auto-generated method stub
+			return SwerveDriveModule.readAngle(frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset);
 		}
 	};
-	private PIDOutput backRightAngleOutput = new PIDOutput(){
+
+	DoubleSupplier backRightEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
 	
 		@Override
-		public void pidWrite(double output) {
-			backRightAngle.set(output);
+		public double getAsDouble() {
+			// TODO Auto-generated method stub
+			return SwerveDriveModule.readAngle(backRightAngleEncoder, RobotMap.backRightAngleOffset);
 		}
 	};
-	private PIDOutput backLeftAngleOutput = new PIDOutput(){
+
+	DoubleSupplier backLeftEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
 	
 		@Override
-		public void pidWrite(double output) {
-			backLeftAngle.set(output);
+		public double getAsDouble() {
+			// TODO Auto-generated method stub
+			return SwerveDriveModule.readAngle(backLeftAngleEncoder, RobotMap.backLeftAngleOffset);
 		}
 	};
+	
+	DoubleConsumer frontRightAngleOutput = new DoubleConsumer(){
+	
+		@Override
+		public void accept(double arg0) {
+			frontRightAngle.set(arg0);
+			
+		}
+	};
+	DoubleConsumer frontLeftAngleOutput = new DoubleConsumer(){
+	
+		@Override
+		public void accept(double arg0) {
+			frontLeftAngle.set(arg0);
+			
+		}
+	};
+	DoubleConsumer backRightAngleOutput = new DoubleConsumer(){
+	
+		@Override
+		public void accept(double arg0) {
+			backRightAngle.set(arg0);
+			
+		}
+	};
+	DoubleConsumer backLeftAngleOutput = new DoubleConsumer(){
+	
+		@Override
+		public void accept(double arg0) {
+			backLeftAngle.set(arg0);
+			
+		}
+	};
+	
 	// private void setAdjustmentAngle(double input){
 	// 	adjustmentAngle = input;
 	// }
@@ -164,12 +138,11 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// };
 	//Testing PID values on front left controller first before applying them to the other angle motors
 	
-	public PIDController frontRightAngleController = new PIDController(0.18, 0.0, 0.0, frontRightEncoderValue, frontRightAngleOutput);
-	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0, frontLeftEncoderValue, frontLeftAngleOutput);
-	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0, backLeftEncoderValue, backLeftAngleOutput);
-	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0, backRightEncoderValue, backRightAngleOutput);
-	// public PIDController fieldOrientedController = new PIDController (0.12, 0.0, 0.0, gyroscopeValue, gyroscopeOutput);
-	
+	public PIDController frontRightAngleController = new PIDController(0.18, 0.0, 0.0);
+	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
+	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0);
+	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0);
+	public PIDController rotationJoyAngleController = new PIDController(0.1, 0.0, 0.0);
 	
 	/*
 	 * 0 is Front Right
@@ -185,7 +158,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
-	// public ADXRS450_Gyro temp_gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
 
 	public SwerveDriveSubsystem() {
 		zeroGyro();
@@ -199,17 +171,17 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		mSwerveModules[3].getAngleMotor().setInverted(true);
 
 		for (SwerveDriveModule module : mSwerveModules) {
-			module.getPIDController().setInputRange(0, 2 * Math.PI);
-			module.getPIDController().setAbsoluteTolerance(Math.toRadians(3.0));
-			module.getPIDController().setOutputRange(-0.8, 0.8);
-			module.getPIDController().setContinuous(true);
-			module.getPIDController().enable();
+			module.getPIDController().enableContinuousInput(0, 2 * Math.PI);
+			module.getPIDController().setTolerance(Math.toRadians(3.0));
 			// module.getPIDController().setSetpoint(0);
 		}
 		// fieldOrientedController.setInputRange(0, 360);
 		// fieldOrientedController.setAbsoluteTolerance(3.0);
 		// fieldOrientedController.setOutputRange(-0.5, 0.5);
 		// fieldOrientedController.setContinuous(true);
+
+		rotationJoyAngleController.enableContinuousInput(-180, 180);
+		rotationJoyAngleController.setTolerance(3);
 	}
 
 	public AHRS getNavX() {
@@ -336,12 +308,22 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			if (Math.abs(forward) > 0.05 ||
 			    Math.abs(strafe) > 0.05 ||
 			    Math.abs(rotation) > 0.05) {
-				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
+					
+				mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180));
 				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
 			} else {
 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
 			}
-			mSwerveModules[i].setTargetSpeed(speeds[i]);
+
+			if (speeds[i] > RobotMap.maxSwerveSpeed){
+				mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+			}
+			else if (speeds[i] < -RobotMap.maxSwerveSpeed){
+				mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
+			}
+			else{
+				mSwerveModules[i].setTargetSpeed(speeds[i]);
+			}
 		}
 	}
 
@@ -415,21 +397,4 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			module.setTargetSpeed(0);
 		}
 	}
-
-	//Test code for trajectory library
-	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
-	Waypoint[] points = new Waypoint[] {
-		new Waypoint(-4, -1, Pathfinder.d2r(-45)),
-		new Waypoint(-2, -2, 0),
-		new Waypoint(0, 0, 0)
-	};
-
-	Trajectory trajectory = Pathfinder.generate(points, config);
-	// Wheelbase Width(left to right) = 0.5m, Wheelbase length(front to back) = 0.6m, Swerve Mode = Default
-	SwerveModifier modifier = new SwerveModifier(trajectory).modify(0.5, 0.6, SwerveModifier.Mode.SWERVE_DEFAULT);
-	
-	Trajectory fl = modifier.getFrontLeftTrajectory();
-	Trajectory fr = modifier.getFrontRightTrajectory();
-	Trajectory bl = modifier.getBackLeftTrajectory();
-	Trajectory br = modifier.getBackRightTrajectory();
 }

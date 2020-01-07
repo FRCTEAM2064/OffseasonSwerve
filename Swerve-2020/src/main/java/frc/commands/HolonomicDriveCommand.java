@@ -12,7 +12,7 @@ public class HolonomicDriveCommand extends Command {
 	public HolonomicDriveCommand(HolonomicDrivetrain drivetrain, boolean isFieldOriented) {
 		mDrivetrain = drivetrain;
 		iFO = isFieldOriented;
-		requires(drivetrain);
+		// requires(drivetrain);
 	}
 
 	private double deadband(double input) {

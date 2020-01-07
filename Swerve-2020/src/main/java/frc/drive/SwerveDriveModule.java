@@ -3,12 +3,10 @@ package frc.drive;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.commands.SwerveModuleCommand;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
 public class SwerveDriveModule extends Subsystem {
 	private static final long STALL_TIMEOUT = 2000;
 

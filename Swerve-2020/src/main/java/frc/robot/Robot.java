@@ -14,7 +14,8 @@ import frc.commands.HolonomicDriveCommand;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 
-/**
+
+/*
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
@@ -109,13 +110,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    drive.holonomicDrive(-OI.getlYval(
-
-    ), OI.getlXval(), OI.getrXval(), false);
-    // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
-    System.out.println(drive.mNavX.pidGet()); //TODO: Check if this will be more accurate
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false); //First check if this works
+    System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
+    
     //Step 6: Trapezoidal motion profile for drive motor
     // System.out.println(OI.getrAngle());
   }

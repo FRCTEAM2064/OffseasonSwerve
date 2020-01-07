@@ -1,4 +1,4 @@
-package frc.vision;
+package frc.vision.drivers;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -149,5 +149,10 @@ public final class Limelight {
         STANDARD,
         PIP_MAIN,
         PIP_SECONDARY
+    }
+
+    public double getDistHighGoal(){
+        
+        return 0.0;
     }
 }

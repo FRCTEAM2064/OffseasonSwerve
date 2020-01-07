@@ -1,7 +1,5 @@
 package frc.drive;
 
-import frc.commands.HolonomicDriveCommand;
-
 public abstract class HolonomicDrivetrain extends Drivetrain {
 
 	private double mAdjustmentAngle = 0;
@@ -18,7 +16,7 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new HolonomicDriveCommand(this, false));
+		// setDefaultCommand(new HolonomicDriveCommand(this, false));
 	}
 
 	public boolean isFieldOriented() {
