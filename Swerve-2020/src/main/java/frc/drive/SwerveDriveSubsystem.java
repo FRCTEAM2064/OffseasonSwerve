@@ -12,10 +12,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.RobotMap;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.modifiers.SwerveModifier;
 
 public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// private static final double WHEELBASE = 12.5;
@@ -26,6 +22,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	//Value ratio is never used
 
 	public double adjustmentAngle = 0.0;
+	public double prevAngle = 0.0;
 
 	public CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	public CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
@@ -213,64 +210,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public SwerveDriveModule getSwerveModule(int i) {
 		return mSwerveModules[i];
 	}
-// 	@Override
-// 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
-// 		forward *= getSpeedMultiplier();
-// 		strafe *= getSpeedMultiplier();
-// 		if (iFO) {
-// 			double angleRad = Math.toRadians(getGyroAngle());
-// 			double temp = forward * Math.cos(angleRad) +
-// 					strafe * Math.sin(angleRad);
-// 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
-// 			forward = temp;
-// 		}
-
-// 		double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
-// 		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
-// 		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
-// 		double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
-
-// 		double[] angles = new double[]{
-// 				Math.atan2(b, c) * 180 / Math.PI,
-// 				Math.atan2(b, d) * 180 / Math.PI,
-// 				Math.atan2(a, d) * 180 / Math.PI,
-// 				Math.atan2(a, c) * 180 / Math.PI
-// 		};
-// /*
-// 	 * 0 is Front Right
-// 	 * 1 is Front Left
-// 	 * 2 is Back Left
-// 	 * 3 is Back Right
-// */
-// 		double[] speeds = new double[]{
-// 				Math.sqrt(b * b + c * c), //Front right
-// 				Math.sqrt(b * b + d * d), //Front left
-// 				Math.sqrt(a * a + d * d), //Back left
-// 				Math.sqrt(a * a + c * c) //Back right
-// 		};
-
-// 		double max = speeds[0];
-
-// 		for (double speed : speeds) {
-// 			if (speed > max) {
-// 				max = speed;
-// 			}
-// 		}
-
-// 		for (int i = 0; i < 4; i++) {
-// 			if (Math.abs(forward) > 0.05 ||
-// 			    Math.abs(strafe) > 0.05 ||
-// 			    Math.abs(rotation) > 0.05) {
-// 				mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
-// 				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
-// 			} else {
-// 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
-// 			}
-// 			mSwerveModules[i].setTargetSpeed(speeds[i]);
-// 		}
-// 	}
-	@Override
-	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
+	
+	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO, boolean isOptimized) {
 		forward *= getSpeedMultiplier();
 		strafe *= getSpeedMultiplier();
 		if (iFO) {
@@ -280,7 +221,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
 			forward = temp;
 		}
-
+		// mSwerveModules[i].readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset())
 		double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
 		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
 		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
@@ -314,93 +255,49 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 
 		for (int i = 0; i < 4; i++) {
-			if (Math.abs(forward) > 0.05 ||
-			    Math.abs(strafe) > 0.05 ||
-			    Math.abs(rotation) > 0.05) {
-					
-				mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180)));
-				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
-			} else {
-				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
-			}
-
-			if (speeds[i] > RobotMap.maxSwerveSpeed){
-				mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
-			}
-			else if (speeds[i] < -RobotMap.maxSwerveSpeed){
-				mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
-				
+			if (isOptimized){
+				if (Math.abs(forward) > 0.05 ||
+					Math.abs(strafe) > 0.05 ||
+					Math.abs(rotation) > 0.05) {
+						double angle = angles[i];
+						double currentAngle = SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(),
+							mSwerveModules[i].getOffset());
+						if (Math.abs(angle - currentAngle) > 90 && Math.abs(angle - currentAngle) < 270) {
+							angle = ((int)angle + 180) % 360;
+							speeds[i] = -speeds[i];
+						}
+						//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
+						if (Math.abs(speeds[i]) < .05){
+							angle = prevAngle;
+						}
+						else {
+							prevAngle = angle;
+						}
+						
+					}
 			}
 			else{
-				mSwerveModules[i].setTargetSpeed(speeds[i]);
+				if (Math.abs(forward) > 0.05 ||
+					Math.abs(strafe) > 0.05 ||
+					Math.abs(rotation) > 0.05) {
+						
+					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180)));
+				}
+
+				if (speeds[i] > RobotMap.maxSwerveSpeed){
+					mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+				}
+				else if (speeds[i] < -RobotMap.maxSwerveSpeed){
+					mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
+					
+				}
+				else{
+					mSwerveModules[i].setTargetSpeed(speeds[i]);
+				}
 			}
 		}
 	}
 
-// 	@Override
-// 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
-// 		forward *= getSpeedMultiplier();
-// 		strafe *= getSpeedMultiplier();
-// 		if (iFO) {
-// 			double angleRad = Math.toRadians(getGyroAngle());
-// 			double temp = forward * Math.cos(angleRad) +
-// 					strafe * Math.sin(angleRad);
-// 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
-// 			forward = temp;
-// 		}
-
-// 		double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
-// 		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
-// 		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
-// 		double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
-
-// 		double[] angles = new double[]{
-// 				Math.atan2(b, c) * 180 / Math.PI,
-// 				Math.atan2(b, d) * 180 / Math.PI,
-// 				Math.atan2(a, d) * 180 / Math.PI,
-// 				Math.atan2(a, c) * 180 / Math.PI
-// 		};
-// /*
-// 	 * 0 is Front Right
-// 	 * 1 is Front Left
-// 	 * 2 is Back Left
-// 	 * 3 is Back Right
-// */
-// 		double[] speeds = new double[]{
-// 				Math.sqrt(b * b + c * c), //Front right
-// 				Math.sqrt(b * b + d * d), //Front left
-// 				Math.sqrt(a * a + d * d), //Back left
-// 				Math.sqrt(a * a + c * c) //Back right
-// 		};
-
-// 		double max = speeds[0];
-
-// 		for (double speed : speeds) {
-// 			if (speed > max) {
-// 				max = speed;
-// 			}
-// 		}
-
-// 		for (int i = 0; i < 4; i++) {
-// 			boolean reversed = false;
-// 			if (Math.abs(forward) > 0.05 ||
-// 			    Math.abs(strafe) > 0.05 ||
-// 			    Math.abs(rotation) > 0.05) {
-// 					if(OI.shortestPathDirection(mSwerveModules[i].readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i]) + 180 ) == -1){
-// 						reversed = true;
-// 						mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
-// 					}
-// 					else{
-// 						mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i] + 180));
-// 					}
-// 					// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
-// 			} else {
-// 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
-// 			}
-// 			mSwerveModules[i].setTargetSpeed(speeds[i]);
-// 		}
-// 	}
- 
 	@Override
 	public void stopDriveMotors() {
 		for (SwerveDriveModule module : mSwerveModules) {

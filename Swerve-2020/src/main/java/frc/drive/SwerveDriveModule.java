@@ -16,7 +16,7 @@ public class SwerveDriveModule extends Subsystem {
 
 	private final int mModuleNumber;
 
-	private static double angleOffset;
+	private double angleOffset;
 
 	private final CANSparkMax mAngleMotor;
 	private final CANSparkMax mDriveMotor;

@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.commands.HolonomicDriveCommand;
 import frc.drive.SwerveDriveModule;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
@@ -30,7 +29,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
-  HolonomicDriveCommand driveCommand;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -50,8 +48,6 @@ public class Robot extends TimedRobot {
     // drive.backRightAngleController.enable();
     // drive.frontLeftAngleController.enable();
     // drive.frontRightAngleController.enable();
-
-    driveCommand = new HolonomicDriveCommand(drive, false);
   }
 
   /**
