@@ -4,6 +4,7 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -26,21 +27,29 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 	public double adjustmentAngle = 0.0;
 
-	private CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
-	private CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
-	private CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
-	private CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
-	private CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
-	private CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
-	private CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
-	private CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
+	public CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
+	public CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
+	public CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
+	public CANSparkMax frontLeftDrive = new CANSparkMax(RobotMap.frontLeftDriveID, MotorType.kBrushless);
+	public CANSparkMax backLeftAngle = new CANSparkMax(RobotMap.backLeftAngleID, MotorType.kBrushless);
+	public CANSparkMax backLeftDrive = new CANSparkMax(RobotMap.backLeftDriveID, MotorType.kBrushless);
+	public CANSparkMax backRightAngle = new CANSparkMax(RobotMap.backRightAngleID, MotorType.kBrushless);
+	public CANSparkMax backRightDrive = new CANSparkMax(RobotMap.backRightDriveID, MotorType.kBrushless);
 
 	public AnalogInput frontRightAngleEncoder = new AnalogInput(RobotMap.frontRightEncoderID);
 	public AnalogInput frontLeftAngleEncoder = new AnalogInput(RobotMap.frontLeftEncoderID);
 	public AnalogInput backLeftAngleEncoder = new AnalogInput(RobotMap.backLeftEncoderID);
 	public AnalogInput backRightAngleEncoder = new AnalogInput(RobotMap.backRightEncoderID);
 
-
+	public CANEncoder backRightAngleCANCoder = backRightAngle.getEncoder();
+	public CANEncoder frontRightAngleCANCoder = frontLeftAngle.getEncoder();
+	public CANEncoder frontLeftAngleCANCoder = frontLeftAngle.getEncoder();
+	public CANEncoder backLeftAngleCANCoder = backLeftAngle.getEncoder();
+	public CANEncoder backRightDriveCANCoder = backRightDrive.getEncoder();
+	public CANEncoder frontRightDriveCANCoder = frontLeftDrive.getEncoder();
+	public CANEncoder frontLeftDriveCANCoder = frontLeftDrive.getEncoder();
+	public CANEncoder backLeftDriveCANCoder = backLeftDrive.getEncoder();
+	
 	// private PIDSource gyroscopeValue = new PIDSource(){
 	// 	@Override
 	// 	public void setPIDSourceType(PIDSourceType arg0) {	
@@ -180,8 +189,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		// fieldOrientedController.setOutputRange(-0.5, 0.5);
 		// fieldOrientedController.setContinuous(true);
 
-		rotationJoyAngleController.enableContinuousInput(-180, 180);
-		rotationJoyAngleController.setTolerance(3);
+		// rotationJoyAngleController.enableContinuousInput(-180, 180);
+		// rotationJoyAngleController.setTolerance(3); TODO: BRING THIS BACK
 	}
 
 	public AHRS getNavX() {
@@ -309,7 +318,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			    Math.abs(strafe) > 0.05 ||
 			    Math.abs(rotation) > 0.05) {
 					
-				mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180));
+				mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180)));
 				// mSwerveModules[i].getPIDController().setSetpoint(Math.toRadians(angles[i]));
 			} else {
 				// mSwerveModules[i].getPIDController().setSetpoint(mSwerveModules[i].getTargetAngle());
@@ -320,6 +329,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			}
 			else if (speeds[i] < -RobotMap.maxSwerveSpeed){
 				mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
+				
 			}
 			else{
 				mSwerveModules[i].setTargetSpeed(speeds[i]);

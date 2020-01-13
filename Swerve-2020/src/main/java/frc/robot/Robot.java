@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.commands.HolonomicDriveCommand;
+import frc.drive.SwerveDriveModule;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 
@@ -50,7 +51,7 @@ public class Robot extends TimedRobot {
     // drive.frontLeftAngleController.enable();
     // drive.frontRightAngleController.enable();
 
-    driveCommand = new HolonomicDriveCommand(drive, true);
+    driveCommand = new HolonomicDriveCommand(drive, false);
   }
 
   /**
@@ -110,11 +111,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
+    drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder, 0), 0));
+    
+    // double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false); //First check if this works
-    System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false); //First check if this works
+    // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
     
     //Step 6: Trapezoidal motion profile for drive motor
