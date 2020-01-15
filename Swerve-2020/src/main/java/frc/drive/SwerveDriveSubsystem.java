@@ -263,7 +263,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 						double currentAngle = SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(),
 							mSwerveModules[i].getOffset());
 						if (Math.abs(angle - currentAngle) > 90 && Math.abs(angle - currentAngle) < 270) {
-							angle = ((int)angle + 180) % 360;
+							angle = ((int)angle + 180) % 360; //TODO: If this doesn't work, uncomment line below and comment this line out
+							// angle = ((int)angle + 360) % 360 - 180;
 							speeds[i] = -speeds[i];
 						}
 						//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
