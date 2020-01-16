@@ -107,12 +107,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(SwerveDriveModule.readAngle(drive.frontLeftAngleEncoder, 0), 0));
+    // drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(drive.mSwerveModules[1].readAngle(), Math.toRadians(90)));
+    // drive.frontRightAngle.set(drive.frontRightAngleController.calculate(drive.mSwerveModules[0].readAngle(), Math.toRadians(90)));
+    // drive.backLeftAngle.set(drive.backLeftAngleController.calculate(drive.mSwerveModules[2].readAngle(), Math.toRadians(90)));
+    // drive.backRightAngle.set(drive.backRightAngleController.calculate(drive.mSwerveModules[3].readAngle(), Math.toRadians(90)));
+
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[1].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[0].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
+
     
     // double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false); //First check if this works
+    // drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, false);
+    drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, true); //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
     

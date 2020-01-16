@@ -154,9 +154,9 @@ public class SwerveDriveModule extends Subsystem {
 		mDriveMotor.set(speed);
 	}
 
-	public static double readAngle(AnalogInput encoder, double angleOffset){
-		double angle = ((encoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
-		angle += angleOffset;
+	public double readAngle(){
+		double angle = ((getEncoder().getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI);
+		angle += getOffset();
 		angle %= 2.0 * Math.PI;
         if (angle < 0.0) {
 			angle += 2.0 * Math.PI;

@@ -29,7 +29,7 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 		mFieldOriented = fieldOriented;
 	}
 
-	public abstract void stopDriveMotors();
+	public abstract void stopAllMotors();
 
 	public void zeroGyro() {
 		setAdjustmentAngle(getGyroAngle() + getAdjustmentAngle());

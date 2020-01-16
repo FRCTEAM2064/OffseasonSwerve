@@ -1,8 +1,5 @@
 package frc.drive;
 
-import java.util.function.DoubleConsumer;
-import java.util.function.DoubleSupplier;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -15,9 +12,9 @@ import frc.robot.RobotMap;
 
 public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// private static final double WHEELBASE = 12.5;
-	private static final double WHEELBASE = 24;
+	private static final double WHEELBASE = 26.5;
 	// private static final double TRACKWIDTH = 13.5;
-	private static final double TRACKWIDTH = 25;
+	private static final double TRACKWIDTH = 33;
 	// private static final double RATIO = Math.sqrt(Math.pow(WHEELBASE, 2) + Math.pow(TRACKWIDTH, 2));
 	//Value ratio is never used
 
@@ -62,75 +59,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// 		return PIDSourceType.kDisplacement;
 	// 	}
 	// };
-
-	DoubleSupplier frontRightEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
-	
-		@Override
-		public double getAsDouble() {
-			// TODO Auto-generated method stub
-			return SwerveDriveModule.readAngle(frontRightAngleEncoder, RobotMap.frontRightAngleOffset);
-		}
-	}; 
-	
-	DoubleSupplier frontLeftEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
-	
-		@Override
-		public double getAsDouble() {
-			// TODO Auto-generated method stub
-			return SwerveDriveModule.readAngle(frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset);
-		}
-	};
-
-	DoubleSupplier backRightEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
-	
-		@Override
-		public double getAsDouble() {
-			// TODO Auto-generated method stub
-			return SwerveDriveModule.readAngle(backRightAngleEncoder, RobotMap.backRightAngleOffset);
-		}
-	};
-
-	DoubleSupplier backLeftEncoderValue = new DoubleSupplier(){ //TODO: How to set displacement type
-	
-		@Override
-		public double getAsDouble() {
-			// TODO Auto-generated method stub
-			return SwerveDriveModule.readAngle(backLeftAngleEncoder, RobotMap.backLeftAngleOffset);
-		}
-	};
-	
-	DoubleConsumer frontRightAngleOutput = new DoubleConsumer(){
-	
-		@Override
-		public void accept(double arg0) {
-			frontRightAngle.set(arg0);
-			
-		}
-	};
-	DoubleConsumer frontLeftAngleOutput = new DoubleConsumer(){
-	
-		@Override
-		public void accept(double arg0) {
-			frontLeftAngle.set(arg0);
-			
-		}
-	};
-	DoubleConsumer backRightAngleOutput = new DoubleConsumer(){
-	
-		@Override
-		public void accept(double arg0) {
-			backRightAngle.set(arg0);
-			
-		}
-	};
-	DoubleConsumer backLeftAngleOutput = new DoubleConsumer(){
-	
-		@Override
-		public void accept(double arg0) {
-			backLeftAngle.set(arg0);
-			
-		}
-	};
 	
 	// private void setAdjustmentAngle(double input){
 	// 	adjustmentAngle = input;
@@ -142,7 +70,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// 		setAdjustmentAngle(input);
 	// 	}
 	// };
-	//Testing PID values on front left controller first before applying them to the other angle motors
 	
 	public PIDController frontRightAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
@@ -255,54 +182,60 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 
 		for (int i = 0; i < 4; i++) {
-			if (isOptimized){
-				if (Math.abs(forward) > 0.05 ||
-					Math.abs(strafe) > 0.05 ||
-					Math.abs(rotation) > 0.05) {
-						double angle = angles[i];
-						double currentAngle = SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(),
-							mSwerveModules[i].getOffset());
-						if (Math.abs(angle - currentAngle) > 90 && Math.abs(angle - currentAngle) < 270) {
-							angle = ((int)angle + 180) % 360; //TODO: If this doesn't work, uncomment line below and comment this line out
-							// angle = ((int)angle + 360) % 360 - 180;
-							speeds[i] = -speeds[i];
-						}
-						//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
-						if (Math.abs(speeds[i]) < .05){
-							angle = prevAngle;
-						}
-						else {
-							prevAngle = angle;
-						}
-						
+			if (Math.abs(forward) > 0.05 ||
+			Math.abs(strafe) > 0.05 ||
+			Math.abs(rotation) > 0.05) {
+				if (isOptimized){
+					double angle = angles[i];
+					double currentAngle = mSwerveModules[i].readAngle();
+					if (Math.abs(angle - currentAngle) < Math.PI/2 && Math.abs(angle - currentAngle) > 3*Math.PI/2) {
+						angle = (angle + Math.PI) % Math.PI*2; //TODO: If this doesn't work, uncomment line below and comment this line out
+						// angle = (angle) % 2*Math.PI - Math.PI;
+						speeds[i] = -speeds[i];
 					}
-			}
-			else{
-				if (Math.abs(forward) > 0.05 ||
-					Math.abs(strafe) > 0.05 ||
-					Math.abs(rotation) > 0.05) {
-						
-					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(SwerveDriveModule.readAngle(mSwerveModules[i].getEncoder(), mSwerveModules[i].getOffset()), Math.toRadians(angles[i] + 180)));
-				}
-
-				if (speeds[i] > RobotMap.maxSwerveSpeed){
-					mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
-				}
-				else if (speeds[i] < -RobotMap.maxSwerveSpeed){
-					mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
-					
+					//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
+					if (Math.abs(speeds[i]) < .05){
+						angle = prevAngle;
+					}
+					else {
+						prevAngle = angle;
+					}
+					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(mSwerveModules[i].readAngle(), Math.toRadians(angles[i] + 180)));
+					if (speeds[i] > RobotMap.maxSwerveSpeed){
+						mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+					}
+					else if (speeds[i] < -RobotMap.maxSwerveSpeed){
+						mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);	
+					}
+					else{
+						mSwerveModules[i].setTargetSpeed(speeds[i]);
+					}
 				}
 				else{
-					mSwerveModules[i].setTargetSpeed(speeds[i]);
+					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(mSwerveModules[i].readAngle(), Math.toRadians(angles[i] + 180)));
+				
+					if (speeds[i] > RobotMap.maxSwerveSpeed){
+						mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+					}
+					else if (speeds[i] < -RobotMap.maxSwerveSpeed){
+						mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);	
+					}
+					else{
+						mSwerveModules[i].setTargetSpeed(speeds[i]);
+					}
 				}
+			}
+			else{
+				stopAllMotors();
 			}
 		}
 	}
 
 	@Override
-	public void stopDriveMotors() {
+	public void stopAllMotors() {
 		for (SwerveDriveModule module : mSwerveModules) {
 			module.setTargetSpeed(0);
+			module.getAngleMotor().set(0);
 		}
 	}
 }

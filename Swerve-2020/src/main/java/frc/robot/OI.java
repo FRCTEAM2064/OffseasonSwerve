@@ -19,7 +19,7 @@ public class OI {
 
     private static Joystick ljoy= new Joystick(0);
     private static Joystick rjoy = new Joystick(1);
-    private static Joystick ojoy = new Joystick(2);
+    // private static Joystick ojoy = new Joystick(2);
 
     private static JoystickButton lb1 = new JoystickButton(ljoy, 1);
     private static JoystickButton lb2 = new JoystickButton(ljoy, 2);
