@@ -8,7 +8,7 @@
 package frc.vision;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -29,8 +29,6 @@ public class VisionSubsystem extends Subsystem {
 
   public Limelight firstLime;
   public PIDController rotateToTarget;
-  public PIDSource targetXCoor;
-  public PIDOutput rotateRobot;
 
   public VisionSubsystem(){
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable(FIRST_LIMELIGHT_TABLE_NAME));
@@ -40,38 +38,43 @@ public class VisionSubsystem extends Subsystem {
 
     targetXCoor = new PIDSource(){
     
-      @Override
-      public void setPIDSourceType(PIDSourceType pidSource) {
-        pidSource = PIDSourceType.kDisplacement;
-      }
-    
-      @Override
-      public double pidGet() {
-        return firstLime.getTargetPosition().x;
-      }
-    
-      @Override
-      public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-      }
-    };
-    rotateRobot = new PIDOutput(){
-    
+      
       @Override
       public void pidWrite(double output) {
         Robot.drive.holonomicDrive(0, 0, output, true, false);
       }
     };
 
-    rotateToTarget = new PIDController(0.1, 0, 0, targetXCoor, rotateRobot);
+    rotateToTarget = new PIDController(0.1, 0, 0);
     rotateToTarget.setInputRange(-0.5, 0.5);
     rotateToTarget.setOutputRange(-0.2, 0.2);
     rotateToTarget.setAbsoluteTolerance(0.03);
-    rotateToTarget.disable();
+    rotateToTarget.disableContinuousOutput();
   }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public double centeringRobot(){
+    double x = firstLime.table.getEntry('tx');
+    double y = firstLime.table.getEntry('ty');
+    float KpAim = -0.1;
+    float KpDistance = -0.1;
+    float min_aim_command = 0.05;
+    if(OI.rb1.get()){
+      float heading_error = -x;
+      float distance_error = -y;
+      float steering_adjust = 0.0;
+      if(x>1.0){
+        steering_adjust = KpAim*heading_error - min_aim_command;
+      }
+      else if(x<1.0){
+        steering_adjust = KpAim*heading_error + min_aim_command;
+      }
+      float distance_adjust = KpDistance + distance_error;
+      return steering_adjust + distance_adjust;
+    }
   }
 }

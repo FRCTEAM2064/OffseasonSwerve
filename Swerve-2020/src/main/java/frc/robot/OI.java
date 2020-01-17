@@ -19,17 +19,17 @@ public class OI {
 
     public static Joystick ljoy= new Joystick(0);
     public static Joystick rjoy = new Joystick(1);
-    // private static Joystick ojoy = new Joystick(2);
+    // public static Joystick ojoy = new Joystick(2);
 
-    private static JoystickButton lb1 = new JoystickButton(ljoy, 1);
-    private static JoystickButton lb2 = new JoystickButton(ljoy, 2);
-    private static JoystickButton lb3 = new JoystickButton(ljoy, 3);
-    private static JoystickButton lb4 = new JoystickButton(ljoy, 4);
+    public static JoystickButton lb1 = new JoystickButton(ljoy, 1);
+    public static JoystickButton lb2 = new JoystickButton(ljoy, 2);
+    public static JoystickButton lb3 = new JoystickButton(ljoy, 3);
+    public static JoystickButton lb4 = new JoystickButton(ljoy, 4);
 
-    private static JoystickButton rb1 = new JoystickButton(rjoy, 1);
-    private static JoystickButton rb2 = new JoystickButton(rjoy, 2);
-    private static JoystickButton rb3 = new JoystickButton(rjoy, 3);
-    private static JoystickButton rb4 = new JoystickButton(rjoy, 4);
+    public static JoystickButton rb1 = new JoystickButton(rjoy, 1);
+    public static JoystickButton rb2 = new JoystickButton(rjoy, 2);
+    public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
+    public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
