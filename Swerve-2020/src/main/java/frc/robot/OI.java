@@ -9,16 +9,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 /**
  * Add your docs here.
  */
 
 public class OI {
-    public static double previous_angle = 0;
+    public static double[] previous_strafe_vals = new double[RobotMap.numberIt];
+    public static double previous_angle;
 
-    private static Joystick ljoy= new Joystick(0);
-    private static Joystick rjoy = new Joystick(1);
+    public static Joystick ljoy= new Joystick(0);
+    public static Joystick rjoy = new Joystick(1);
     // private static Joystick ojoy = new Joystick(2);
 
     private static JoystickButton lb1 = new JoystickButton(ljoy, 1);
@@ -77,6 +77,19 @@ public class OI {
         previous_angle = current_angle;
         return current_angle;
     }
+
+    public static double getlAngle(){
+        if (getlYval() < 0.05 && getlXval() < 0.05){
+            return previous_angle;
+        }
+        double current_angle = Math.toDegrees(Math.atan2(getlYval(), getlXval())) + 90;
+        if (current_angle > 180){
+            current_angle -= 360;
+        }
+        previous_angle = current_angle;
+        return current_angle;
+    }
+
     /**
      * @param setpoint : The final 
      * returns +1 or -1 depending on if 
@@ -89,10 +102,28 @@ public class OI {
         if (!(difference_without_discont > difference_with_discont)) return 1;
         return -1;
     }
+    
+    public static boolean shouldOptimize(double setpoint, double current){
+        double error = getContinuousError(setpoint - current, 360);
+        return Math.abs(error) > 90 && Math.abs(error) < 270;
+    }
+
+    public static double getContinuousError(double error, double m_inputRange) {
+        error %= m_inputRange;
+        if (Math.abs(error) > m_inputRange / 2) {
+            if (error > 0) {
+                return error - m_inputRange;
+          } 
+            else {
+                return error + m_inputRange;
+            }
+        }
+        return error;
+      }
+    }
     // public static double shortestPathDirection(double current_angle, double setpoint){
     //     double difference_without_discont = Math.abs(setpoint - current_angle);
     //     double difference_with_discont = Math.abs(360 - difference_without_discont);
     //     if (!(difference_without_discont > difference_with_discont)) return -1;
     //     return 1;
     // }
-}

@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.drive.SwerveDriveModule;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 
@@ -29,6 +28,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
+  public static int numOfIterations = 0;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -117,17 +117,25 @@ public class Robot extends TimedRobot {
     // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
     // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
 
-    
+    // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
+    // if ((OI.previous_strafe_vals[0] * -1 > 0 && OI.getlXval() < 0) || (OI.previous_strafe_vals[0] * -1 < 0 && OI.getlXval() > 0)){
+    //   drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, true);
+    // }
+    // else{
+      drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, false);
+    // }
     // double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
     // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
     // vision.rotateToTarget.setSetpoint(0);
-    // drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, false);
-    drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, true); //First check if this works
+    
+ //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
     
     //Step 6: Trapezoidal motion profile for drive motor
     // System.out.println(OI.getrAngle());
+    numOfIterations++;
+    numOfIterations %= OI.previous_strafe_vals.length;
   }
 
   /**

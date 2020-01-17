@@ -139,12 +139,12 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	}
 	
 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO, boolean isOptimized) {
-		forward *= getSpeedMultiplier();
-		strafe *= getSpeedMultiplier();
+		forward *= 1;
+		strafe *= 1;
+		if (rotation >= 0.05) isOptimized = false;
 		if (iFO) {
 			double angleRad = Math.toRadians(getGyroAngle());
-			double temp = forward * Math.cos(angleRad) +
-					strafe * Math.sin(angleRad);
+			double temp = forward * Math.cos(angleRad) + strafe * Math.sin(angleRad);
 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
 			forward = temp;
 		}
@@ -185,52 +185,33 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 			if (Math.abs(forward) > 0.05 ||
 			Math.abs(strafe) > 0.05 ||
 			Math.abs(rotation) > 0.05) {
-				if (isOptimized){
-					double angle = angles[i];
-					double currentAngle = mSwerveModules[i].readAngle();
-					if (Math.abs(angle - currentAngle) < Math.PI/2 && Math.abs(angle - currentAngle) > 3*Math.PI/2) {
-						angle = (angle + Math.PI) % Math.PI*2; //TODO: If this doesn't work, uncomment line below and comment this line out
-						// angle = (angle) % 2*Math.PI - Math.PI;
-						speeds[i] = -speeds[i];
+				double angle = angles[i];
+				double currentAngle = mSwerveModules[i].readAngle();
+				if(isOptimized){
+					if (angle - currentAngle > 178 || angle - currentAngle > 182){
+						mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(currentAngle, Math.toRadians(angles[i]) + 180));
 					}
-					//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
-					if (Math.abs(speeds[i]) < .05){
-						angle = prevAngle;
-					}
-					else {
-						prevAngle = angle;
-					}
-					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(mSwerveModules[i].readAngle(), Math.toRadians(angles[i] + 180)));
+					else mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(currentAngle, Math.toRadians(angles[i])));
+				}
+				else mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(currentAngle, Math.toRadians(angles[i] + 180)));
 					if (speeds[i] > RobotMap.maxSwerveSpeed){
-						mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+						if (isOptimized) mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
+						else mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
 					}
 					else if (speeds[i] < -RobotMap.maxSwerveSpeed){
-						mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);	
+						if (isOptimized) mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
+						else mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);
 					}
 					else{
-						mSwerveModules[i].setTargetSpeed(speeds[i]);
+						if (isOptimized) mSwerveModules[i].setTargetSpeed(-speeds[i]);
+						else mSwerveModules[i].setTargetSpeed(speeds[i]);
 					}
 				}
-				else{
-					mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(mSwerveModules[i].readAngle(), Math.toRadians(angles[i] + 180)));
-				
-					if (speeds[i] > RobotMap.maxSwerveSpeed){
-						mSwerveModules[i].setTargetSpeed(RobotMap.maxSwerveSpeed);
-					}
-					else if (speeds[i] < -RobotMap.maxSwerveSpeed){
-						mSwerveModules[i].setTargetSpeed(-RobotMap.maxSwerveSpeed);	
-					}
-					else{
-						mSwerveModules[i].setTargetSpeed(speeds[i]);
-					}
-				}
-			}
 			else{
 				stopAllMotors();
 			}
 		}
 	}
-
 	@Override
 	public void stopAllMotors() {
 		for (SwerveDriveModule module : mSwerveModules) {
@@ -239,3 +220,15 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 	}
 }
+
+// if (isOptimized && OI.shouldOptimize(OI.getlYval(), OI.previous_strafe_vals[0])){	
+// 	angle = (angle + Math.PI) % Math.PI*2; //TODO: If this doesn't work, uncomment line below and comment this line out
+// 	// angle = (angle) % 2*Math.PI - Math.PI;
+// 	speeds[i] = -speeds[i];
+// 	//If we are moving slowly, don't change the angle to keep things stable (rotating wheels when speed is small can induce lateral movement)
+// 	if (Math.abs(speeds[i]) < .05){
+// 		angle = prevAngle;
+// 	}
+// 	else {
+// 		prevAngle = angle;
+// 	}
