@@ -26,10 +26,10 @@ public class VisionSubsystem extends Subsystem {
   // here. Call these from Commands.
   private static final String FIRST_LIMELIGHT_TABLE_NAME = "limelight-first";
 
-
+  
+  public Ultrasonic Usonic;
   public Limelight firstLime;
   public PIDController rotateToTarget;
-
   public VisionSubsystem(){
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable(FIRST_LIMELIGHT_TABLE_NAME));
     firstLime.setCamMode(CamMode.VISION);
@@ -56,10 +56,13 @@ public class VisionSubsystem extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  public double getAngle(){
+    int dist = Usonic.getRangeMM() * 1000;
 
+  }
   public double centeringRobot(){
-    double x = firstLime.table.getEntry('tx');
-    double y = firstLime.table.getEntry('ty');
+    double x = firstLime.table.getEntry("tx");
+    double y = firstLime.table.getEntry("ty");
     float KpAim = -0.1;
     float KpDistance = -0.1;
     float min_aim_command = 0.05;

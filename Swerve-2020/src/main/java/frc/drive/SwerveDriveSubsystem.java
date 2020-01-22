@@ -70,7 +70,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	// 		setAdjustmentAngle(input);
 	// 	}
 	// };
-	
+	//one with the robot
+	//one with the program
 	public PIDController frontRightAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0);

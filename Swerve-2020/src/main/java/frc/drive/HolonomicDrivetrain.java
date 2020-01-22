@@ -34,4 +34,6 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 	public void zeroGyro() {
 		setAdjustmentAngle(getGyroAngle() + getAdjustmentAngle());
 	}
+	//one with the robot
+	//one with the program
 }
