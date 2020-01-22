@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 
-
 /*
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -26,6 +25,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  public static OI oi;
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
   public static int numOfIterations = 0;
@@ -41,13 +41,10 @@ public class Robot extends TimedRobot {
 
     drive = new SwerveDriveSubsystem();
     vision = new VisionSubsystem();
+    oi = new OI();
     
     
-    drive.mNavX.reset();
-    // drive.backLeftAngleController.enable();
-    // drive.backRightAngleController.enable();
-    // drive.frontLeftAngleController.enable();
-    // drive.frontRightAngleController.enable();
+    // drive.mNavX.reset();
   }
 
   /**
@@ -55,6 +52,7 @@ public class Robot extends TimedRobot {
    * this for items like diagnostics that you want ran during disabled,
    * autonomous, teleoperated and test.
    *
+   * 
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
@@ -99,14 +97,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    // vision.rotateToTarget.enable();
-    // drive.frontRightAngleController.setSetpoint(0);
+
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    oi.getMethods();
+    // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false);
+    // drive.frontRightDrive.set(1);
+    // System.out.println(drive.frontRightDriveCANCoder.getVelocity());
+
     // drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(drive.mSwerveModules[1].readAngle(), Math.toRadians(90)));
     // drive.frontRightAngle.set(drive.frontRightAngleController.calculate(drive.mSwerveModules[0].readAngle(), Math.toRadians(90)));
     // drive.backLeftAngle.set(drive.backLeftAngleController.calculate(drive.mSwerveModules[2].readAngle(), Math.toRadians(90)));
@@ -118,24 +121,11 @@ public class Robot extends TimedRobot {
     // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
 
     // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
-    // if ((OI.previous_strafe_vals[0] * -1 > 0 && OI.getlXval() < 0) || (OI.previous_strafe_vals[0] * -1 < 0 && OI.getlXval() > 0)){
-    //   drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, true);
-    // }
-    // else{
-      drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), false, false);
-    // }
     // double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
-    // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
-    // vision.rotateToTarget.setSetpoint(0);
     
  //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
-    
-    //Step 6: Trapezoidal motion profile for drive motor
-    // System.out.println(OI.getrAngle());
-    numOfIterations++;
-    numOfIterations %= OI.previous_strafe_vals.length;
   }
 
   /**

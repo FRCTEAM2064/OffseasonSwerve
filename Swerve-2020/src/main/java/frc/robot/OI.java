@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.commands.testMoveSwerve;
+// import frc.commands.rotateToCenter;
 /**
  * Add your docs here.
  */
@@ -30,6 +33,14 @@ public class OI {
     public static JoystickButton rb2 = new JoystickButton(rjoy, 2);
     public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
+
+    // private Command rotate = new rotateToCenter();
+    private Command testMove = new testMoveSwerve();
+    public void getMethods(){
+        if (!rb1.get()) testMove.schedule();
+    }
+
+
 
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1

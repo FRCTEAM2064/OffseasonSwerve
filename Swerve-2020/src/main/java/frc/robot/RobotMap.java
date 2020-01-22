@@ -30,7 +30,13 @@ public class RobotMap {
     public static double backLeftAngleOffset = -Math.toRadians(48.5);
     public static double backRightAngleOffset = -Math.toRadians(140.6);
 
-    public static double maxSwerveSpeed = 0.8;
+    public static double maxSwerveSpeed = 1;
 
     public static int numberIt = 10;
+
+    public static final double RADIUS_OF_WHEEL = 2.0 * 2.54/100; //in m
+    public static final double circumference_of_wheel = RADIUS_OF_WHEEL * Math.PI * 2; //in m
+    public static final double empirical_max_rpm = 5676 * maxSwerveSpeed;
+    public static final double empirical_free_velocity = empirical_max_rpm * circumference_of_wheel; //full speed
+
 }
