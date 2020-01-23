@@ -49,6 +49,13 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0);
+	
+	public PIDController frontRightDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController frontLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);
+	
+	
 	public PIDController rotationJoyAngleController = new PIDController(0.1, 0.0, 0.0);
 	
 	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 1.7, 2.0, 60.0);
@@ -59,10 +66,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	 * 3 is Back Right
 	 */
 	public SwerveDriveModule[] mSwerveModules = new SwerveDriveModule[] {
-		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightAngleEncoder, RobotMap.frontRightAngleOffset),
-		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset),
-		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftAngleEncoder, RobotMap.backLeftAngleOffset),
-		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightAngleEncoder, RobotMap.backRightAngleOffset)
+		new SwerveDriveModule(0, frontRightAngle, frontRightDrive, frontRightAngleController, frontRightDriveController, frontRightAngleEncoder, RobotMap.frontRightAngleOffset),
+		new SwerveDriveModule(1, frontLeftAngle, frontLeftDrive, frontLeftAngleController, frontLeftDriveController, frontLeftAngleEncoder, RobotMap.frontLeftAngleOffset),
+		new SwerveDriveModule(2, backLeftAngle, backLeftDrive, backLeftAngleController, backLeftDriveController, backLeftAngleEncoder, RobotMap.backLeftAngleOffset),
+		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightDriveController, backRightAngleEncoder, RobotMap.backRightAngleOffset)
 	};
 
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
@@ -79,8 +86,10 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		mSwerveModules[3].getAngleMotor().setInverted(true);
 
 		for (SwerveDriveModule module : mSwerveModules) {
-			module.getPIDController().enableContinuousInput(0, 2 * Math.PI);
-			module.getPIDController().setTolerance(Math.toRadians(3.0));
+			module.getAnglePIDController().enableContinuousInput(0, 2 * Math.PI);
+			module.getAnglePIDController().setTolerance(Math.toRadians(3.0));
+			module.getDrivePIDController().setTolerance(250);
+			module.getDriveMotor().getEncoder().setPosition(0);
 			// module.getPIDController().setSetpoint(0);
 		}
 		
@@ -111,8 +120,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	}
 
 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
-		forward *= 1;
-		strafe *= 1;
 		if (iFO) {
 			double angleRad = Math.toRadians(getGyroAngle());
 			double temp = forward * Math.cos(angleRad) + strafe * Math.sin(angleRad);
@@ -156,7 +163,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 				double angle = angles[i];
 				double currentAngle = mSwerveModules[i].readAngle();
 				// Old version
-				mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getPIDController().calculate(currentAngle, Math.toRadians(angle + 180)));
+				mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getAnglePIDController().calculate(currentAngle, Math.toRadians(angle + 180)));
 				// mSwerveModules[i].setTargetAngle(angle + 180);
 				// mSwerveModules[i].setTargetAngle(angle);
 				mSwerveModules[i].setTargetSpeed(speeds[i]);

@@ -22,16 +22,18 @@ public class SwerveDriveModule extends Subsystem {
 	private final CANSparkMax mDriveMotor;
 
 	private final PIDController mAngleController;
+	private final PIDController mDriveController;
 
 	private final AnalogInput mAngleEnc;
 
-	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,PIDController angleController, AnalogInput angleEnc, double angleOffset) {
+	public SwerveDriveModule(int moduleNumber, CANSparkMax angleMotor, CANSparkMax driveMotor,PIDController angleController, PIDController driveController, AnalogInput angleEnc, double angleOffset) {
 		mModuleNumber = moduleNumber;
 
 		mAngleMotor = angleMotor;
 		mDriveMotor = driveMotor;
 
 		mAngleController = angleController;
+		mDriveController = driveController;
 
 		mAngleEnc = angleEnc;
 
@@ -75,8 +77,12 @@ public class SwerveDriveModule extends Subsystem {
 		return mDriveMotor;
 	}
 
-	public PIDController getPIDController(){
+	public PIDController getAnglePIDController(){
 		return mAngleController;
+	}
+
+	public PIDController getDrivePIDController(){
+		return mDriveController;
 	}
 
 	public AnalogInput getEncoder(){
@@ -113,59 +119,9 @@ public class SwerveDriveModule extends Subsystem {
 		getDriveMotor().set(velocity/RobotMap.empirical_free_velocity);
 	}
 
-	public void setTargetAngle(double targetAngle) {
-		// mLastTargetAngle = targetAngle;
-
-		// targetAngle %= 360;
-		// targetAngle += angleOffset;
-
-		// double currentAngle = mAngleMotor.getPosition() * (360.0 / 1024.0);
-		// double currentAngle = Math.toDegrees(readAngle());
-		// double currentAngleMod = currentAngle % 360;
-		// if (currentAngleMod < 0) currentAngleMod += 360;
-
-		// double delta = currentAngleMod - targetAngle;
-
-		// if (delta > 180) {
-		// 	targetAngle += 360;
-		// } else if (delta < -180) {
-		// 	targetAngle -= 360;
-		// }
-
-		// delta = currentAngleMod - targetAngle;
-		// if (delta > 90 || delta < -90) {
-		// 	if (delta > 90)
-		// 		targetAngle += 180;
-		// 	else if (delta < -90)
-		// 		targetAngle -= 180;
-			// getDriveMotor().setInverted(false);
-		// } 
-		// else {
-		// 	getDriveMotor().setInverted(true);
-		// }
-
-		// targetAngle += currentAngle - currentAngleMod;
-
-		// double currentError = mAngleMotor.getError();
-		// double currentError = Math.abs(targetAngle * (RobotMap.encUnitsPerRot/360.0) - mAngleEnc.getValue());
-		// if (Math.abs(currentError - mLastError) < 7.5 &&
-		// 		Math.abs(currentAngle - targetAngle) > 5) {
-		// 	if (mStallTimeBegin == Long.MAX_VALUE) mStallTimeBegin = System.currentTimeMillis();
-		// 	if (System.currentTimeMillis() - mStallTimeBegin > STALL_TIMEOUT) {
-		// 		throw new MotorStallException(String.format("Angle motor on swerve module '%d' has stalled.",
-		// 				mModuleNumber));
-		// 	}
-		// } else {
-		// 	mStallTimeBegin = Long.MAX_VALUE;
-		// }
-		// mLastError = currentError;
-
-
-		// targetAngle *= 1024.0 / 360.0;
-		// targetAngle = targetAngle%360;
-		// targetAngle = Math.toRadians(targetAngle);
-
-		// mAngleMotor.setSetpoint(targetAngle);
-		// getPIDController().calculate(readAngle(), targetAngle);
-	}
+	/**
+	 * Returns drive encoder position as an integer; for jaci's pathfinder
+	 * @return 1 rotation = 4096 ticks
+	 */
+	public int getDriveEncoderVal(){return (int)(getDriveMotor().getEncoder().getPosition() * 4096);}
 }

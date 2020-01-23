@@ -26,7 +26,7 @@ public class RobotMap {
     public static int frontRightEncoderID = 0; //WAS 3
 
     public static double frontRightAngleOffset = -Math.toRadians(219.5);
-    public static double frontLeftAngleOffset = -Math.toRadians(279.5);
+    public static double frontLeftAngleOffset = -Math.toRadians(135.4);
     public static double backLeftAngleOffset = -Math.toRadians(48.5);
     public static double backRightAngleOffset = -Math.toRadians(140.6);
 

@@ -35,12 +35,14 @@ public class OI {
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
     // private Command rotate = new rotateToCenter();
-    private Command testMove = new testMoveSwerve();
+    
+    private testMoveSwerve testMove = new testMoveSwerve();
     public void getMethods(){
-        if (!rb1.get()) testMove.schedule();
+        System.out.println(testMove.isScheduled());
+        if (rb1.get()) {
+            testMove.schedule(false);
+        }
     }
-
-
 
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
