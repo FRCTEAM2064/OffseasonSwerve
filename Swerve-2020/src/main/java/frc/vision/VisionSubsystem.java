@@ -30,15 +30,16 @@ public class VisionSubsystem extends Subsystem {
     firstLime.setLedMode(LedMode.ON);
     firstLime.setPipeline(0);
 
-    rotateToTarget = new PIDController(0.1, 0, 0);
-    rotateToTarget.setTolerance(0.03);
+    rotateToTarget = new PIDController(0.27, 0, 0);
+    rotateToTarget.setTolerance(0.5);
     rotateToTarget.disableContinuousInput();
   }
   @Override
   public void initDefaultCommand(){}
 
   public double centeringRobotPID(){
-    return rotateToTarget.calculate(firstLime.table.getInstance().getEntry("tx").getDouble(0.0), 0);
+    // System.out.println(rotateToTarget.calculate(firstLime.table.getInstance().getEntry("tx").getDouble(0.0), 0));
+    return rotateToTarget.calculate(firstLime.table.getInstance().getEntry("tx").getDouble(0), 0);
   }
 
 

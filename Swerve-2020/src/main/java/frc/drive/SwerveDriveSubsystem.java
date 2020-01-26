@@ -8,10 +8,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.command.Subsystem;
+// import frc.commands.testMoveSwerve;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
+import jaci.pathfinder.modifiers.SwerveModifier;
 
-public class SwerveDriveSubsystem extends HolonomicDrivetrain {
+public class SwerveDriveSubsystem extends Subsystem{
 	// private static final double WHEELBASE = 12.5;
 	private static final double WHEELBASE = 26.5;
 	// private static final double TRACKWIDTH = 13.5;
@@ -56,9 +60,16 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);
 	
 	
-	public PIDController rotationJoyAngleController = new PIDController(0.1, 0.0, 0.0);
+	public PIDController rotationJoyAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
 	
-	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 1.7, 2.0, 60.0);
+	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
+	
+	public SwerveModifier modifier;
+
+	public EncoderFollower flFollower;
+	public EncoderFollower frFollower;
+	public EncoderFollower blFollower;
+	public EncoderFollower brFollower;
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -75,7 +86,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
 	public SwerveDriveSubsystem() {
-		zeroGyro();
+		mNavX.zeroYaw();
 
 		mSwerveModules[0].getDriveMotor().setInverted(true);
 		mSwerveModules[1].getDriveMotor().setInverted(false);
@@ -98,8 +109,8 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		// fieldOrientedController.setOutputRange(-0.5, 0.5);
 		// fieldOrientedController.setContinuous(true);
 
-		// rotationJoyAngleController.enableContinuousInput(-180, 180);
-		// rotationJoyAngleController.setTolerance(3); TODO: BRING THIS BACK
+		rotationJoyAngleController.enableContinuousInput(-180, 180);
+		rotationJoyAngleController.setTolerance(3);
 	}
 
 	public AHRS getNavX() {
@@ -108,7 +119,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 	public double getGyroAngle() {
 		// return temp_gyro.getAngle();
-		return (mNavX.getAngle() - getAdjustmentAngle());
+		return (mNavX.getAngle());
 	}
 
 	public double getGyroRate() {
@@ -121,7 +132,7 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 
 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
 		if (iFO) {
-			double angleRad = Math.toRadians(getGyroAngle());
+			double angleRad = Math.toRadians(mNavX.getYaw() + 180);
 			double temp = forward * Math.cos(angleRad) + strafe * Math.sin(angleRad);
 			strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
 			forward = temp;
@@ -159,7 +170,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 		}
 
 		for (int i = 0; i < 4; i++) {
-			if (Math.abs(forward) > 0.05 || Math.abs(strafe) > 0.05 || Math.abs(rotation) > 0.05) {
 				double angle = angles[i];
 				double currentAngle = mSwerveModules[i].readAngle();
 				// Old version
@@ -167,10 +177,6 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 				// mSwerveModules[i].setTargetAngle(angle + 180);
 				// mSwerveModules[i].setTargetAngle(angle);
 				mSwerveModules[i].setTargetSpeed(speeds[i]);
-			}
-			else{
-				stopAllMotors();
-			}
 		}
 	}
 	
@@ -184,5 +190,11 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain {
 	public static void toggleDriveInverted(SwerveDriveModule module){
 		if (module.getDriveMotor().getInverted()) module.getDriveMotor().setInverted(false);
 		else module.getDriveMotor().setInverted(true);
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// testMoveSwerve testMove = new testMoveSwerve();
+		// testMove.start();
 	}
 }

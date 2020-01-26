@@ -9,8 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.commands.testMoveSwerve;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.commands.rotateToCenter;
+import frc.commands.rotationControl;
+// import frc.commands.testMoveSwerve;
+import frc.commands.toggleIntakePanel;
 // import frc.commands.rotateToCenter;
 /**
  * Add your docs here.
@@ -34,29 +37,30 @@ public class OI {
     public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
-    // private Command rotate = new rotateToCenter();
+    private Command rotate = new rotateToCenter();
     
-    private testMoveSwerve testMove = new testMoveSwerve();
-    public void getMethods(){
-        System.out.println(testMove.isScheduled());
-        if (rb1.get()) {
-            testMove.schedule(false);
-        }
+    // public Command testMove = new testMoveSwerve();
+    // public Command toggleIntake = new toggleIntakePanel();
+    public void getCommands(){
+        // rb1.whenPressed(testMove);
+        lb1.whileHeld(rotate);
+        // rb2.whenPressed(toggleIntake);
+        // lb2.whenPressed(new rotationControl()); TODO: Uncomment this to test control panel
     }
 
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */
     public static double getlYval(){
-        if (Math.abs(-ljoy.getY()) < 0.05) return 0;
-        else return -ljoy.getY();
+        if (Math.abs(ljoy.getY()) < 0.05) return 0;
+        else return ljoy.getY();
     }
     /**
      * @return left joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getlXval(){
-        if (Math.abs(-ljoy.getX()) < 0.05) return 0;
-        else return -ljoy.getX();
+        if (Math.abs(ljoy.getX()) < 0.05) return 0;
+        else return ljoy.getX();
     }
     /**
      * @return right joystick moving right and left axis val. right = 1; left = -1
@@ -91,17 +95,17 @@ public class OI {
         return current_angle;
     }
 
-    public static double getlAngle(){
-        if (getlYval() < 0.05 && getlXval() < 0.05){
-            return previous_angle;
-        }
-        double current_angle = Math.toDegrees(Math.atan2(getlYval(), getlXval())) + 90;
-        if (current_angle > 180){
-            current_angle -= 360;
-        }
-        previous_angle = current_angle;
-        return current_angle;
-    }
+    // public static double getlAngle(){
+    //     if (getlYval() < 0.05 && getlXval() < 0.05){
+    //         return previous_angle;
+    //     }
+    //     double current_angle = Math.toDegrees(Math.atan2(getlYval(), getlXval())) + 90;
+    //     if (current_angle > 180){
+    //         current_angle -= 360;
+    //     }
+    //     previous_angle = current_angle;
+    //     return current_angle;
+    // }
 
     /**
      * @param setpoint : The final 

@@ -7,12 +7,17 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
-
+import manipulators.ControlPanelSubsystem;
+import manipulators.IntakeSubsystem;
 /*
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -28,7 +33,12 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
+  public static IntakeSubsystem intake;
+  public static ControlPanelSubsystem controlPanel;
   public static int numOfIterations = 0;
+
+  public UsbCamera driverCam;
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -38,11 +48,17 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
+    
+    driverCam = CameraServer.getInstance().startAutomaticCapture();
+    driverCam.setFPS(24);
+    driverCam.setPixelFormat(PixelFormat.kMJPEG);
+    driverCam.setResolution(360, 240);
     drive = new SwerveDriveSubsystem();
     vision = new VisionSubsystem();
+    // intake = new IntakeSubsystem();
+    controlPanel = new ControlPanelSubsystem();
     oi = new OI();
-    
+    Scheduler.getInstance().enable();
     
     // drive.mNavX.reset();
   }
@@ -58,6 +74,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // driverCam = CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -104,28 +121,31 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    oi.getMethods();
+    Scheduler.getInstance().run();
+    oi.getCommands();
     // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
-    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false);
+    // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
     // drive.frontRightDrive.set(1);
     // System.out.println(drive.frontRightDriveCANCoder.getVelocity());
-
+    // Swerve Test code
     // drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(drive.mSwerveModules[1].readAngle(), Math.toRadians(90)));
     // drive.frontRightAngle.set(drive.frontRightAngleController.calculate(drive.mSwerveModules[0].readAngle(), Math.toRadians(90)));
     // drive.backLeftAngle.set(drive.backLeftAngleController.calculate(drive.mSwerveModules[2].readAngle(), Math.toRadians(90)));
     // drive.backRightAngle.set(drive.backRightAngleController.calculate(drive.mSwerveModules[3].readAngle(), Math.toRadians(90)));
 
     // System.out.println(Math.toDegrees(drive.mSwerveModules[1].readAngle()));
-    // System.out.println(Math.toDegrees(drive.mSwerveModules[0].readAngle()));
+    // System.out.println(Math.toDPegrees(drive.mSwerveModules[0].readAngle()));
     // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
     // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
 
     // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
-    // double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
-    
+    double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
+    System.out.println(OI.getrAngle());
  //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
-    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, false); //TODO: TEST LEVI's ROTATION THING
+    if (Math.abs(rotation) < 0.05) rotation = 0;
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, true); //TODO: TEST LEVI's ROTATION THING
   }
 
   /**

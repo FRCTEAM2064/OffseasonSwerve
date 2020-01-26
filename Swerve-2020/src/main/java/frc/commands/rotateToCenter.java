@@ -7,34 +7,38 @@
 
 package frc.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
-public class rotateToCenter extends CommandBase {
+public class rotateToCenter extends Command {
   /**
    * Creates a new rotateToCenter.
    */
   public rotateToCenter() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.drive);
+    requires(Robot.drive);
   }
 
   // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    System.out.println("Command initialized");
+  
+  public void initialize(){
+    Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
+    // System.out.println("Command Initialized");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.drive.holonomicDrive(0, 0, Robot.vision.centeringRobotPID(), false);
+    // System.out.println("Command Executing");
+    Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
-    Robot.drive.stopAllMotors();
+  public void end() {
+    // System.out.println("Command ended");
+    Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), 0, false);
   }
 
   // Returns true when the command should end.
