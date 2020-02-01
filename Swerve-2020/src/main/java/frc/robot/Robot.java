@@ -141,7 +141,7 @@ public class Robot extends TimedRobot {
 
     // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
     double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
-    System.out.println(OI.getrAngle());
+    //System.out.println(OI.getrAngle());
  //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     if (Math.abs(rotation) < 0.05) rotation = 0;

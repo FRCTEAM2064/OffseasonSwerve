@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
+import frc.commands.rotationControlPickColor;
 // import frc.commands.testMoveSwerve;
 import frc.commands.toggleIntakePanel;
 // import frc.commands.rotateToCenter;
@@ -31,6 +32,7 @@ public class OI {
     public static JoystickButton lb2 = new JoystickButton(ljoy, 2);
     public static JoystickButton lb3 = new JoystickButton(ljoy, 3);
     public static JoystickButton lb4 = new JoystickButton(ljoy, 4);
+    public static JoystickButton lb8 = new JoystickButton(ljoy, 8);
 
     public static JoystickButton rb1 = new JoystickButton(rjoy, 1);
     public static JoystickButton rb2 = new JoystickButton(rjoy, 2);
@@ -38,12 +40,14 @@ public class OI {
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
     private Command rotate = new rotateToCenter();
-    
+    private Command rotateControlPickColor = new rotationControlPickColor();
+
     // public Command testMove = new testMoveSwerve();
     // public Command toggleIntake = new toggleIntakePanel();
     public void getCommands(){
         // rb1.whenPressed(testMove);
         lb1.whileHeld(rotate);
+        lb8.whenPressed(rotateControlPickColor);
         // rb2.whenPressed(toggleIntake);
         // lb2.whenPressed(new rotationControl()); TODO: Uncomment this to test control panel
     }
