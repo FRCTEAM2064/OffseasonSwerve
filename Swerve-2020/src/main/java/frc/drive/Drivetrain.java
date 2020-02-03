@@ -1,8 +1,8 @@
 package frc.drive;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public abstract class Drivetrain extends Subsystem {
+public abstract class Drivetrain implements Subsystem {
 	private double speedMultiplier = 0.7;
 
 	protected abstract void initDefaultCommand();

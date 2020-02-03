@@ -7,14 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.commands.HolonomicDriveCommand;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
-
-/**
+import manipulators.ControlPanelSubsystem;
+import manipulators.IntakeSubsystem;
+/*
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
@@ -26,9 +30,15 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  public static OI oi;
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
-  HolonomicDriveCommand driveCommand;
+  public static IntakeSubsystem intake;
+  public static ControlPanelSubsystem controlPanel;
+  public static int numOfIterations = 0;
+
+  public UsbCamera driverCam;
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -38,18 +48,19 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
+    
+    driverCam = CameraServer.getInstance().startAutomaticCapture();
+    driverCam.setFPS(24);
+    driverCam.setPixelFormat(PixelFormat.kMJPEG);
+    driverCam.setResolution(360, 240);
     drive = new SwerveDriveSubsystem();
     vision = new VisionSubsystem();
+    // intake = new IntakeSubsystem();
+    controlPanel = new ControlPanelSubsystem();
+    oi = new OI();
+    Scheduler.getInstance().enable();
     
-    
-    drive.mNavX.reset();
-    // drive.backLeftAngleController.enable();
-    // drive.backRightAngleController.enable();
-    // drive.frontLeftAngleController.enable();
-    // drive.frontRightAngleController.enable();
-
-    driveCommand = new HolonomicDriveCommand(drive, true);
+    // drive.mNavX.reset();
   }
 
   /**
@@ -57,11 +68,13 @@ public class Robot extends TimedRobot {
    * this for items like diagnostics that you want ran during disabled,
    * autonomous, teleoperated and test.
    *
+   * 
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
+    // driverCam = CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -101,21 +114,38 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    // vision.rotateToTarget.enable();
-    // drive.frontRightAngleController.setSetpoint(0);
+
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    // System.out.println("X coordinate" + vision.firstLime.getTargetPosition().x);
-    // vision.rotateToTarget.setSetpoint(0);
-    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), false);
+    Scheduler.getInstance().run();
+    oi.getCommands();
+    // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
+    // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
+    // drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
+    // drive.frontRightDrive.set(1);
+    // System.out.println(drive.frontRightDriveCANCoder.getVelocity());
+    // Swerve Test code
+    // drive.frontLeftAngle.set(drive.frontLeftAngleController.calculate(drive.mSwerveModules[1].readAngle(), Math.toRadians(90)));
+    // drive.frontRightAngle.set(drive.frontRightAngleController.calculate(drive.mSwerveModules[0].readAngle(), Math.toRadians(90)));
+    // drive.backLeftAngle.set(drive.backLeftAngleController.calculate(drive.mSwerveModules[2].readAngle(), Math.toRadians(90)));
+    // drive.backRightAngle.set(drive.backRightAngleController.calculate(drive.mSwerveModules[3].readAngle(), Math.toRadians(90)));
+
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[1].readAngle()));
+    // System.out.println(Math.toDPegrees(drive.mSwerveModules[0].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
+
+    // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
+    double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
+    //System.out.println(OI.getrAngle());
+ //First check if this works
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
-    System.out.println(drive.mNavX.pidGet()); //TODO: Check if this will be more accurate
-    //Step 6: Trapezoidal motion profile for drive motor
-    // System.out.println(OI.getrAngle());
+    if (Math.abs(rotation) < 0.05) rotation = 0;
+    drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, true); //TODO: TEST LEVI's ROTATION THING
   }
 
   /**

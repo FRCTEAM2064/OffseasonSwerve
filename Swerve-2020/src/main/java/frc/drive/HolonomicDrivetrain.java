@@ -1,7 +1,5 @@
 package frc.drive;
 
-import frc.commands.HolonomicDriveCommand;
-
 public abstract class HolonomicDrivetrain extends Drivetrain {
 
 	private double mAdjustmentAngle = 0;
@@ -14,11 +12,9 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 
 	public abstract double getGyroAngle();
 
-	public abstract void holonomicDrive(double forward, double strafe, double rotation, boolean isFieldOriented);
-
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new HolonomicDriveCommand(this, false));
+		// setDefaultCommand(new HolonomicDriveCommand(this, false));
 	}
 
 	public boolean isFieldOriented() {
@@ -33,7 +29,7 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
 		mFieldOriented = fieldOriented;
 	}
 
-	public abstract void stopDriveMotors();
+	public abstract void stopAllMotors();
 
 	public void zeroGyro() {
 		setAdjustmentAngle(getGyroAngle() + getAdjustmentAngle());
