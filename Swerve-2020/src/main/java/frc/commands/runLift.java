@@ -7,42 +7,36 @@
 
 package frc.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class toggleControlPanel extends Command {
-  public toggleControlPanel() {
-    requires(Robot.controlPanel);
+public class runLift extends Command {
+  public runLift() {
+    requires(Robot.climb);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.controlPanel.isUp){
-      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kReverse);
-      Robot.controlPanel.isUp = false;
-    }
-    else{
-      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kForward);
-      Robot.controlPanel.isUp = true;
-    }
+    Robot.climb.winchControl.set(0.2);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.climb.winchControl.set(0.2);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.climb.winchControl.set(0);
   }
 
   // Called when another command which requires one or more of the same

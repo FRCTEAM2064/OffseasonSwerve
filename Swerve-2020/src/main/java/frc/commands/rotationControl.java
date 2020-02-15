@@ -34,9 +34,9 @@ public class rotationControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
+    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
     ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    numberRotations += Robot.controlPanel.detectColor(current, initial);
+    numberRotations += Robot.controlPanel.detectRotation(current, initial);
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -47,7 +47,7 @@ public class rotationControl extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
+    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
   }
 
   // Called when another command which requires one or more of the same

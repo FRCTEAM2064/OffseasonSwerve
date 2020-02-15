@@ -25,8 +25,8 @@ public class ControlPanelSubsystem extends Subsystem {
   // here. Call these from Commands.
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
-  // public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
-  // public TalonSRX runControlPanel = new TalonSRX(16);
+  public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
+  public TalonSRX runControlPanel = new TalonSRX(14);
 
   public ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
@@ -52,7 +52,7 @@ public class ControlPanelSubsystem extends Subsystem {
   public void initDefaultCommand() {
   }
 
-  public double detectColor(ColorMatchResult current, ColorMatchResult initial){
+  public double detectRotation(ColorMatchResult current, ColorMatchResult initial){
     if (previous_color.equals(current.color)){
       previous_color = current.color;
       return 0;
@@ -84,6 +84,22 @@ public class ControlPanelSubsystem extends Subsystem {
       return "Unknown";
     }
   }
+
+  public Color takeGameData(String gamedata){
+    switch(gamedata.charAt(0)){
+      case 'B':
+        return kBlueTarget;
+      case 'G':
+        return kGreenTarget;
+      case 'R':
+        return kRedTarget;
+      case 'Y':
+        return kYellowTarget;
+      default:
+        return previous_color; //If it doesn't move it's because of this code
+    }
+  }
 }
+
 
 

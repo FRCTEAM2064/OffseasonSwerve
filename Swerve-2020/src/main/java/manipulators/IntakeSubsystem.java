@@ -7,6 +7,8 @@
 
 package manipulators;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -20,15 +22,15 @@ public class IntakeSubsystem extends Subsystem {
   
   public CANSparkMax intakeTubingLeft;
   public CANSparkMax intakeTubingRight;
-  public CANSparkMax intakeTubingInwards; //Might be talon; will have to change this if so
+  public TalonSRX intakeTubingInwards; 
 
   public DoubleSolenoid intakePiston;
   public boolean isDown = false;
   public IntakeSubsystem() {
-    intakeTubingLeft = new CANSparkMax(13, MotorType.kBrushless);
-    intakeTubingRight = new CANSparkMax(14, MotorType.kBrushless);
-    intakeTubingInwards = new CANSparkMax(15, MotorType.kBrushless);
-
+    intakeTubingLeft = new CANSparkMax(9, MotorType.kBrushless);
+    intakeTubingRight = new CANSparkMax(10, MotorType.kBrushless);
+    intakeTubingInwards = new TalonSRX(11);
+    
     intakePiston = new DoubleSolenoid(1, 0);
   }
 
@@ -38,12 +40,12 @@ public class IntakeSubsystem extends Subsystem {
   public void activateMotors(){
     intakeTubingLeft.set(0.6);
     intakeTubingRight.set(0.6);
-    intakeTubingInwards.set(0.6);
+    intakeTubingInwards.set(ControlMode.PercentOutput, 0.6);
   }
 
   public void deactivateMotors(){
     intakeTubingLeft.set(0);
     intakeTubingRight.set(0);
-    intakeTubingInwards.set(0);
+    intakeTubingInwards.set(ControlMode.PercentOutput, 0);
   }
 }

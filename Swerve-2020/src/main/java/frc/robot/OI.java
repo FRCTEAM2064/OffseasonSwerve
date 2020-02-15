@@ -12,7 +12,13 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
+<<<<<<< HEAD
 import frc.commands.rotationControlPickColor;
+=======
+import frc.commands.runLift;
+import frc.commands.shoot;
+import frc.commands.testMoveSwerve;
+>>>>>>> 
 // import frc.commands.testMoveSwerve;
 import frc.commands.toggleIntakePanel;
 // import frc.commands.rotateToCenter;
@@ -39,6 +45,7 @@ public class OI {
     public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
+<<<<<<< HEAD
     private Command rotate = new rotateToCenter();
     private Command rotateControlPickColor = new rotationControlPickColor();
 
@@ -50,6 +57,15 @@ public class OI {
         lb8.whenPressed(rotateControlPickColor);
         // rb2.whenPressed(toggleIntake);
         // lb2.whenPressed(new rotationControl()); TODO: Uncomment this to test control panel
+=======
+    public void getCommands(){
+        rb2.whileHeld(new testMoveSwerve());
+        rb3.whenPressed(new toggleIntakePanel());
+        lb1.whileHeld(new shoot());
+        lb2.whenPressed(new rotateToCenter());
+        lb3.whenPressed(new rotationControl());
+        lb4.whileHeld(new runLift());
+>>>>>>> 
     }
 
     /**
@@ -71,20 +87,15 @@ public class OI {
      */
     public static double getrXval(){
         if (Math.abs(rjoy.getX()) < 0.05) return 0;
-        else return -rjoy.getX();
+        else{
+            if (rb1.get()) return -rjoy.getX()/2;
+            else return -rjoy.getX();
+        }
     }
 
     public static double getrYval(){
         if (Math.abs(rjoy.getY()) < 0.05) return 0;
         else return rjoy.getY();
-    }
-
-    public static boolean quickRotLeft(){
-        return rb3.get();
-    }
-    
-    public static boolean quickRotRight(){
-        return rb4.get();
     }
 
     public static double getrAngle(){

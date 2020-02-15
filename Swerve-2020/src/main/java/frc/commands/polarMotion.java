@@ -7,42 +7,47 @@
 
 package frc.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class toggleControlPanel extends Command {
-  public toggleControlPanel() {
-    requires(Robot.controlPanel);
+public class polarMotion extends Command {
+  double meters;
+  double angle;
+  double initialEnc;
+  /**
+   * @param meters - How far to move in meters
+   * @param angle - What angle to move in, assuming positive x axis is 0 degrees
+   */
+  public polarMotion(double meters, double angle) {
+    this.meters = meters;
+    this.angle = angle;
+    requires(Robot.drive);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.controlPanel.isUp){
-      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kReverse);
-      Robot.controlPanel.isUp = false;
-    }
-    else{
-      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kForward);
-      Robot.controlPanel.isUp = true;
-    }
+    initialEnc = Robot.drive.trueFRDEnc;
+    Robot.drive.holonomicDrive(meters * -Math.sin(Math.toRadians(angle)), meters * -Math.cos(Math.toRadians(angle)), 0, true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.drive.holonomicDrive(meters * -Math.sin(Math.toRadians(angle)), meters * -Math.cos(Math.toRadians(angle)), 0, true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return Math.abs(Robot.drive.trueFRDEnc - initialEnc) >= (4096 * meters/RobotMap.circumference_of_wheel);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drive.stopAllMotors();
   }
 
   // Called when another command which requires one or more of the same

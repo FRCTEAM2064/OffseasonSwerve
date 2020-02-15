@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+<<<<<<< HEAD
+=======
+import frc.robot.OI;
+>>>>>>> 
 // import frc.commands.testMoveSwerve;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Trajectory;
@@ -26,6 +30,14 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public double adjustmentAngle = 0.0;
 	public double prevAngle = 0.0;
 
+<<<<<<< HEAD
+=======
+	public double trueFRDEnc = 0;
+	public double trueFLDEnc = 0;
+	public double trueBRDEnc = 0;
+	public double trueBLDEnc = 0;
+
+>>>>>>> 
 	public CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	public CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
 	public CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
@@ -70,6 +82,15 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public EncoderFollower frFollower;
 	public EncoderFollower blFollower;
 	public EncoderFollower brFollower;
+<<<<<<< HEAD
+=======
+	
+	public double previous_FRenc = 0.0;
+	public double previous_FLenc = 0.0;
+	public double previous_BLenc = 0.0;
+	public double previous_BRenc = 0.0;
+	
+>>>>>>> 
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -197,4 +218,69 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// testMoveSwerve testMove = new testMoveSwerve();
 		// testMove.start();
 	}
+<<<<<<< HEAD
+=======
+
+	public double rTFRDEncVal(double previous_driveenc){
+		if (mSwerveModules[0].readAngle() > Math.PI/2 && mSwerveModules[0].readAngle() < 1.5 * Math.PI){
+			trueFRDEnc -= previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
+		}
+		else{
+			trueFRDEnc += previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
+		}
+		return trueFRDEnc;
+	}
+
+	public double rTFLDEncVal(double previous_driveenc){
+		if (mSwerveModules[1].readAngle() > Math.PI/2 && mSwerveModules[1].readAngle() < 1.5 * Math.PI){
+			trueFLDEnc -= previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
+		}
+		else{
+			trueFLDEnc += previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
+		}
+		return trueFLDEnc;
+	}
+	public double rTBRDEncVal(double previous_driveenc){
+		if (mSwerveModules[2].readAngle() > Math.PI/2 && mSwerveModules[2].readAngle() < 1.5 * Math.PI){
+			trueBRDEnc -= previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
+		}
+		else{
+			trueBRDEnc += previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
+		}
+		return trueBRDEnc;
+	}
+	public double rTBLDEncVal(double previous_driveenc){
+		if (mSwerveModules[3].readAngle() > Math.PI/2 && mSwerveModules[3].readAngle() < 1.5 * Math.PI){
+			trueBLDEnc -= previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
+		}
+		else{
+			trueBLDEnc += previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
+		}
+		return trueBLDEnc;
+	}
+	
+	public void update(){
+		holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
+		previous_FRenc = rTFRDEncVal(trueFRDEnc);
+		previous_FLenc = rTFLDEncVal(trueFLDEnc);
+		previous_BLenc = rTBLDEncVal(trueBLDEnc);
+		previous_BRenc = rTBRDEncVal(trueBRDEnc);
+	}
+
+	public void testMotors(){
+		// frontRightAngle.set(frontRightAngleController.calculate(mSwerveModules[0].readAngle(), Math.toRadians(90)));
+		frontLeftAngle.set(frontLeftAngleController.calculate(mSwerveModules[1].readAngle(), Math.toRadians(90)));
+		// backLeftAngle.set(backLeftAngleController.calculate(mSwerveModules[2].readAngle(), Math.toRadians(90)));
+		// backRightAngle.set(backRightAngleController.calculate(mSwerveModules[3].readAngle(), Math.toRadians(90)));
+
+		// System.out.println(Math.toDegrees(mSwerveModules[0].readAngle()));
+		System.out.println(Math.toDegrees(mSwerveModules[1].readAngle()));
+    	// System.out.println(Math.toDegrees(mSwerveModules[2].readAngle()));
+    	// System.out.println(Math.toDegrees(mSwerveModules[3].readAngle()));
+	}
+
+	public void calibrateNavX(){
+		System.out.println(mNavX.getYaw());
+	}
+>>>>>>> 
 }

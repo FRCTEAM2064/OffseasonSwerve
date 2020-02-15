@@ -98,8 +98,13 @@ public class testMoveSwerve extends Command{
     Robot.drive.mSwerveModules[1].getAngleMotor().set(Robot.drive.mSwerveModules[1].getAnglePIDController().calculate(Robot.drive.mSwerveModules[1].readAngle(), Math.toRadians(fl_angle)));
     Robot.drive.mSwerveModules[1].getDriveMotor().set(Robot.drive.flFollower.calculate((int)Robot.drive.mSwerveModules[1].getDriveEncoderVal()));
 
+<<<<<<< HEAD
     Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
     Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.mSwerveModules[0].getDriveEncoderVal()));
+=======
+    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), fr_angle));
+    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)-Robot.drive.rTFRDEncVal(Robot.drive.previous_FRenc)));
+>>>>>>> 
 
     Robot.drive.mSwerveModules[2].getAngleMotor().set(Robot.drive.mSwerveModules[2].getAnglePIDController().calculate(Robot.drive.mSwerveModules[2].readAngle(), Math.toRadians(bl_angle)));
     Robot.drive.mSwerveModules[2].getDriveMotor().set(Robot.drive.blFollower.calculate((int)Robot.drive.mSwerveModules[2].getDriveEncoderVal()));
