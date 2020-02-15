@@ -7,8 +7,11 @@
 
 package manipulators;
 
+<<<<<<< HEAD
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -22,15 +25,26 @@ public class IntakeSubsystem extends Subsystem {
   
   public CANSparkMax intakeTubingLeft;
   public CANSparkMax intakeTubingRight;
+<<<<<<< HEAD
   public TalonSRX intakeTubingInwards; 
+=======
+  public CANSparkMax intakeTubingInwards; //Might be talon; will have to change this if so
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 
   public DoubleSolenoid intakePiston;
   public boolean isDown = false;
   public IntakeSubsystem() {
+<<<<<<< HEAD
     intakeTubingLeft = new CANSparkMax(9, MotorType.kBrushless);
     intakeTubingRight = new CANSparkMax(10, MotorType.kBrushless);
     intakeTubingInwards = new TalonSRX(11);
     
+=======
+    intakeTubingLeft = new CANSparkMax(13, MotorType.kBrushless);
+    intakeTubingRight = new CANSparkMax(14, MotorType.kBrushless);
+    intakeTubingInwards = new CANSparkMax(15, MotorType.kBrushless);
+
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     intakePiston = new DoubleSolenoid(1, 0);
   }
 
@@ -40,12 +54,20 @@ public class IntakeSubsystem extends Subsystem {
   public void activateMotors(){
     intakeTubingLeft.set(0.6);
     intakeTubingRight.set(0.6);
+<<<<<<< HEAD
     intakeTubingInwards.set(ControlMode.PercentOutput, 0.6);
+=======
+    intakeTubingInwards.set(0.6);
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
 
   public void deactivateMotors(){
     intakeTubingLeft.set(0);
     intakeTubingRight.set(0);
+<<<<<<< HEAD
     intakeTubingInwards.set(ControlMode.PercentOutput, 0);
+=======
+    intakeTubingInwards.set(0);
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
 }

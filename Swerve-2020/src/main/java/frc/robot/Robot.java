@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
+<<<<<<< HEAD
 import manipulators.ClimbingSubsystem;
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 import manipulators.ControlPanelSubsystem;
 import manipulators.IntakeSubsystem;
 /*
@@ -36,9 +39,13 @@ public class Robot extends TimedRobot {
   public static SwerveDriveSubsystem drive;
   public static VisionSubsystem vision;
   public static IntakeSubsystem intake;
+<<<<<<< HEAD
   public static ShooterSubsystem shooter;
   public static ControlPanelSubsystem controlPanel;
   public static ClimbingSubsystem climb;
+=======
+  public static ControlPanelSubsystem controlPanel;
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   public static int numOfIterations = 0;
 
   public UsbCamera driverCam;
@@ -126,6 +133,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     Scheduler.getInstance().run();
     oi.getCommands();
     // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
@@ -151,6 +161,7 @@ public class Robot extends TimedRobot {
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     if (Math.abs(rotation) < 0.05) rotation = 0;
     drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, true); //TODO: TEST LEVI's ROTATION THING
+<<<<<<< HEAD
 =======
     // Scheduler.getInstance().run();
     // oi.getCommands();
@@ -158,6 +169,9 @@ public class Robot extends TimedRobot {
     // System.out.println(drive.rTFRDEncVal(drive.previous_FRenc));
     // Robot.drgive.calibrateNavX();
     // Robot.drive.testMotors();
+=======
+  }
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 
     // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
     // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
