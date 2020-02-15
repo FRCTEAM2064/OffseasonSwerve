@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -53,6 +54,8 @@ public class toggleControlPanel extends Command {
   }
 }
 =======
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 // /*----------------------------------------------------------------------------*/
 // /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 // /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -106,4 +109,7 @@ public class toggleControlPanel extends Command {
 //   protected void interrupted() {
 //   }
 // }
+<<<<<<< HEAD
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+=======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b

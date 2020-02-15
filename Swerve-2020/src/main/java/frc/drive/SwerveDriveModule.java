@@ -124,7 +124,11 @@ public class SwerveDriveModule extends Subsystem {
 	 * @return 1 rotation = 4096 ticks
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	protected int getDriveEncoderVal() {return (int)(getDriveMotor().getEncoder().getPosition() * 4096);}
+=======
+	public int getDriveEncoderVal(){return (int)(getDriveMotor().getEncoder().getPosition() * 4096);}
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 	public int getDriveEncoderVal(){return (int)(getDriveMotor().getEncoder().getPosition() * 4096);}
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b

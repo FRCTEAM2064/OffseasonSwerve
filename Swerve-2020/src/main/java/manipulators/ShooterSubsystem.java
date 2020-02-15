@@ -8,7 +8,10 @@
 package manipulators;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 import com.ctre.phoenix.sensors.CANCoder;
@@ -26,6 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // here. Call these from Commands.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   public TalonSRX intakeTubingUpwards;
 
   public CANSparkMax shooter_motor;
@@ -37,6 +41,8 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter_motor = new CANSparkMax(13, MotorType.kBrushless);
     shooter_encoder = new CANCoder(13);
 =======
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   CANSparkMax shooter_motor;
   CANCoder shooter_encoder;
 
@@ -47,6 +53,9 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter_encoder = new CANCoder(12);
     
     hoodAdjust = new DoubleSolenoid(3,2);
+<<<<<<< HEAD
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+=======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
   @Override
@@ -54,7 +63,11 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter_motor.set(0.7);
     double RPM = shooter_encoder.getVelocity()/360;
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (RPM < 1500) {
+=======
+    if (RPM < 1000) {
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
     if (RPM < 1000) {
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b

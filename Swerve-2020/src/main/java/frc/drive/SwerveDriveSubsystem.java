@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import frc.robot.OI;
 >>>>>>> 
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 // import frc.commands.testMoveSwerve;
@@ -35,6 +38,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	public double trueFRDEnc = 0;
 	public double trueFLDEnc = 0;
@@ -42,6 +46,8 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public double trueBLDEnc = 0;
 
 >>>>>>> 
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	public CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
@@ -71,6 +77,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0);
+<<<<<<< HEAD
 	
 	public PIDController frontRightDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController frontLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
@@ -101,6 +108,15 @@ public class SwerveDriveSubsystem extends Subsystem{
 =======
 	
 	
+=======
+	
+	public PIDController frontRightDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController frontLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
+	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);
+	
+	
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	public PIDController rotationJoyAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
 	
 	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
@@ -111,6 +127,9 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public EncoderFollower frFollower;
 	public EncoderFollower blFollower;
 	public EncoderFollower brFollower;
+<<<<<<< HEAD
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+=======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	/*
 	 * 0 is Front Right
@@ -220,6 +239,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 				// mSwerveModules[i].setTargetAngle(angle);
 				mSwerveModules[i].setTargetSpeed(speeds[i]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		}
 	}
 	
@@ -259,11 +279,16 @@ public class SwerveDriveSubsystem extends Subsystem{
 =======
 		}
 	}
+=======
+		}
+	}
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	
 	public void stopAllMotors() {
 		for (SwerveDriveModule module : mSwerveModules) {
 			module.setTargetSpeed(0);
 			module.getAngleMotor().set(0);
+<<<<<<< HEAD
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 		}
 		else{
@@ -277,6 +302,8 @@ public class SwerveDriveSubsystem extends Subsystem{
 		}
 		else{
 			trueBRDEnc += previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 		}
 		return trueBRDEnc;
 	}
@@ -298,6 +325,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 		previous_BRenc = rTBRDEncVal(trueBRDEnc);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public void testMotors(){
 		// frontRightAngle.set(frontRightAngleController.calculate(mSwerveModules[0].readAngle(), Math.toRadians(90)));
@@ -321,10 +349,20 @@ public class SwerveDriveSubsystem extends Subsystem{
 		else module.getDriveMotor().setInverted(true);
 	}
 
+=======
+	public static void toggleDriveInverted(SwerveDriveModule module){
+		if (module.getDriveMotor().getInverted()) module.getDriveMotor().setInverted(false);
+		else module.getDriveMotor().setInverted(true);
+	}
+
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	@Override
 	protected void initDefaultCommand() {
 		// testMoveSwerve testMove = new testMoveSwerve();
 		// testMove.start();
 	}
+<<<<<<< HEAD
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+=======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 }

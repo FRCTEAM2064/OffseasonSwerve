@@ -32,6 +32,7 @@ public class rotateToCenter extends Command {
   public void execute() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     // System.out.println("Command Executing");
     Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
 =======
@@ -42,6 +43,10 @@ public class rotateToCenter extends Command {
       Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), true);
     // }
 >>>>>>> 
+=======
+    // System.out.println("Command Executing");
+    Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
     // System.out.println("Command Executing");
     Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);

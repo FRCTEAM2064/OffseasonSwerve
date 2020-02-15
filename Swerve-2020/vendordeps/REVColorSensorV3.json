@@ -2,7 +2,11 @@
     "fileName": "REVColorSensorV3.json",
     "name": "REVColorSensorV3",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "version": "1.2.0",
+=======
+    "version": "1.0.1",
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
     "version": "1.0.1",
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
@@ -16,7 +20,11 @@
             "groupId": "com.revrobotics.frc",
             "artifactId": "ColorSensorV3-java",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "1.2.0"
+=======
+            "version": "1.0.1"
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
             "version": "1.0.1"
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
@@ -28,7 +36,11 @@
             "groupId": "com.revrobotics.frc",
             "artifactId": "ColorSensorV3-cpp",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "1.2.0",
+=======
+            "version": "1.0.1",
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
             "version": "1.0.1",
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b

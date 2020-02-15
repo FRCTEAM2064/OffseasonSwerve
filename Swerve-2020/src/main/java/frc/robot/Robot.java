@@ -17,7 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import manipulators.ClimbingSubsystem;
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 import manipulators.ControlPanelSubsystem;
@@ -40,9 +43,13 @@ public class Robot extends TimedRobot {
   public static VisionSubsystem vision;
   public static IntakeSubsystem intake;
 <<<<<<< HEAD
+<<<<<<< HEAD
   public static ShooterSubsystem shooter;
   public static ControlPanelSubsystem controlPanel;
   public static ClimbingSubsystem climb;
+=======
+  public static ControlPanelSubsystem controlPanel;
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
   public static ControlPanelSubsystem controlPanel;
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
@@ -134,6 +141,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     Scheduler.getInstance().run();
@@ -148,12 +158,21 @@ public class Robot extends TimedRobot {
     // drive.frontRightAngle.set(drive.frontRightAngleController.calculate(drive.mSwerveModules[0].readAngle(), Math.toRadians(90)));
     // drive.backLeftAngle.set(drive.backLeftAngleController.calculate(drive.mSwerveModules[2].readAngle(), Math.toRadians(90)));
     // drive.backRightAngle.set(drive.backRightAngleController.calculate(drive.mSwerveModules[3].readAngle(), Math.toRadians(90)));
+<<<<<<< HEAD
 
     // System.out.println(Math.toDegrees(drive.mSwerveModules[1].readAngle()));
     // System.out.println(Math.toDPegrees(drive.mSwerveModules[0].readAngle()));
     // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
     // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
 
+=======
+
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[1].readAngle()));
+    // System.out.println(Math.toDPegrees(drive.mSwerveModules[0].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[2].readAngle()));
+    // System.out.println(Math.toDegrees(drive.mSwerveModules[3].readAngle()));
+
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     // OI.previous_strafe_vals[numOfIterations] = OI.getlXval();
     double rotation = drive.rotationJoyAngleController.calculate(drive.mNavX.getYaw(), OI.getrAngle());
     //System.out.println(OI.getrAngle());
@@ -161,6 +180,7 @@ public class Robot extends TimedRobot {
     // System.out.println(drive.mNavX.getYaw()); //TODO: Readings aren't very accurate
     if (Math.abs(rotation) < 0.05) rotation = 0;
     drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), rotation, true); //TODO: TEST LEVI's ROTATION THING
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     // Scheduler.getInstance().run();
@@ -170,6 +190,8 @@ public class Robot extends TimedRobot {
     // Robot.drgive.calibrateNavX();
     // Robot.drive.testMotors();
 =======
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 

@@ -12,6 +12,7 @@ package frc.robot;
  */
 public class RobotMap {    
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static int frontRightAngleID = 1;
     public static int frontRightDriveID = 2;
     public static int frontLeftAngleID = 3; 
@@ -31,6 +32,8 @@ public class RobotMap {
     public static double backLeftAngleOffset = Math.toRadians(0);
     public static double backRightAngleOffset = Math.toRadians(0);
 =======
+=======
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     public static int frontRightAngleID = 2; //WAS 7
     public static int frontRightDriveID = 1; //WAS 8
     public static int frontLeftAngleID = 3; //WAS 2
@@ -49,6 +52,9 @@ public class RobotMap {
     public static double frontLeftAngleOffset = -Math.toRadians(135.4);
     public static double backLeftAngleOffset = -Math.toRadians(48.5);
     public static double backRightAngleOffset = -Math.toRadians(140.6);
+<<<<<<< HEAD
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+=======
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 
     public static int numberIt = 10;
@@ -56,10 +62,14 @@ public class RobotMap {
     public static double maxSwerveSpeed = 1;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static double frictional_Coeff = 0.5;
 =======
     public static double frictional_Coeff = 1;
 >>>>>>> 
+=======
+    public static double frictional_Coeff = 0.5;
+>>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 =======
     public static double frictional_Coeff = 0.5;
 >>>>>>> 3676ba864874d636f635985bc552606c86d2739b
