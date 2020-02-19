@@ -14,44 +14,45 @@ import frc.robot.Robot;
 public class toggleIntakePanel extends Command {
   public toggleIntakePanel() {
     requires(Robot.intake);
-
-    
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     if(Robot.intake.isDown) {
-      Robot.intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
+      // Robot.intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
       Robot.intake.deactivateMotors();
-      Robot.intake.isDown = false;
     }
     else{
-      Robot.intake.intakePiston.set(DoubleSolenoid.Value.kForward);
+      // Robot.intake.intakePiston.set(DoubleSolenoid.Value.kForward);
       Robot.intake.activateMotors();
-      Robot.intake.isDown = true;
     }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(Robot.intake.isDown) Robot.intake.activateMotors();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    if (Robot.intake.isDown) Robot.intake.isDown = false;
+    else Robot.intake.isDown = true;
+    Robot.intake.deactivateMotors();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.intake.deactivateMotors();
   }
 }

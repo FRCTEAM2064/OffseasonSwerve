@@ -12,21 +12,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import frc.commands.rotationControlPickColor;
-=======
-import frc.commands.runLift;
+import frc.commands.raiseLift;
+import frc.commands.lowerLift;
 import frc.commands.shoot;
 import frc.commands.testMoveSwerve;
->>>>>>> 
-=======
-import frc.commands.rotationControlPickColor;
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-import frc.commands.rotationControlPickColor;
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+
 // import frc.commands.testMoveSwerve;
 import frc.commands.toggleIntakePanel;
 // import frc.commands.rotateToCenter;
@@ -35,39 +26,16 @@ import frc.commands.toggleIntakePanel;
  */
 
 public class OI {
-    public static double[] previous_strafe_vals = new double[RobotMap.numberIt];
     public static double previous_angle;
 
     public static Joystick ljoy= new Joystick(0);
     public static Joystick rjoy = new Joystick(1);
-    // public static Joystick ojoy = new Joystick(2);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 
     public static JoystickButton lb1 = new JoystickButton(ljoy, 1);
     public static JoystickButton lb2 = new JoystickButton(ljoy, 2);
     public static JoystickButton lb3 = new JoystickButton(ljoy, 3);
     public static JoystickButton lb4 = new JoystickButton(ljoy, 4);
-    public static JoystickButton lb8 = new JoystickButton(ljoy, 8);
-<<<<<<< HEAD
-
-    public static JoystickButton rb1 = new JoystickButton(rjoy, 1);
-    public static JoystickButton rb2 = new JoystickButton(rjoy, 2);
-    public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
-    public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
-
-<<<<<<< HEAD
-    private Command rotate = new rotateToCenter();
-    private Command rotateControlPickColor = new rotationControlPickColor();
-
-=======
-
-    public static JoystickButton lb1 = new JoystickButton(ljoy, 1);
-    public static JoystickButton lb2 = new JoystickButton(ljoy, 2);
-    public static JoystickButton lb3 = new JoystickButton(ljoy, 3);
-    public static JoystickButton lb4 = new JoystickButton(ljoy, 4);
+    public static JoystickButton lb5 = new JoystickButton(ljoy, 5);
     public static JoystickButton lb8 = new JoystickButton(ljoy, 8);
 
     public static JoystickButton rb1 = new JoystickButton(rjoy, 1);
@@ -75,46 +43,17 @@ public class OI {
     public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
     public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
 
-    private Command rotate = new rotateToCenter();
-    private Command rotateControlPickColor = new rotationControlPickColor();
-
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-
-    public static JoystickButton rb1 = new JoystickButton(rjoy, 1);
-    public static JoystickButton rb2 = new JoystickButton(rjoy, 2);
-    public static JoystickButton rb3 = new JoystickButton(rjoy, 3);
-    public static JoystickButton rb4 = new JoystickButton(rjoy, 4);
-
-    private Command rotate = new rotateToCenter();
-    private Command rotateControlPickColor = new rotationControlPickColor();
-
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-    // public Command testMove = new testMoveSwerve();
-    // public Command toggleIntake = new toggleIntakePanel();
-    public void getCommands(){
-        // rb1.whenPressed(testMove);
-        lb1.whileHeld(rotate);
-        lb8.whenPressed(rotateControlPickColor);
-        // rb2.whenPressed(toggleIntake);
-        // lb2.whenPressed(new rotationControl()); TODO: Uncomment this to test control panel
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    public void getCommands(){
-        rb2.whileHeld(new testMoveSwerve());
-        rb3.whenPressed(new toggleIntakePanel());
+    public OI(){
+        //rb1 is used to halve robot rotation
+        // rb2.whileHeld(new testMoveSwerve());
+        // rb3.whenPressed(new toggleIntakePanel());
         lb1.whileHeld(new shoot());
         lb2.whenPressed(new rotateToCenter());
-        lb3.whenPressed(new rotationControl());
-        lb4.whileHeld(new runLift());
->>>>>>> 
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+        // lb3.whenPressed(new rotationControl());
+        lb3.whileHeld(new toggleIntakePanel());
+        lb4.whileHeld(new raiseLift());
+        lb5.whileHeld(new lowerLift());
     }
-
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */

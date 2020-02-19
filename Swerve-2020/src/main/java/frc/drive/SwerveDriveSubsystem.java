@@ -9,16 +9,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import frc.robot.OI;
->>>>>>> 
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 // import frc.commands.testMoveSwerve;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Trajectory;
@@ -36,20 +27,11 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public double adjustmentAngle = 0.0;
 	public double prevAngle = 0.0;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 	public double trueFRDEnc = 0;
 	public double trueFLDEnc = 0;
 	public double trueBRDEnc = 0;
 	public double trueBLDEnc = 0;
 
->>>>>>> 
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	public CANSparkMax frontRightAngle = new CANSparkMax(RobotMap.frontRightAngleID, MotorType.kBrushless);
 	public CANSparkMax frontRightDrive = new CANSparkMax(RobotMap.frontRightDriveID, MotorType.kBrushless);
 	public CANSparkMax frontLeftAngle = new CANSparkMax(RobotMap.frontLeftAngleID, MotorType.kBrushless);
@@ -77,14 +59,11 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public PIDController frontLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backLeftAngleController = new PIDController(0.18, 0.0, 0.0);
 	public PIDController backRightAngleController = new PIDController(0.18, 0.0, 0.0);
-<<<<<<< HEAD
 	
 	public PIDController frontRightDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController frontLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
-	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);
-<<<<<<< HEAD
-	
+	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);	
 	
 	public PIDController rotationJoyAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
 	
@@ -96,41 +75,12 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public EncoderFollower frFollower;
 	public EncoderFollower blFollower;
 	public EncoderFollower brFollower;
-<<<<<<< HEAD
-=======
+
 	
 	public double previous_FRenc = 0.0;
 	public double previous_FLenc = 0.0;
 	public double previous_BLenc = 0.0;
 	public double previous_BRenc = 0.0;
-	
->>>>>>> 
-=======
-	
-	
-=======
-	
-	public PIDController frontRightDriveController = new PIDController(0.00004, 0.0, 0.0);
-	public PIDController frontLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
-	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
-	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);
-	
-	
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-	public PIDController rotationJoyAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
-	
-	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
-	
-	public SwerveModifier modifier;
-
-	public EncoderFollower flFollower;
-	public EncoderFollower frFollower;
-	public EncoderFollower blFollower;
-	public EncoderFollower brFollower;
-<<<<<<< HEAD
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 	/*
 	 * 0 is Front Right
 	 * 1 is Front Left
@@ -165,6 +115,11 @@ public class SwerveDriveSubsystem extends Subsystem{
 			// module.getPIDController().setSetpoint(0);
 		}
 		
+		// flFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// frFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// blFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+
 		// fieldOrientedController.setInputRange(0, 360);
 		// fieldOrientedController.setAbsoluteTolerance(3.0);
 		// fieldOrientedController.setOutputRange(-0.5, 0.5);
@@ -238,8 +193,6 @@ public class SwerveDriveSubsystem extends Subsystem{
 				// mSwerveModules[i].setTargetAngle(angle + 180);
 				// mSwerveModules[i].setTargetAngle(angle);
 				mSwerveModules[i].setTargetSpeed(speeds[i]);
-<<<<<<< HEAD
-<<<<<<< HEAD
 		}
 	}
 	
@@ -260,8 +213,6 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// testMoveSwerve testMove = new testMoveSwerve();
 		// testMove.start();
 	}
-<<<<<<< HEAD
-=======
 
 	public double rTFRDEncVal(double previous_driveenc){
 		if (mSwerveModules[0].readAngle() > Math.PI/2 && mSwerveModules[0].readAngle() < 1.5 * Math.PI){
@@ -276,20 +227,6 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public double rTFLDEncVal(double previous_driveenc){
 		if (mSwerveModules[1].readAngle() > Math.PI/2 && mSwerveModules[1].readAngle() < 1.5 * Math.PI){
 			trueFLDEnc -= previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
-=======
-		}
-	}
-=======
-		}
-	}
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-	
-	public void stopAllMotors() {
-		for (SwerveDriveModule module : mSwerveModules) {
-			module.setTargetSpeed(0);
-			module.getAngleMotor().set(0);
-<<<<<<< HEAD
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 		}
 		else{
 			trueFLDEnc += previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
@@ -302,8 +239,6 @@ public class SwerveDriveSubsystem extends Subsystem{
 		}
 		else{
 			trueBRDEnc += previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 		}
 		return trueBRDEnc;
 	}
@@ -319,50 +254,29 @@ public class SwerveDriveSubsystem extends Subsystem{
 	
 	public void update(){
 		holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
-		previous_FRenc = rTFRDEncVal(trueFRDEnc);
-		previous_FLenc = rTFLDEncVal(trueFLDEnc);
-		previous_BLenc = rTBLDEncVal(trueBLDEnc);
-		previous_BRenc = rTBRDEncVal(trueBRDEnc);
+		// previous_FRenc = rTFRDEncVal(trueFRDEnc);
+		// previous_FLenc = rTFLDEncVal(trueFLDEnc);
+		// previous_BLenc = rTBLDEncVal(trueBLDEnc);
+		// previous_BRenc = rTBRDEncVal(trueBRDEnc);
 	}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 	public void testMotors(){
+		// frontRightAngle.set(0.5);
+		// frontLeftAngle.set(0.5);
+		// backLeftAngle.set(0.5);
+		// backRightAngle.set(0.5);
+
 		// frontRightAngle.set(frontRightAngleController.calculate(mSwerveModules[0].readAngle(), Math.toRadians(90)));
-		frontLeftAngle.set(frontLeftAngleController.calculate(mSwerveModules[1].readAngle(), Math.toRadians(90)));
+		// frontLeftAngle.set(frontLeftAngleController.calculate(mSwerveModules[1].readAngle(), Math.toRadians(90)));
 		// backLeftAngle.set(backLeftAngleController.calculate(mSwerveModules[2].readAngle(), Math.toRadians(90)));
 		// backRightAngle.set(backRightAngleController.calculate(mSwerveModules[3].readAngle(), Math.toRadians(90)));
 
-		// System.out.println(Math.toDegrees(mSwerveModules[0].readAngle()));
-		System.out.println(Math.toDegrees(mSwerveModules[1].readAngle()));
-    	// System.out.println(Math.toDegrees(mSwerveModules[2].readAngle()));
-    	// System.out.println(Math.toDegrees(mSwerveModules[3].readAngle()));
+		// System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
+		// System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
+    	// System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
+    	// System.out.println("back right " + Math.toDegrees(mSwerveModules[3].readAngle()));
 	}
 
 	public void calibrateNavX(){
 		System.out.println(mNavX.getYaw());
 	}
->>>>>>> 
-=======
-	public static void toggleDriveInverted(SwerveDriveModule module){
-		if (module.getDriveMotor().getInverted()) module.getDriveMotor().setInverted(false);
-		else module.getDriveMotor().setInverted(true);
-	}
-
-=======
-	public static void toggleDriveInverted(SwerveDriveModule module){
-		if (module.getDriveMotor().getInverted()) module.getDriveMotor().setInverted(false);
-		else module.getDriveMotor().setInverted(true);
-	}
-
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-	@Override
-	protected void initDefaultCommand() {
-		// testMoveSwerve testMove = new testMoveSwerve();
-		// testMove.start();
-	}
-<<<<<<< HEAD
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 }

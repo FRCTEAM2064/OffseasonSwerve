@@ -34,21 +34,9 @@ public class rotationControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
-    ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    numberRotations += Robot.controlPanel.detectRotation(current, initial);
-=======
     // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
     ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
     numberRotations += Robot.controlPanel.detectColor(current, initial);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
-    ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    numberRotations += Robot.controlPanel.detectColor(current, initial);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -59,15 +47,7 @@ public class rotationControl extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
-=======
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+    Robot.controlPanel.runControlPanel.set(0);
   }
 
   // Called when another command which requires one or more of the same

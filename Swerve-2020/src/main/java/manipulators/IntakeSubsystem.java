@@ -7,19 +7,13 @@
 
 package manipulators;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends Subsystem {
   /**
@@ -28,67 +22,29 @@ public class IntakeSubsystem extends Subsystem {
   
   public CANSparkMax intakeTubingLeft;
   public CANSparkMax intakeTubingRight;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  public TalonSRX intakeTubingInwards; 
-=======
-  public CANSparkMax intakeTubingInwards; //Might be talon; will have to change this if so
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-  public CANSparkMax intakeTubingInwards; //Might be talon; will have to change this if so
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+  public VictorSP intakeTubingInwards;
 
   public DoubleSolenoid intakePiston;
   public boolean isDown = false;
+  
   public IntakeSubsystem() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    intakeTubingLeft = new CANSparkMax(9, MotorType.kBrushless);
-    intakeTubingRight = new CANSparkMax(10, MotorType.kBrushless);
-    intakeTubingInwards = new TalonSRX(11);
-    
-=======
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-    intakeTubingLeft = new CANSparkMax(13, MotorType.kBrushless);
-    intakeTubingRight = new CANSparkMax(14, MotorType.kBrushless);
-    intakeTubingInwards = new CANSparkMax(15, MotorType.kBrushless);
-
-<<<<<<< HEAD
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-    intakePiston = new DoubleSolenoid(1, 0);
+    intakeTubingLeft = new CANSparkMax(RobotMap.intakeTubingLeftID, MotorType.kBrushless);
+    intakeTubingRight = new CANSparkMax(RobotMap.intakeTubingRightID, MotorType.kBrushless);
+    intakeTubingInwards = new VictorSP(RobotMap.intakeTubingInwardsID);
   }
 
   @Override
   protected void initDefaultCommand() {}
 
   public void activateMotors(){
-    intakeTubingLeft.set(0.6);
-    intakeTubingRight.set(0.6);
-<<<<<<< HEAD
-<<<<<<< HEAD
-    intakeTubingInwards.set(ControlMode.PercentOutput, 0.6);
-=======
-    intakeTubingInwards.set(0.6);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-    intakeTubingInwards.set(0.6);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+    intakeTubingLeft.set(RobotMap.maxTubingSpeed);
+    intakeTubingRight.set(-RobotMap.maxTubingSpeed);
+    intakeTubingInwards.set(RobotMap.maxTubingSpeed);
   }
 
   public void deactivateMotors(){
     intakeTubingLeft.set(0);
     intakeTubingRight.set(0);
-<<<<<<< HEAD
-<<<<<<< HEAD
-    intakeTubingInwards.set(ControlMode.PercentOutput, 0);
-=======
     intakeTubingInwards.set(0);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-    intakeTubingInwards.set(0);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
   }
 }

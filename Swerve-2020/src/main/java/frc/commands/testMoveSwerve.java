@@ -37,15 +37,16 @@ public class testMoveSwerve extends Command{
 		Robot.drive.frFollower.configureEncoder(0, 4096, RobotMap.RADIUS_OF_WHEEL*2);
 		Robot.drive.blFollower.configureEncoder(0, 4096, RobotMap.RADIUS_OF_WHEEL*2);
 		Robot.drive.brFollower.configureEncoder(0, 4096, RobotMap.RADIUS_OF_WHEEL*2);
-		// flFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		// frFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		// blFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		// brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 
-		Robot.drive.flFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		Robot.drive.frFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		Robot.drive.blFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-		Robot.drive.brFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+    Robot.drive.flFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		Robot.drive.frFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		Robot.drive.blFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+    Robot.drive.brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+    
+		// Robot.drive.flFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// Robot.drive.frFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// Robot.drive.blFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
+		// Robot.drive.brFollower.configurePIDVA(1, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
     
     System.out.println("Command Initialized");
     // Use addRequirements() here to declare subsystem dependencies.
@@ -66,18 +67,17 @@ public class testMoveSwerve extends Command{
     double br_angle = Pathfinder.boundHalfDegrees(Pathfinder.r2d(Robot.drive.brFollower.getHeading()));
     // Robot.drive.mSwerveModules[1].getDriveMotor().set(0.4);
 
-//TODO: PROBLEM: Command structure is wack
-    Robot.drive.mSwerveModules[1].getAngleMotor().set(Robot.drive.mSwerveModules[1].getAnglePIDController().calculate(Robot.drive.mSwerveModules[1].readAngle(), Math.toRadians(fl_angle)));
-    Robot.drive.mSwerveModules[1].getDriveMotor().set(Robot.drive.flFollower.calculate((int)Robot.drive.mSwerveModules[1].getDriveEncoderVal()));
-    
     Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
-    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.mSwerveModules[0].getDriveEncoderVal()));
+    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.rTFRDEncVal(Robot.drive.previous_FRenc)));
+    
+    Robot.drive.mSwerveModules[1].getAngleMotor().set(Robot.drive.mSwerveModules[1].getAnglePIDController().calculate(Robot.drive.mSwerveModules[1].readAngle(), Math.toRadians(fl_angle)));
+    Robot.drive.mSwerveModules[1].getDriveMotor().set(Robot.drive.flFollower.calculate((int)Robot.drive.rTFLDEncVal(Robot.drive.previous_FLenc)));
     
     Robot.drive.mSwerveModules[2].getAngleMotor().set(Robot.drive.mSwerveModules[2].getAnglePIDController().calculate(Robot.drive.mSwerveModules[2].readAngle(), Math.toRadians(bl_angle)));
-    Robot.drive.mSwerveModules[2].getDriveMotor().set(Robot.drive.blFollower.calculate((int)Robot.drive.mSwerveModules[2].getDriveEncoderVal()));
+    Robot.drive.mSwerveModules[2].getDriveMotor().set(Robot.drive.blFollower.calculate((int)Robot.drive.rTBLDEncVal(Robot.drive.previous_BLenc)));
     
     Robot.drive.mSwerveModules[3].getAngleMotor().set(Robot.drive.mSwerveModules[3].getAnglePIDController().calculate(Robot.drive.mSwerveModules[3].readAngle(), Math.toRadians(br_angle)));
-    Robot.drive.mSwerveModules[3].getDriveMotor().set(Robot.drive.brFollower.calculate((int)Robot.drive.mSwerveModules[3].getDriveEncoderVal()));
+    Robot.drive.mSwerveModules[3].getDriveMotor().set(Robot.drive.brFollower.calculate((int)Robot.drive.rTBRDEncVal(Robot.drive.trueBRDEnc)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -95,33 +95,17 @@ public class testMoveSwerve extends Command{
     // Robot.drive.mSwerveModules[1].getDriveMotor().set(0.4);
 
 //TODO: PROBLEM: Command structure is wack
-    Robot.drive.mSwerveModules[1].getAngleMotor().set(Robot.drive.mSwerveModules[1].getAnglePIDController().calculate(Robot.drive.mSwerveModules[1].readAngle(), Math.toRadians(fl_angle)));
-    Robot.drive.mSwerveModules[1].getDriveMotor().set(Robot.drive.flFollower.calculate((int)Robot.drive.mSwerveModules[1].getDriveEncoderVal()));
+    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
+    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.rTFLDEncVal(Robot.drive.previous_FLenc)));
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
-    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.mSwerveModules[0].getDriveEncoderVal()));
-=======
-    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), fr_angle));
-    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)-Robot.drive.rTFRDEncVal(Robot.drive.previous_FRenc)));
->>>>>>> 
-=======
-    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
-    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.mSwerveModules[0].getDriveEncoderVal()));
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-    Robot.drive.mSwerveModules[0].getAngleMotor().set(Robot.drive.mSwerveModules[0].getAnglePIDController().calculate(Robot.drive.mSwerveModules[0].readAngle(), Math.toRadians(fr_angle)));
-    Robot.drive.mSwerveModules[0].getDriveMotor().set(Robot.drive.frFollower.calculate((int)Robot.drive.mSwerveModules[0].getDriveEncoderVal()));
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+    Robot.drive.mSwerveModules[1].getAngleMotor().set(Robot.drive.mSwerveModules[1].getAnglePIDController().calculate(Robot.drive.mSwerveModules[1].readAngle(), Math.toRadians(fl_angle)));
+    Robot.drive.mSwerveModules[1].getDriveMotor().set(Robot.drive.flFollower.calculate((int)Robot.drive.rTFRDEncVal(Robot.drive.previous_FRenc)));
 
     Robot.drive.mSwerveModules[2].getAngleMotor().set(Robot.drive.mSwerveModules[2].getAnglePIDController().calculate(Robot.drive.mSwerveModules[2].readAngle(), Math.toRadians(bl_angle)));
-    Robot.drive.mSwerveModules[2].getDriveMotor().set(Robot.drive.blFollower.calculate((int)Robot.drive.mSwerveModules[2].getDriveEncoderVal()));
+    Robot.drive.mSwerveModules[2].getDriveMotor().set(Robot.drive.blFollower.calculate((int)Robot.drive.rTBLDEncVal(Robot.drive.previous_BLenc)));
 
     Robot.drive.mSwerveModules[3].getAngleMotor().set(Robot.drive.mSwerveModules[3].getAnglePIDController().calculate(Robot.drive.mSwerveModules[3].readAngle(), Math.toRadians(br_angle)));
-    Robot.drive.mSwerveModules[3].getDriveMotor().set(Robot.drive.brFollower.calculate((int)Robot.drive.mSwerveModules[3].getDriveEncoderVal()));
-        System.out.println("Command running");
+    Robot.drive.mSwerveModules[3].getDriveMotor().set(Robot.drive.brFollower.calculate((int)Robot.drive.rTBRDEncVal(Robot.drive.trueBRDEnc)));
   }
 
   // Called once the command ends or is interrupted.
@@ -135,12 +119,5 @@ public class testMoveSwerve extends Command{
   public boolean isFinished() {
     return Robot.drive.frFollower.isFinished() && Robot.drive.flFollower.isFinished() && Robot.drive.blFollower.isFinished() && Robot.drive.brFollower.isFinished();
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-}
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+

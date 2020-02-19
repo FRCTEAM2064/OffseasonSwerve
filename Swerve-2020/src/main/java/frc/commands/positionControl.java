@@ -7,7 +7,6 @@
 
 package frc.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -35,7 +34,7 @@ public class positionControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.2); //Make fast as possible.
+    Robot.controlPanel.runControlPanel.set(0.2); //Make fast as possible.
     current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
   }
 
@@ -48,7 +47,7 @@ public class positionControl extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0);
+    Robot.controlPanel.runControlPanel.set(0);
   }
 
   // Called when another command which requires one or more of the same

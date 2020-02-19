@@ -24,8 +24,6 @@ public class ClimbingSubsystem extends Subsystem {
   public ClimbingSubsystem(){
     winchControl = new CANSparkMax(15, MotorType.kBrushless);
     careful = new CANCoder(15);
-
-    careful.configFactoryDefault();
   }
 
   @Override

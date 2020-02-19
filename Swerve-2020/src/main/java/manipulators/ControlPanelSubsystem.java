@@ -7,15 +7,15 @@
 
 package manipulators;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -25,22 +25,14 @@ public class ControlPanelSubsystem extends Subsystem {
   // here. Call these from Commands.
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
-  public TalonSRX runControlPanel = new TalonSRX(14);
-=======
   // public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
-  // public TalonSRX runControlPanel = new TalonSRX(16);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-  // public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
-  // public TalonSRX runControlPanel = new TalonSRX(16);
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
+  // public TalonSRX runControlPanel = new TalonSRX(RobotMap.controlPanelID);
+  public VictorSP runControlPanel = new VictorSP(RobotMap.controlPanelID);
 
   public ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   public ColorMatch m_colorMatcher = new ColorMatch();
+
 
   public Color previous_color;
 
@@ -51,6 +43,35 @@ public class ControlPanelSubsystem extends Subsystem {
   private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
+  public Color[] twoMoreThanDetected = {kBlueTarget, kGreenTarget, kRedTarget, kYellowTarget};
+  public Color colorMatch(Color cur){
+    for (int i = 0; i < twoMoreThanDetected.length; i++){
+      if(twoMoreThanDetected[i].equals(cur)){
+        return(twoMoreThanDetected[(i+2)%4]);
+      }
+    }
+    
+    return kRedTarget;
+  } 
+
+  public int colorDirect(Color cur, Color target){
+    int curi = 0;
+    int tari = 0;
+    for(int i = 0; i<twoMoreThanDetected.length; i ++){
+      if(twoMoreThanDetected[i].equals(cur)){
+        curi = i;
+      }
+      else if(twoMoreThanDetected[i].equals(target)){
+        tari = i;
+      }
+    }
+    if((tari - curi) > ((4 -curi)%3)){
+      return 1;
+    }
+    return -1;
+  }
+
+  // public int colorDirect(Color cur, Color target){
   public ControlPanelSubsystem(){
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -62,15 +83,7 @@ public class ControlPanelSubsystem extends Subsystem {
   public void initDefaultCommand() {
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  public double detectRotation(ColorMatchResult current, ColorMatchResult initial){
-=======
   public double detectColor(ColorMatchResult current, ColorMatchResult initial){
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-  public double detectColor(ColorMatchResult current, ColorMatchResult initial){
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
     if (previous_color.equals(current.color)){
       previous_color = current.color;
       return 0;
@@ -102,8 +115,6 @@ public class ControlPanelSubsystem extends Subsystem {
       return "Unknown";
     }
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   public Color takeGameData(String gamedata){
     switch(gamedata.charAt(0)){
@@ -120,16 +131,3 @@ public class ControlPanelSubsystem extends Subsystem {
     }
   }
 }
-
-
-
-=======
-}
-
-
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
-=======
-}
-
-
->>>>>>> 3676ba864874d636f635985bc552606c86d2739b
