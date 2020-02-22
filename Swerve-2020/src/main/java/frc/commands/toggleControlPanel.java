@@ -13,23 +13,22 @@ import frc.robot.Robot;
 
 public class toggleControlPanel extends Command {
   public toggleControlPanel() {
-    requires(Robot.controlPanel);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.controlPanel.isUp){
-      // Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kReverse);
-      Robot.controlPanel.isUp = false;
-    }
-    else{
-      // Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kForward);
+    if (Robot.controlPanel.accessControlPanel.get().equals(DoubleSolenoid.Value.kForward)){
+      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kReverse);
       Robot.controlPanel.isUp = true;
+    }
+    else if (Robot.controlPanel.accessControlPanel.get().equals(DoubleSolenoid.Value.kReverse)){
+      Robot.controlPanel.accessControlPanel.set(DoubleSolenoid.Value.kForward);
+      Robot.controlPanel.isUp = false;
     }
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  // Called repeatedly whens this Command is scheduled to run
   @Override
   protected void execute() {
   }
@@ -37,7 +36,13 @@ public class toggleControlPanel extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    if (Robot.controlPanel.accessControlPanel.get().equals(DoubleSolenoid.Value.kForward) && Robot.controlPanel.isUp){
+      return true;
+    }
+    else if (Robot.controlPanel.accessControlPanel.get().equals(DoubleSolenoid.Value.kReverse) && !Robot.controlPanel.isUp){
+      return true;
+    }
+    else return true;
   }
 
   // Called once after isFinished returns true

@@ -11,6 +11,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,7 +26,7 @@ public class ControlPanelSubsystem extends Subsystem {
   // here. Call these from Commands.
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
-  // public DoubleSolenoid accessControlPanel = new DoubleSolenoid(5, 4);
+  public DoubleSolenoid accessControlPanel = new DoubleSolenoid(2, 3);
   // public TalonSRX runControlPanel = new TalonSRX(RobotMap.controlPanelID);
   public VictorSP runControlPanel = new VictorSP(RobotMap.controlPanelID);
 

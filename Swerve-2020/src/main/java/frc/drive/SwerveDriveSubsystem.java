@@ -126,7 +126,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// fieldOrientedController.setContinuous(true);
 
 		rotationJoyAngleController.enableContinuousInput(-180, 180);
-		rotationJoyAngleController.setTolerance(3);
+		rotationJoyAngleController.setTolerance(4);
 	}
 
 	public AHRS getNavX() {

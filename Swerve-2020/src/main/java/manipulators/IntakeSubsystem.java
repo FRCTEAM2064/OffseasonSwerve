@@ -31,6 +31,7 @@ public class IntakeSubsystem extends Subsystem {
     intakeTubingLeft = new CANSparkMax(RobotMap.intakeTubingLeftID, MotorType.kBrushless);
     intakeTubingRight = new CANSparkMax(RobotMap.intakeTubingRightID, MotorType.kBrushless);
     intakeTubingInwards = new VictorSP(RobotMap.intakeTubingInwardsID);
+    intakePiston = new DoubleSolenoid(0, 1);
   }
 
   @Override

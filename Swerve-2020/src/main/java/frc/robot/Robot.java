@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -39,7 +42,10 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooter;
   public static ControlPanelSubsystem controlPanel;
   public static ClimbingSubsystem climb;
+  public static I2C arduino;
   public static int numOfIterations = 0;
+  public Compressor compressor;
+  
 
   public UsbCamera driverCam;
   
@@ -64,6 +70,8 @@ public class Robot extends TimedRobot {
     shooter = new ShooterSubsystem();
     intake = new IntakeSubsystem();
     oi = new OI();
+    compressor = new Compressor();
+    // arduino = new I2C(I2C.Port.kMXP, deviceAddress)
 
     Scheduler.getInstance().enable();
     
@@ -133,7 +141,11 @@ public class Robot extends TimedRobot {
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
     Robot.drive.update();
-    System.out.println(drive.rTFRDEncVal(drive.previous_FRenc));
+    // System.out.println("front right " + Robot.drive.mSwerveModules[0].readAngle());
+    intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
+    System.out.println(intake.intakePiston.get());
+
+    // System.out.println(drive.rTFRDEncVal(drive.previous_FRenc));
     // Robot.drive.calibrateNavX();
 
     // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));

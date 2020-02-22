@@ -46,11 +46,10 @@ public class OI {
     public OI(){
         //rb1 is used to halve robot rotation
         // rb2.whileHeld(new testMoveSwerve());
-        // rb3.whenPressed(new toggleIntakePanel());
+        rb3.whenPressed(new toggleIntakePanel());
         lb1.whileHeld(new shoot());
         lb2.whenPressed(new rotateToCenter());
-        // lb3.whenPressed(new rotationControl());
-        lb3.whileHeld(new toggleIntakePanel());
+        lb3.whenPressed(new rotationControl());
         lb4.whileHeld(new raiseLift());
         lb5.whileHeld(new lowerLift());
     }
