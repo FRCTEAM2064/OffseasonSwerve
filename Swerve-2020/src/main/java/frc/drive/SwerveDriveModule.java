@@ -123,5 +123,5 @@ public class SwerveDriveModule extends Subsystem {
 	 * Returns drive encoder position as an integer; for jaci's pathfinder
 	 * @return 1 rotation = 4096 ticks
 	 */
-	protected int getDriveEncoderVal() {return (int)(getDriveMotor().getEncoder().getPosition() * 1024);}
+	public int getDriveEncoderVal() {return (int)(getDriveMotor().getEncoder().getPosition() * 1024);}
 }

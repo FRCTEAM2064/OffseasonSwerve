@@ -19,24 +19,25 @@ public class rotationControl extends Command {
 
   public rotationControl() {
     requires(Robot.controlPanel);
-    // initial = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    // Robot.controlPanel.previous_color = initial.color;
+    initial = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
+    Robot.controlPanel.previous_color = initial.color;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    initial = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    Robot.controlPanel.previous_color = initial.color;
+    // initial = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
+    // Robot.controlPanel.previous_color = initial.color;
     //IF this doesn't work shift comment the top 2 lines out and uncomment the bottom 2 lines in the constructor (method rotationControl right above)
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.controlPanel.runControlPanel.set(ControlMode.PercentOutput, 0.3);
+    Robot.controlPanel.runControlPanel.set(0.3);
     ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
     numberRotations += Robot.controlPanel.detectColor(current, initial);
+    System.out.println(numberRotations);
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override

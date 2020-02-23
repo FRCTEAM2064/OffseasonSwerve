@@ -24,7 +24,7 @@ import frc.robot.RobotMap;
 public class ControlPanelSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final I2C.Port i2cPort = I2C.Port.kMXP;
 
   public DoubleSolenoid accessControlPanel = new DoubleSolenoid(2, 3);
   // public TalonSRX runControlPanel = new TalonSRX(RobotMap.controlPanelID);

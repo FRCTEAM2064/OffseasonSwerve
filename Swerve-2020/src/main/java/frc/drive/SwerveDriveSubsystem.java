@@ -65,11 +65,11 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);	
 	
-	public PIDController rotationJoyAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
+	public PIDController rotationAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
 	
-	public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
+	// public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
 	
-	public SwerveModifier modifier;
+	// public SwerveModifier modifier;
 
 	public EncoderFollower flFollower;
 	public EncoderFollower frFollower;
@@ -105,6 +105,8 @@ public class SwerveDriveSubsystem extends Subsystem{
 		mSwerveModules[3].getDriveMotor().setInverted(true);
 
 		mSwerveModules[0].getAngleMotor().setInverted(true);
+		mSwerveModules[1].getAngleMotor().setInverted(true);
+		mSwerveModules[2].getAngleMotor().setInverted(true);
 		mSwerveModules[3].getAngleMotor().setInverted(true);
 
 		for (SwerveDriveModule module : mSwerveModules) {
@@ -125,8 +127,8 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// fieldOrientedController.setOutputRange(-0.5, 0.5);
 		// fieldOrientedController.setContinuous(true);
 
-		rotationJoyAngleController.enableContinuousInput(-180, 180);
-		rotationJoyAngleController.setTolerance(4);
+		rotationAngleController.enableContinuousInput(-180, 180);
+		rotationAngleController.setTolerance(4);
 	}
 
 	public AHRS getNavX() {

@@ -6,7 +6,7 @@ import frc.common.math.MathUtils;
 import frc.common.math.Vector2;
 
 
-public final class Limelight {
+public Limelight {
     public final NetworkTable table;
 
     public final NetworkTableEntry tv;
@@ -28,23 +28,22 @@ public final class Limelight {
 
     public Limelight(NetworkTable table) {
         this.table = table;
+        tv = table.getEntry("tv");
+        tx = table.getEntry("tx");
+        ty = table.getEntry("ty");
+        ta = table.getEntry("ta");
+        ts = table.getEntry("ts");
+        tl = table.getEntry("tl");
 
-        tv = table.getInstance().getEntry("tv");
-        tx = table.getInstance().getEntry("tx");
-        ty = table.getInstance().getEntry("ty");
-        ta = table.getInstance().getEntry("ta");
-        ts = table.getInstance().getEntry("ts");
-        tl = table.getInstance().getEntry("tl");
+        tcornx = table.getEntry("tcornx");
+        tcorny = table.getEntry("tcorny");
+        camtran = table.getEntry("camtran");
 
-        tcornx = table.getInstance().getEntry("tcornx");
-        tcorny = table.getInstance().getEntry("tcorny");
-        camtran = table.getInstance().getEntry("camtran");
-
-        ledMode = table.getInstance().getEntry("ledMode");
-        camMode = table.getInstance().getEntry("camMode");
-        pipeline = table.getInstance().getEntry("pipeline");
-        stream = table.getInstance().getEntry("stream");
-        snapshot = table.getInstance().getEntry("snapshot");
+        ledMode = table.getEntry("ledMode");
+        camMode = table.getEntry("camMode");
+        pipeline = table.getEntry("pipeline");
+        stream = table.getEntry("stream");
+        snapshot = table.getEntry("snapshot");
     }
 
     public boolean hasTarget() {

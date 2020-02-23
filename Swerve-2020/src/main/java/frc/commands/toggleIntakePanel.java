@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class toggleIntakePanel extends Command {
-  public toggleIntakePanel() {
+  public toggleIntakePanel() {//add delay to 
     requires(Robot.intake);
   }
 

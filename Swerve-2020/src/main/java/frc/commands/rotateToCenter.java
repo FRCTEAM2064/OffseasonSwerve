@@ -24,20 +24,20 @@ public class rotateToCenter extends Command {
   
   public void initialize(){
     Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
-    // System.out.println("Command Initialized");
+    System.out.println("Command Initialized");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println("Command Executing");
+    System.out.println("Command Executing");
     Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), Robot.vision.centeringRobotPID(), false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end() {
-    // System.out.println("Command ended");
+    System.out.println("Command ended");
     Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), 0, false);
   }
 

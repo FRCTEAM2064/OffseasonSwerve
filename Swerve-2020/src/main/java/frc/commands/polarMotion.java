@@ -14,7 +14,8 @@ import frc.robot.RobotMap;
 public class polarMotion extends Command {
   double meters;
   double angle;
-  double initialEnc;
+  double initialFREnc;
+  
   /**
    * @param meters - How far to move in meters
    * @param angle - What angle to move in, assuming positive x axis is 0 degrees
@@ -28,7 +29,8 @@ public class polarMotion extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    initialEnc = Robot.drive.trueFRDEnc;
+    initialFREnc = Robot.drive.mSwerveModules[0].getDriveEncoderVal();
+    
     Robot.drive.holonomicDrive(meters * -Math.sin(Math.toRadians(angle)), meters * -Math.cos(Math.toRadians(angle)), 0, true);
   }
 
@@ -41,7 +43,7 @@ public class polarMotion extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.drive.trueFRDEnc - initialEnc) >= (4096 * meters/RobotMap.circumference_of_wheel);
+    return Math.abs(Robot.drive.mSwerveModules[0].getDriveEncoderVal() - initialFREnc) >= (1024 * meters/RobotMap.circumference_of_wheel);
   }
 
   // Called once after isFinished returns true

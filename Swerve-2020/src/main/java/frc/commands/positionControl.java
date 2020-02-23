@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
 
 public class positionControl extends Command {
-  boolean isFinished = false;
+  boolean noGameData = false;
   public positionControl() {
     requires(Robot.controlPanel);
   }
@@ -25,23 +25,28 @@ public class positionControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(!Robot.controlPanel.isUp){
+      new toggleControlPanel();
+    }
     String gameData;
     gameData = DriverStation.getInstance().getGameSpecificMessage();
-    if(!(gameData.length() > 0)) isFinished = true;
+    if(!(gameData.length() > 0)) noGameData = true;
+    
     target = Robot.controlPanel.takeGameData(gameData);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.controlPanel.runControlPanel.set(0.2); //Make fast as possible.
+    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.2); //Make fast as possible.
     current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished || current.color.equals(target);
+    return noGameData || current.color.equals(target);
   }
 
   // Called once after isFinished returns true

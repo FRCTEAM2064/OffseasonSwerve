@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     intake = new IntakeSubsystem();
     oi = new OI();
     compressor = new Compressor();
-    // arduino = new I2C(I2C.Port.kMXP, deviceAddress)
+    arduino = new I2C(I2C.Port.kOnboard, 0x45);
 
     Scheduler.getInstance().enable();
     
@@ -129,7 +129,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-
+    Scheduler.getInstance().close();
+    Scheduler.getInstance().enable();
   }
   /**
    * This function is called periodically during operator control.
@@ -140,10 +141,21 @@ public class Robot extends TimedRobot {
     // Robot.drive.testMotors();
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
-    Robot.drive.update();
+    // Robot.drive.update();
+    // System.out.println(vision.firstLime.tx.getDouble(26));
+    System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));
+    System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
+    System.out.println("ta " + vision.firstLime.table.getEntry("ta").getDouble(126.0));
+    System.out.println("tl " + vision.firstLime.table.getEntry("tl").getDouble(126.0));
+    // System.out.println(Robot.vision.rotateToTarget.atSetpoint());
+    // System.out.println("velocity: " + Robot.shooter.shooter_encoder.getBusVoltage());
+    // System.out.println(Robot.drive.mSwerveModules[0].readAngle());
+    // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
+    // System.out.println(Robot.drive.mSwerveModules[2].readAngle());
+    // System.out.println(Robot.drive.mSwerveModules[3].readAngle());
     // System.out.println("front right " + Robot.drive.mSwerveModules[0].readAngle());
-    intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
-    System.out.println(intake.intakePiston.get());
+    // intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
+    // System.out.println(intake.intakePiston.get());
 
     // System.out.println(drive.rTFRDEncVal(drive.previous_FRenc));
     // Robot.drive.calibrateNavX();
