@@ -17,6 +17,7 @@ import frc.commands.raiseLift;
 import frc.autonomous.MoveForward2m;
 import frc.autonomous.rotationControlFull;
 import frc.commands.lowerLift;
+import frc.commands.positionControl;
 import frc.commands.shoot;
 // import frc.commands.testMoveSwerve;
 import frc.commands.toggleControlPanel;
@@ -63,7 +64,7 @@ public class OI {
     public static JoystickButton ob9 = new JoystickButton(ojoy, 9);
     public OI(){
         //rb1 is used to halve robot rotation
-        if(rb2.get()) new MoveForward2m();
+        // if(rb2.get()) new MoveForward2m();
         rb3.whenPressed(new toggleIntakePanel());
         rb4.whenPressed(new toggleControlPanel());
         lb1.whileHeld(new shoot());
@@ -71,8 +72,9 @@ public class OI {
         lb3.whenPressed(new rotationControl());
         lb4.whileHeld(new raiseLift());
         lb5.whileHeld(new lowerLift());
+        lb6.whenPressed(new positionControl());
         if(ob8.get()){
-            Robot.arduino.write(0x20, 4);
+            // Robot.arduino.write(0x20, 4);
         }
 
     }

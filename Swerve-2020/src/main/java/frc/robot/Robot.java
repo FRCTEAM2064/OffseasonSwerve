@@ -141,12 +141,11 @@ public class Robot extends TimedRobot {
     // Robot.drive.testMotors();
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
-    // Robot.drive.update();
-    // System.out.println(vision.firstLime.tx.getDouble(26));
+    Robot.drive.update();
     System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));
-    System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
-    System.out.println("ta " + vision.firstLime.table.getEntry("ta").getDouble(126.0));
-    System.out.println("tl " + vision.firstLime.table.getEntry("tl").getDouble(126.0));
+    // System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
+    // System.out.println("ta " + vision.firstLime.table.getEntry("ta").getDouble(126.0));
+    // System.out.println("tl " + vision.firstLime.table.getEntry("tl").getDouble(126.0));
     // System.out.println(Robot.vision.rotateToTarget.atSetpoint());
     // System.out.println("velocity: " + Robot.shooter.shooter_encoder.getBusVoltage());
     // System.out.println(Robot.drive.mSwerveModules[0].readAngle());

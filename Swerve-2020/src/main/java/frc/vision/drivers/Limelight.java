@@ -6,7 +6,7 @@ import frc.common.math.MathUtils;
 import frc.common.math.Vector2;
 
 
-public Limelight {
+public class Limelight {
     public final NetworkTable table;
 
     public final NetworkTableEntry tv;

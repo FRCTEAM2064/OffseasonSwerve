@@ -25,22 +25,23 @@ public class positionControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(!Robot.controlPanel.isUp){
-      new toggleControlPanel();
-    }
+    // if(!Robot.controlPanel.isUp){
+    //   new toggleControlPanel();
+    // }
     String gameData;
     gameData = DriverStation.getInstance().getGameSpecificMessage();
     if(!(gameData.length() > 0)) noGameData = true;
     
     target = Robot.controlPanel.takeGameData(gameData);
+    target = Robot.controlPanel.convertData(target);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.2); //Make fast as possible.
     current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    
+    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.2); //Make fast as possible.
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -39,10 +39,10 @@ public class ControlPanelSubsystem extends Subsystem {
 
   public boolean isUp = false;
 
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  public final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+  public final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+  public final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  public final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
   public Color[] twoMoreThanDetected = {kBlueTarget, kGreenTarget, kRedTarget, kYellowTarget};
   public Color colorMatch(Color cur){
@@ -54,7 +54,12 @@ public class ControlPanelSubsystem extends Subsystem {
     
     return kRedTarget;
   } 
-
+/**
+ * 
+ * @param cur   the current color you are on
+ * @param target   the color you want the sensor to be on to get points
+ * @return
+ */
   public int colorDirect(Color cur, Color target){
     int curi = 0;
     int tari = 0;
@@ -130,5 +135,13 @@ public class ControlPanelSubsystem extends Subsystem {
       default:
         return previous_color; //If it doesn't move it's because of this code
     }
+  }
+
+  public Color convertData (Color color){
+    if(color.equals(kBlueTarget)) return kRedTarget;
+    else if (color.equals(kRedTarget)) return kBlueTarget;
+    else if (color.equals(kGreenTarget)) return kYellowTarget;
+    else if (color.equals(kYellowTarget)) return kGreenTarget;
+    else return kRedTarget;
   }
 }

@@ -42,7 +42,7 @@ public class rotationControl extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (numberRotations > 3 && numberRotations < 5);
+    return (numberRotations > 2.5 && numberRotations < 4.5);
   }
 
   // Called once after isFinished returns true
