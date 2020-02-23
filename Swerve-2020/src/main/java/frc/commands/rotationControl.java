@@ -34,7 +34,7 @@ public class rotationControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.controlPanel.runControlPanel.set(0.3);
+    Robot.controlPanel.runControlPanel.set(0.7);
     ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
     numberRotations += Robot.controlPanel.detectColor(current, initial);
     System.out.println(numberRotations);

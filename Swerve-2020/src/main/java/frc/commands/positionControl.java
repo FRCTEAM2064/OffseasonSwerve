@@ -41,7 +41,7 @@ public class positionControl extends Command {
   @Override
   protected void execute() {
     current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.2); //Make fast as possible.
+    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.7); //Make fast as possible.
   }
 
   // Make this return true when this Command no longer needs to run execute()
