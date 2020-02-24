@@ -6,6 +6,9 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.commands;
+
+import java.util.concurrent.TimeUnit;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -17,8 +20,21 @@ public class shoot extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.shooter.intakeTubingUpwards.set(RobotMap.maxTubingSpeed);
+
     Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
+    Robot.shooter.intakeTubingUpwards.set(0);
+    Robot.intake.intakeTubingInwards.set(0);
+
+    try {
+      TimeUnit.SECONDS.sleep(1);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    Robot.intake.intakeTubingInwards.set(RobotMap.maxTubingSpeed);
+    Robot.shooter.intakeTubingUpwards.set(RobotMap.maxTubingSpeed);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -46,6 +62,7 @@ public class shoot extends Command {
   protected void end() {
     Robot.shooter.shooter_motor.set(0.0);
     Robot.shooter.intakeTubingUpwards.set(0);
+    Robot.intake.intakeTubingInwards.set(0);
   }
 
   // Called when another command which requires one or more of the same
@@ -54,5 +71,6 @@ public class shoot extends Command {
   protected void interrupted() {
     Robot.shooter.shooter_motor.set(0);
     Robot.shooter.intakeTubingUpwards.set(0);
+    Robot.intake.intakeTubingInwards.set(0);
   }
 }

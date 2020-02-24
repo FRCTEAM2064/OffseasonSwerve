@@ -22,7 +22,7 @@ public class VisionSubsystem extends PIDSubsystem {
   public PIDController rotateToTarget;
 
   public VisionSubsystem() {
-    super("VisionSubsystem", 0.2, 0, 0);
+    super("VisionSubsystem", 0.75, 0, 0);
     setAbsoluteTolerance(1);
     
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable("limelight-first"));

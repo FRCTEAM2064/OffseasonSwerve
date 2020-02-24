@@ -34,14 +34,15 @@ public class rotationControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.controlPanel.runControlPanel.set(0.7);
-    ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    numberRotations += Robot.controlPanel.detectColor(current, initial);
-    System.out.println(numberRotations);
+    Robot.controlPanel.runControlPanel.set(0.4);
+
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    ColorMatchResult current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
+    numberRotations += Robot.controlPanel.detectColor(current, initial);
+    System.out.println(numberRotations);    
     return (numberRotations > 2.5 && numberRotations < 4.5);
   }
 
@@ -55,5 +56,6 @@ public class rotationControl extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.controlPanel.runControlPanel.set(0);
   }
 }

@@ -66,13 +66,13 @@ public class OI {
         //rb1 is used to halve robot rotation
         // if(rb2.get()) new MoveForward2m();
         rb3.whenPressed(new toggleIntakePanel());
-        rb4.whenPressed(new toggleControlPanel());
+        rb4.whileHeld(new toggleControlPanel());
         lb1.whileHeld(new shoot());
         lb2.whileHeld(new rotateToCenter());
-        lb3.whenPressed(new rotationControl());
+        lb3.whileHeld(new rotationControl());
         lb4.whileHeld(new raiseLift());
         lb5.whileHeld(new lowerLift());
-        lb6.whenPressed(new positionControl());
+        lb6.whileHeld(new positionControl());
         if(ob8.get()){
             // Robot.arduino.write(0x20, 4);
         }
