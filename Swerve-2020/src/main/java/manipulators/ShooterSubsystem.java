@@ -7,19 +7,18 @@
 
 package manipulators;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class ShooterSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -33,6 +32,10 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter_encoder = new CANCoder(RobotMap.shooterID);
     intakeTubingUpwards = new VictorSP(RobotMap.intakeTubingUpwardsID);
   }
+
   @Override
-  public void periodic(){} 
+  protected void initDefaultCommand() {
+    // TODO Auto-generated method stub
+
+  }
 }

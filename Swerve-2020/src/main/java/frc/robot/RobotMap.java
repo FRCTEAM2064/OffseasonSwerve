@@ -35,7 +35,7 @@ public class RobotMap {
 
 
     public static double frontRightAngleOffset = -Math.toRadians(221.4);
-    public static double frontLeftAngleOffset = -Math.toRadians(68.8);
+    public static double frontLeftAngleOffset = -Math.toRadians(68.8 + 180);
     public static double backLeftAngleOffset = -Math.toRadians(52.6);
     public static double backRightAngleOffset = -Math.toRadians(129.9);
 

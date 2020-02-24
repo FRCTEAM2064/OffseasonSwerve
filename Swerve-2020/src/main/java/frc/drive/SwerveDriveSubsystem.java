@@ -100,7 +100,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 		mNavX.zeroYaw();
 
 		mSwerveModules[0].getDriveMotor().setInverted(true);
-		mSwerveModules[1].getDriveMotor().setInverted(false);
+		mSwerveModules[1].getDriveMotor().setInverted(true);
 		mSwerveModules[2].getDriveMotor().setInverted(false);
 		mSwerveModules[3].getDriveMotor().setInverted(true);
 
@@ -114,18 +114,12 @@ public class SwerveDriveSubsystem extends Subsystem{
 			module.getAnglePIDController().setTolerance(Math.toRadians(3.0));
 			module.getDrivePIDController().setTolerance(250);
 			module.getDriveMotor().getEncoder().setPosition(0);
-			// module.getPIDController().setSetpoint(0);
 		}
 		
 		// flFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 		// frFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 		// blFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 		// brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
-
-		// fieldOrientedController.setInputRange(0, 360);
-		// fieldOrientedController.setAbsoluteTolerance(3.0);
-		// fieldOrientedController.setOutputRange(-0.5, 0.5);
-		// fieldOrientedController.setContinuous(true);
 
 		rotationAngleController.enableContinuousInput(-180, 180);
 		rotationAngleController.setTolerance(4);

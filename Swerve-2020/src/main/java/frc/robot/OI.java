@@ -9,13 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
-import frc.commands.rotationControlPickColor;
 import frc.commands.raiseLift;
-import frc.autonomous.MoveForward2m;
-import frc.autonomous.rotationControlFull;
 import frc.commands.lowerLift;
 import frc.commands.positionControl;
 import frc.commands.shoot;
@@ -62,18 +58,26 @@ public class OI {
     public static JoystickButton ob7 = new JoystickButton(ojoy, 7);
     public static JoystickButton ob8 = new JoystickButton(ojoy, 8);
     public static JoystickButton ob9 = new JoystickButton(ojoy, 9);
+    public static JoystickButton ob10 = new JoystickButton(ojoy, 10);
+    public static JoystickButton ob11 = new JoystickButton(ojoy, 11);
+    public static JoystickButton ob12 = new JoystickButton(ojoy, 12);
+    public static JoystickButton ob13 = new JoystickButton(ojoy, 13);
+
     public OI(){
         //rb1 is used to halve robot rotation
         // if(rb2.get()) new MoveForward2m();
-        rb3.whenPressed(new toggleIntakePanel());
-        rb4.whenPressed(new toggleControlPanel());
-        lb1.whileHeld(new shoot());
         lb2.whileHeld(new rotateToCenter());
-        lb3.whenPressed(new rotationControl());
-        lb4.whileHeld(new raiseLift());
-        lb5.whileHeld(new lowerLift());
-        lb6.whenPressed(new positionControl());
-        if(ob8.get()){
+        
+        rb3.whenPressed(new toggleIntakePanel());
+        
+        lb1.whileHeld(new shoot());
+        ob5.whileHeld(new raiseLift());
+        ob6.whileHeld(new lowerLift());
+        ob8.whenPressed(new positionControl());
+        ob10.whenPressed(new toggleControlPanel());
+        ob12.whenPressed(new rotationControl());
+        
+        if(ob11.get()){
             // Robot.arduino.write(0x20, 4);
         }
 
