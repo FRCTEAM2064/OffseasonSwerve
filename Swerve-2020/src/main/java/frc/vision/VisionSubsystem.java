@@ -14,7 +14,6 @@ import frc.vision.drivers.Limelight;
 import frc.vision.drivers.Limelight.CamMode;
 import frc.vision.drivers.Limelight.LedMode;
 import frc.robot.Robot;
-import frc.robot.OI;
 
 public class VisionSubsystem extends PIDSubsystem {
 
@@ -22,8 +21,8 @@ public class VisionSubsystem extends PIDSubsystem {
   public PIDController rotateToTarget;
 
   public VisionSubsystem() {
-    super("VisionSubsystem", 0.2, 0, 0);
-    setAbsoluteTolerance(1);
+    super("VisionSubsystem", 0.9, 0, 0);
+    setAbsoluteTolerance(2);
     
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable("limelight-first"));
     firstLime.setCamMode(CamMode.VISION);
@@ -44,9 +43,6 @@ public class VisionSubsystem extends PIDSubsystem {
 
   @Override
   protected void usePIDOutput(double output) {
-    
-    Robot.drive.holonomicDrive(-OI.getlYval(), OI.getlXval(), output, false);
-
+    Robot.drive.holonomicDrive(0, 0, output, false);
   }
-
 }

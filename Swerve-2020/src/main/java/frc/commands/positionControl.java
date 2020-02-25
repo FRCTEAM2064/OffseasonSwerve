@@ -25,9 +25,6 @@ public class positionControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // if(!Robot.controlPanel.isUp){
-    //   new toggleControlPanel();
-    // }
     String gameData;
     gameData = DriverStation.getInstance().getGameSpecificMessage();
     if(!(gameData.length() > 0)) noGameData = true;
@@ -41,13 +38,14 @@ public class positionControl extends Command {
   @Override
   protected void execute() {
     current = Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor());
-    Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.7); //Make fast as possible.
+    // Robot.controlPanel.runControlPanel.set(Robot.controlPanel.colorDirect(current.color,target) * 0.4); //Make fast as possible.
+    Robot.controlPanel.runControlPanel.set(0.4);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return noGameData || current.color.equals(target);
+    return noGameData || current.color == target;
   }
 
   // Called once after isFinished returns true
@@ -60,5 +58,6 @@ public class positionControl extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.controlPanel.runControlPanel.set(0);
   }
 }

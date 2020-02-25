@@ -39,7 +39,7 @@ public class rotateToCenter extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end() {
-    // Robot.vision.disable();
+    Robot.vision.disable();
   }
 
   // Returns true when the command should end.

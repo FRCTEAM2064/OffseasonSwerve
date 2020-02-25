@@ -33,6 +33,14 @@ public class ShooterSubsystem extends Subsystem {
     intakeTubingUpwards = new VictorSP(RobotMap.intakeTubingUpwardsID);
   }
 
+  public double shooterAreaLength(double area){
+    return 4.82 * area - 14.1;
+  }
+
+  public double shooterLengthSpeed(double length){
+    return length/40 + 0.5;
+  }
+
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub

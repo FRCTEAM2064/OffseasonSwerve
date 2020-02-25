@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.concurrent.TimeUnit;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.commands.rotateToCenter;
@@ -70,15 +72,26 @@ public class OI {
         
         rb3.whenPressed(new toggleIntakePanel());
         
-        lb1.whileHeld(new shoot());
+        if (ob1.get()){
+            Robot.shooter.intakeTubingUpwards.set(RobotMap.maxTubingSpeed);
+            Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+              } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+        }
+
+        ob1.whileHeld(new shoot());
         ob5.whileHeld(new raiseLift());
         ob6.whileHeld(new lowerLift());
-        ob8.whenPressed(new positionControl());
+        ob8.whileHeld(new positionControl());
         ob10.whenPressed(new toggleControlPanel());
-        ob12.whenPressed(new rotationControl());
+        ob12.whileHeld(new rotationControl());
         
         if(ob11.get()){
-            // Robot.arduino.write(0x20, 4);
+            
         }
 
     }

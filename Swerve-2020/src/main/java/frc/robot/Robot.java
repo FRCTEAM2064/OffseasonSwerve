@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     intake = new IntakeSubsystem();
     oi = new OI();
     compressor = new Compressor();
-    arduino = new I2C(I2C.Port.kOnboard, 0x45);
+    arduino = new I2C(I2C.Port.kOnboard, 168);
 
     Scheduler.getInstance().enable();
     
@@ -142,25 +142,19 @@ public class Robot extends TimedRobot {
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
     Robot.drive.update();
-    System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));
-    // System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
+    // System.out.println(Robot.drive.mSwerveModules[1].readAngle());
+    // System.out.println(Robot.climb.careful.getPosition());
     // System.out.println("ta " + vision.firstLime.table.getEntry("ta").getDouble(126.0));
+    System.out.println(Robot.arduino.addressOnly()); //SHOULD BE FALSE; MAKE SURE TO FIRST DEPLOY CODE ONTO ARDUINO
+    // System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));
+    // System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
     // System.out.println("tl " + vision.firstLime.table.getEntry("tl").getDouble(126.0));
     // System.out.println(Robot.vision.rotateToTarget.atSetpoint());
-    // System.out.println("velocity: " + Robot.shooter.shooter_encoder.getBusVoltage());
     // System.out.println(Robot.drive.mSwerveModules[0].readAngle());
     // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
-    // System.out.println(Robot.drive.mSwerveModules[2].readAngle());
-    // System.out.println(Robot.drive.mSwerveModules[3].readAngle());
-    // System.out.println("front right " + Robot.drive.mSwerveModules[0].readAngle());
-    // intake.intakePiston.set(DoubleSolenoid.Value.kReverse);
-    // System.out.println(intake.intakePiston.get());
 
-    // System.out.println(drive.rTFRDEncVal(drive.previous_FRenc));
     // Robot.drive.calibrateNavX();
-
-    // System.out.println(vision.firstLime.table.getEntry("tx").getDouble(0.0));
-    // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
+// System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
   }
 
   /**
