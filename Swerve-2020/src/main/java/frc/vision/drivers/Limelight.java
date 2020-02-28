@@ -90,8 +90,8 @@ public class Limelight {
         }
     }
 
-    public void setLedMode(LedMode mode) {
-        switch (mode) {
+    public void setLedMode(frc.common.drivers.Limelight.LedMode on) {
+        switch (on) {
             case DEFAULT:
                 ledMode.setNumber(0);
                 break;
@@ -154,4 +154,7 @@ public class Limelight {
     public double getDistHighGoal(){
         return 0.0;
     }
+
+	public void setLedMode(LedMode off) {
+	}
 }

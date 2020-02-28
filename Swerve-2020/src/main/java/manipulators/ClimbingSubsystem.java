@@ -7,7 +7,7 @@
 
 package manipulators;
 
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -20,10 +20,11 @@ public class ClimbingSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public CANSparkMax winchControl;
-  public CANCoder careful;
+  public CANEncoder careful;
   public ClimbingSubsystem(){
     winchControl = new CANSparkMax(15, MotorType.kBrushless);
-    careful = new CANCoder(15);
+    careful = new CANEncoder(winchControl);
+    careful.setPosition(0);
   }
 
   @Override

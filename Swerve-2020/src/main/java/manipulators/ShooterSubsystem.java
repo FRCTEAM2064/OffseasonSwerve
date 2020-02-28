@@ -7,10 +7,11 @@
 
 package manipulators;
 
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -25,12 +26,14 @@ public class ShooterSubsystem extends Subsystem {
   public VictorSP intakeTubingUpwards;
 
   public CANSparkMax shooter_motor;
-  public CANCoder shooter_encoder;
+  public CANEncoder shooter_encoder;
+  public DoubleSolenoid variable_hood;
   
   public ShooterSubsystem(){
     shooter_motor = new CANSparkMax(RobotMap.shooterID, MotorType.kBrushless);
-    shooter_encoder = new CANCoder(RobotMap.shooterID);
+    shooter_encoder = new CANEncoder(shooter_motor);
     intakeTubingUpwards = new VictorSP(RobotMap.intakeTubingUpwardsID);
+    variable_hood = new DoubleSolenoid(4, 5);
   }
 
   public double shooterAreaLength(double area){

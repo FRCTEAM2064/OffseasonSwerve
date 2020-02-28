@@ -14,7 +14,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
 import frc.commands.raiseLift;
+import frc.commands.rotateToAngleGyro;
+import frc.commands.hoodDown;
+import frc.commands.hoodUp;
+import frc.commands.hoodDown;
 import frc.commands.lowerLift;
+import frc.commands.polarMotion;
 import frc.commands.positionControl;
 import frc.commands.shoot;
 // import frc.commands.testMoveSwerve;
@@ -68,32 +73,28 @@ public class OI {
     public OI(){
         //rb1 is used to halve robot rotation
         // if(rb2.get()) new MoveForward2m();
-        lb2.whileHeld(new rotateToCenter());
+        lb4.whileHeld(new rotateToAngleGyro(-90,false));
+        lb7.whenPressed(new polarMotion(3,127)); //TODO: GET Multiplicative constant
         
+        rb2.whileHeld(new rotateToCenter());
         rb3.whenPressed(new toggleIntakePanel());
         
-        if (ob1.get()){
-            Robot.shooter.intakeTubingUpwards.set(RobotMap.maxTubingSpeed);
-            Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
-            try {
-                TimeUnit.SECONDS.sleep(1);
-              } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
-        }
-
         ob1.whileHeld(new shoot());
+        ob3.whenPressed(new hoodUp());
+        ob4.whenPressed(new hoodDown());
         ob5.whileHeld(new raiseLift());
         ob6.whileHeld(new lowerLift());
         ob8.whileHeld(new positionControl());
         ob10.whenPressed(new toggleControlPanel());
         ob12.whileHeld(new rotationControl());
         
-        if(ob11.get()){
+        if(ob1.get()){ //Shooter LEDs
             
         }
 
+        if (ob11.get()){ //Celebration button
+
+        }
     }
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1

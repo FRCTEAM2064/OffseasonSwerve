@@ -65,7 +65,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);	
 	
-	public PIDController rotationAngleController = new PIDController(0.000375 * 1.25, 0.0, 0.00002);
+	public PIDController rotationAngleController = new PIDController(0.005, 0.0, 0.00007);
 	
 	// public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
 	
@@ -99,10 +99,10 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public SwerveDriveSubsystem() {
 		mNavX.zeroYaw();
 
-		mSwerveModules[0].getDriveMotor().setInverted(true);
+		mSwerveModules[0].getDriveMotor().setInverted(false);
 		mSwerveModules[1].getDriveMotor().setInverted(true);
-		mSwerveModules[2].getDriveMotor().setInverted(false);
-		mSwerveModules[3].getDriveMotor().setInverted(true);
+		mSwerveModules[2].getDriveMotor().setInverted(true);
+		mSwerveModules[3].getDriveMotor().setInverted(false);
 
 		mSwerveModules[0].getAngleMotor().setInverted(true);
 		mSwerveModules[1].getAngleMotor().setInverted(true);
@@ -122,7 +122,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 
 		rotationAngleController.enableContinuousInput(-180, 180);
-		rotationAngleController.setTolerance(4);
+		rotationAngleController.setTolerance(2);
 	}
 
 	public AHRS getNavX() {
@@ -185,7 +185,9 @@ public class SwerveDriveSubsystem extends Subsystem{
 				double angle = angles[i];
 				double currentAngle = mSwerveModules[i].readAngle();
 				// Old version
+				
 				mSwerveModules[i].getAngleMotor().set(mSwerveModules[i].getAnglePIDController().calculate(currentAngle, Math.toRadians(angle + 180)));
+				
 				// mSwerveModules[i].setTargetAngle(angle + 180);
 				// mSwerveModules[i].setTargetAngle(angle);
 				mSwerveModules[i].setTargetSpeed(speeds[i]);

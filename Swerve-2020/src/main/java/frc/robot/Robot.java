@@ -14,11 +14,14 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.autonomous.RightSideAuto;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
+import frc.vision.drivers.Limelight.LedMode;
 import manipulators.ClimbingSubsystem;
 import manipulators.ControlPanelSubsystem;
 import manipulators.IntakeSubsystem;
@@ -32,7 +35,7 @@ import manipulators.IntakeSubsystem;
 import manipulators.ShooterSubsystem;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String rightSide = "Right Side Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static OI oi;
@@ -45,7 +48,7 @@ public class Robot extends TimedRobot {
   public static I2C arduino;
   public static int numOfIterations = 0;
   public Compressor compressor;
-  
+  public SendableChooser<String> chooser;
 
   public UsbCamera driverCam;
   
@@ -56,7 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.addOption("Right Side Auto", rightSide);
     SmartDashboard.putData("Auto choices", m_chooser);
     
     driverCam = CameraServer.getInstance().startAutomaticCapture();
@@ -72,9 +75,11 @@ public class Robot extends TimedRobot {
     oi = new OI();
     compressor = new Compressor();
     arduino = new I2C(I2C.Port.kOnboard, 168);
-
-    Scheduler.getInstance().enable();
+    chooser = new SendableChooser<String>();
     
+    Robot.vision.firstLime.setLedMode(LedMode.OFF);
+    Scheduler.getInstance().enable();
+    // System.out.println(Robot.arduino.addressOnly()); //SHOULD BE FALSE; MAKE SURE TO FIRST DEPLOY CODE ONTO ARDUINO
     // drive.mNavX.reset();
   }
 
@@ -89,7 +94,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putString("Control Panel Color", controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
     // driverCam = CameraServer.getInstance().startAutomaticCapture();
+    if (Robot.climb.getCurrentCommandName() == "")climb.winchControl.set( 0.01);
   }
 
   /**
@@ -106,8 +113,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    switch (m_autoSelected) {
+      case rightSide:
+        RightSideAuto rSide = new RightSideAuto();
+        rSide.start();
+        break;
+      case kDefaultAuto:
+      default:
+      
+        break;
+    }
   }
 
   /**
@@ -116,15 +134,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    switch (m_autoSelected) {
-      case kCustomAuto:
-
-        break;
-      case kDefaultAuto:
-      default:
-      
-        break;
-    }
   }
 
   @Override
@@ -141,14 +150,22 @@ public class Robot extends TimedRobot {
     // Robot.drive.testMotors();
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
-    Robot.drive.update();
+    // if (!drive.getCurrentCommandName().equals("polarMotion")) Robot.drive.update();
+    if (vision.getCurrentCommandName().equals("rotateToCenter")){
+
+    }
+    else if(drive.getCurrentCommandName().equals("polarMotion")){
+
+    }
+    else if (drive.getCurrentCommandName().equals("rotateToAngleGyro")){
+
+    }
+    else{
+      Robot.drive.update();
+    }
     // System.out.println(Robot.drive.mSwerveModules[1].readAngle());
     // System.out.println(Robot.climb.careful.getPosition());
-    // System.out.println("ta " + vision.firstLime.table.getEntry("ta").getDouble(126.0));
-    System.out.println(Robot.arduino.addressOnly()); //SHOULD BE FALSE; MAKE SURE TO FIRST DEPLOY CODE ONTO ARDUINO
     // System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));
-    // System.out.println("ty " + vision.firstLime.table.getEntry("ty").getDouble(126.0));
-    // System.out.println("tl " + vision.firstLime.table.getEntry("tl").getDouble(126.0));
     // System.out.println(Robot.vision.rotateToTarget.atSetpoint());
     // System.out.println(Robot.drive.mSwerveModules[0].readAngle());
     // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));

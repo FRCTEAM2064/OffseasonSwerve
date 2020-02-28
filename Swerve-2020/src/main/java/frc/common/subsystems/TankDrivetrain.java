@@ -24,17 +24,17 @@ public abstract class TankDrivetrain extends Drivetrain {
 
     @Override
     public synchronized void updateKinematics(double timestamp) {
-        // TODO: Tank drive kinematics
+        
     }
 
     @Override
     public Vector2 getKinematicPosition() {
-        return Vector2.ZERO; // TODO: Tank drive kinematics
+        return Vector2.ZERO;
     }
 
     @Override
     public Vector2 getKinematicVelocity() {
-        return Vector2.ZERO; // TODO: Tank drive kinematics
+        return Vector2.ZERO;
     }
 
     @Override

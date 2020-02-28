@@ -31,24 +31,31 @@ public class RobotMap {
     public static final int intakeTubingInwardsID = 4;
     public static final int intakeTubingUpwardsID = 5;
     public static final int controlPanelID = 6;
-    
-
 
     public static double frontRightAngleOffset = -Math.toRadians(221.4);
-    public static double frontLeftAngleOffset = -Math.toRadians(68.8 + 180);
+    public static double frontLeftAngleOffset = -Math.toRadians(68.8);
     public static double backLeftAngleOffset = -Math.toRadians(52.6);
     public static double backRightAngleOffset = -Math.toRadians(129.9);
 
     public static double maxSwerveSpeed = 1;
     public static double frictional_Coeff = 1;
     
-    public static final double RADIUS_OF_WHEEL = 2.0 * 2.54/100; //in m
+    public static final double RADIUS_OF_WHEEL = inchesToMeters(2); //in m
     public static final double circumference_of_wheel = RADIUS_OF_WHEEL * Math.PI * 2; //in m
     public static final double empirical_max_rpm = 5676 * maxSwerveSpeed;
+    // public static final double shooter_max_rpm = 
     public static final double empirical_free_velocity = empirical_max_rpm * circumference_of_wheel * frictional_Coeff; //full speed
 
     public static final double maxRaiseLiftSpeed = 1;
     public static final double maxLowerLiftSpeed = 0.5;
-    public static final double maxFlywheelSpeed = 1;
+    public static final double maxFlywheelSpeed = 1; //CHANGE THIS TO CHANGE SHOOT SPEED 
     public static final double maxTubingSpeed = 1;
+
+    public static final double climbBelowTrench = 150;
+
+    public static final double actualDistanceMultiplier = 1;
+
+    public static double inchesToMeters(double inches){
+        return inches*2.54/100;
+    }
 }

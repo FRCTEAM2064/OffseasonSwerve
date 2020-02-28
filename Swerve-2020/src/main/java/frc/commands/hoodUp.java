@@ -8,58 +8,40 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class polarMotion extends Command {
-  double meters;
-  double angle;
-  double initialFREnc;
-  
-  /**
-   * @param meters - How far to move in meters
-   * @param angle - What angle to move in, assuming positive x axis is 0 degrees
-   */
-  public polarMotion(double meters, double angle) {
-    this.meters = meters;
-    this.angle = angle;
-    requires(Robot.drive);
+public class hoodUp extends Command {
+  public hoodUp() {
+    requires(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    initialFREnc = Robot.drive.mSwerveModules[0].getDriveEncoderVal();
-    // System.out.println("Command initialized");
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+      Robot.shooter.variable_hood.set(DoubleSolenoid.Value.kReverse);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // System.out.println("Command executing");
-    System.out.println(Robot.drive.mSwerveModules[0].getDriveEncoderVal());
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.drive.mSwerveModules[0].getDriveEncoderVal() - initialFREnc) >= RobotMap.actualDistanceMultiplier
-        * (1024 * meters / RobotMap.circumference_of_wheel);
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drive.stopAllMotors();
-    
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drive.stopAllMotors();
   }
 }

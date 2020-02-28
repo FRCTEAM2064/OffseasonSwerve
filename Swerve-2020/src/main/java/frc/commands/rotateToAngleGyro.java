@@ -8,52 +8,41 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class polarMotion extends Command {
-  double meters;
-  double angle;
-  double initialFREnc;
-  
-  /**
-   * @param meters - How far to move in meters
-   * @param angle - What angle to move in, assuming positive x axis is 0 degrees
-   */
-  public polarMotion(double meters, double angle) {
-    this.meters = meters;
-    this.angle = angle;
+public class rotateToAngleGyro extends Command {
+  public double setpoint;
+  public boolean auto = false;
+  public rotateToAngleGyro(double setpoint, boolean auto) {
     requires(Robot.drive);
+    this.setpoint = setpoint;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    initialFREnc = Robot.drive.mSwerveModules[0].getDriveEncoderVal();
-    // System.out.println("Command initialized");
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint), true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // System.out.println("Command executing");
-    System.out.println(Robot.drive.mSwerveModules[0].getDriveEncoderVal());
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+    System.out.println(Robot.drive.getGyroAngle());
+    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint), true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.drive.mSwerveModules[0].getDriveEncoderVal() - initialFREnc) >= RobotMap.actualDistanceMultiplier
-        * (1024 * meters / RobotMap.circumference_of_wheel);
+    if (auto) return Robot.drive.rotationAngleController.atSetpoint();
+    else return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     Robot.drive.stopAllMotors();
-    
   }
 
   // Called when another command which requires one or more of the same
