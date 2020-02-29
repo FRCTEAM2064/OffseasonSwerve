@@ -29,19 +29,26 @@ public class rotateToAngleGyro extends Command {
   @Override
   protected void execute() {
     System.out.println(Robot.drive.getGyroAngle());
-    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint), true);
+    if (Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint) > 0.5){
+      Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), 0.5, true);
+    }
+    else if (Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint) < -0.5){
+      Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), -0.5, true);
+    }
+    else Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint), true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (auto) return Robot.drive.rotationAngleController.atSetpoint();
+    if (auto) return Math.abs(Robot.drive.getGyroAngle() - setpoint) <= 5;
     else return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drive.rotationAngleController.close();
     Robot.drive.stopAllMotors();
   }
 

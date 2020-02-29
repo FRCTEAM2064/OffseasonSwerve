@@ -11,10 +11,10 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,10 +45,11 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooter;
   public static ControlPanelSubsystem controlPanel;
   public static ClimbingSubsystem climb;
-  public static I2C arduino;
+  public static SerialPort arduino;
   public static int numOfIterations = 0;
   public Compressor compressor;
   public SendableChooser<String> chooser;
+  public static Timer timerino;
 
   public UsbCamera driverCam;
   
@@ -61,6 +62,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Right Side Auto", rightSide);
     SmartDashboard.putData("Auto choices", m_chooser);
+    timerino = new Timer();
+    timerino.start();
     
     driverCam = CameraServer.getInstance().startAutomaticCapture();
     driverCam.setFPS(24);
@@ -74,13 +77,36 @@ public class Robot extends TimedRobot {
     intake = new IntakeSubsystem();
     oi = new OI();
     compressor = new Compressor();
-    arduino = new I2C(I2C.Port.kOnboard, 168);
     chooser = new SendableChooser<String>();
     
     Robot.vision.firstLime.setLedMode(LedMode.OFF);
     Scheduler.getInstance().enable();
     // System.out.println(Robot.arduino.addressOnly()); //SHOULD BE FALSE; MAKE SURE TO FIRST DEPLOY CODE ONTO ARDUINO
     // drive.mNavX.reset();
+      try{
+			  arduino = new SerialPort(9600, SerialPort.Port.kUSB);
+		  }
+		  catch (Exception e){
+			  System.out.println("Failed to connect on kUSB, trying kUSB 1");
+		  }
+		try{
+			arduino = new SerialPort(9600, SerialPort.Port.kUSB1);
+		}
+		catch(Exception e1){
+			System.out.println("Failed to connect on kUSB1, trying kUSB 2");
+    }
+    try {
+      arduino = new SerialPort(9600, SerialPort.Port.kUSB2);
+    }
+    catch (Exception ree){
+      System.out.println("Failed to connect on kUSB2, trying kUSB MXP");
+    }
+		try{
+			arduino = new SerialPort(9600, SerialPort.Port.kMXP);
+    } 
+    catch ( Exception e2){
+			System.out.println("Failed to connect on kMXP");
+	  }
   }
 
   /**
@@ -147,7 +173,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    // Robot.drive.testMotors();
+    Robot.drive.testMotors();
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
     // if (!drive.getCurrentCommandName().equals("polarMotion")) Robot.drive.update();
@@ -155,13 +181,14 @@ public class Robot extends TimedRobot {
 
     }
     else if(drive.getCurrentCommandName().equals("polarMotion")){
-
+      System.out.println("doesn't run drive");
     }
     else if (drive.getCurrentCommandName().equals("rotateToAngleGyro")){
 
     }
     else{
       Robot.drive.update();
+      
     }
     // System.out.println(Robot.drive.mSwerveModules[1].readAngle());
     // System.out.println(Robot.climb.careful.getPosition());
@@ -170,7 +197,7 @@ public class Robot extends TimedRobot {
     // System.out.println(Robot.drive.mSwerveModules[0].readAngle());
     // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
 
-    // Robot.drive.calibrateNavX();
+    Robot.drive.getGyroAngle();
 // System.out.println(Robot.controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
   }
 

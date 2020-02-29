@@ -24,8 +24,8 @@ public class RightSideAuto extends CommandGroup {
     addParallel(new toggleIntakePanel());
     addSequential(new polarMotion(RobotMap.inchesToMeters(27.808), 180));
     addSequential(new polarMotion(RobotMap.inchesToMeters(117.219), 270));
-    addSequential(new rotateToCenter(true));
-    addSequential(new shoot(4));
+    addSequential(new rotateToCenter(true, 2));
+    addSequential(new shoot(5.0));
     addSequential(new polarMotion(RobotMap.inchesToMeters(136), 270));
     addSequential(new polarMotion(RobotMap.inchesToMeters(136), 90));
     addSequential(new shoot(4));

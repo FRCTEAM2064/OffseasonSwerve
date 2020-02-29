@@ -65,7 +65,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 	public PIDController backLeftDriveController = new PIDController(0.00004, 0.0, 0.0);
 	public PIDController backRightDriveController = new PIDController(0.00004, 0.0, 0.0);	
 	
-	public PIDController rotationAngleController = new PIDController(0.005, 0.0, 0.00007);
+	public PIDController rotationAngleController = new PIDController(0.0012, 0.0, 0.0);
 	
 	// public Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, RobotMap.empirical_free_velocity, 10.0, 1.0);
 	
@@ -122,7 +122,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// brFollower.configurePIDVA(0.00004, 0.0, 0, 1 / RobotMap.empirical_free_velocity, 3);
 
 		rotationAngleController.enableContinuousInput(-180, 180);
-		rotationAngleController.setTolerance(2);
+		rotationAngleController.setTolerance(5);
 	}
 
 	public AHRS getNavX() {
@@ -143,6 +143,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 	}
 
 	public void holonomicDrive(double forward, double strafe, double rotation, boolean iFO) {
+		rotation *= -1;
 		if (iFO) {
 			double angleRad = Math.toRadians(mNavX.getYaw() + 180);
 			double temp = forward * Math.cos(angleRad) + strafe * Math.sin(angleRad);
@@ -268,10 +269,10 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// backLeftAngle.set(backLeftAngleController.calculate(mSwerveModules[2].readAngle(), Math.toRadians(90)));
 		// backRightAngle.set(backRightAngleController.calculate(mSwerveModules[3].readAngle(), Math.toRadians(90)));
 
-		// System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
-		// System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
-    	// System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
-    	// System.out.println("back right " + Math.toDegrees(mSwerveModules[3].readAngle()));
+		System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
+		System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
+    	System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
+    	System.out.println("back right " + Math.toDegrees(mSwerveModules[3].readAngle()));
 	}
 
 	public void calibrateNavX(){

@@ -18,6 +18,7 @@ public class rotateToCenter extends Command {
    */
   public double setpoint;
   public boolean auto = false;
+  public boolean time = false;
   public rotateToCenter() {
     // Use addRequirements() here to declare subsystem dependencies.
     // this.setpoint = setpoint;  
@@ -30,6 +31,10 @@ public class rotateToCenter extends Command {
     this.auto = auto;
     requires(Robot.drive);
     requires(Robot.vision);
+  }
+  public rotateToCenter(boolean time, double timeout){
+    this.time = time;
+    setTimeout(timeout);
   }
 
   // Called when the command is initially scheduled.
@@ -58,6 +63,7 @@ public class rotateToCenter extends Command {
   @Override
   public boolean isFinished() {
     if (auto) return Robot.vision.onTarget();
+    if (time) return isTimedOut();
     else return false;
     
   }

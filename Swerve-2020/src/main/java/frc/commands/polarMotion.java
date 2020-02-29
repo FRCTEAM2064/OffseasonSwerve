@@ -31,7 +31,7 @@ public class polarMotion extends Command {
   protected void initialize() {
     initialFREnc = Robot.drive.mSwerveModules[0].getDriveEncoderVal();
     // System.out.println("Command initialized");
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle))/4, Math.cos(Math.toRadians(angle))/4, 0, true);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -39,13 +39,13 @@ public class polarMotion extends Command {
   protected void execute() {
     // System.out.println("Command executing");
     System.out.println(Robot.drive.mSwerveModules[0].getDriveEncoderVal());
-    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0, false);
+    Robot.drive.holonomicDrive(Math.sin(Math.toRadians(angle))/4, Math.cos(Math.toRadians(angle))/4, 0, true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.drive.mSwerveModules[0].getDriveEncoderVal() - initialFREnc) >= RobotMap.actualDistanceMultiplier
+    return Math.abs(Robot.drive.mSwerveModules[0].getDriveEncoderVal() - initialFREnc) >= RobotMap.actualDistanceMultiplierHardWood
         * (1024 * meters / RobotMap.circumference_of_wheel);
   }
 
@@ -53,7 +53,6 @@ public class polarMotion extends Command {
   @Override
   protected void end() {
     Robot.drive.stopAllMotors();
-    
   }
 
   // Called when another command which requires one or more of the same

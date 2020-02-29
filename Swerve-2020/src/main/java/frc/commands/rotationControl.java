@@ -7,7 +7,6 @@
 
 package frc.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.wpilibj.command.Command;

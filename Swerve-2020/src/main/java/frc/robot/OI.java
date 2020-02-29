@@ -73,8 +73,8 @@ public class OI {
     public OI(){
         //rb1 is used to halve robot rotation
         // if(rb2.get()) new MoveForward2m();
-        lb4.whileHeld(new rotateToAngleGyro(-90,false));
-        lb7.whenPressed(new polarMotion(3,127)); //TODO: GET Multiplicative constant
+        lb4.whenPressed(new rotateToAngleGyro(-90,true));
+        lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12),120)); //TODO: GET Multiplicative constant
         
         rb2.whileHeld(new rotateToCenter());
         rb3.whenPressed(new toggleIntakePanel());
@@ -87,13 +87,19 @@ public class OI {
         ob8.whileHeld(new positionControl());
         ob10.whenPressed(new toggleControlPanel());
         ob12.whileHeld(new rotationControl());
-        
-        if(ob1.get()){ //Shooter LEDs
-            
-        }
+        if(Robot.timerino.get() > 5){
+            if(ob1.get()){ //Shooter LEDs
+                Robot.arduino.write(new byte[] {0x7}, 1);
+            }
+            else if (ob11.get()){ //Celebration button
+                Robot.arduino.write(new byte[] {0x9}, 1);
+                System.out.println("Send celebration");
+            }
+            else{ //Passive
+                Robot.arduino.write(new byte[] {0x12}, 1);
+            }
 
-        if (ob11.get()){ //Celebration button
-
+            Robot.timerino.reset();
         }
     }
     /**

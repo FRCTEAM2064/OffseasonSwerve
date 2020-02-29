@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.vision.drivers.Limelight;
 import frc.vision.drivers.Limelight.CamMode;
-import frc.vision.drivers.Limelight.LedMode;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -28,7 +27,7 @@ public class VisionSubsystem extends PIDSubsystem {
     firstLime.setCamMode(CamMode.VISION);
     // firstLime.setLedMode(LedMode.ON);
     firstLime.setPipeline(0);
-    setAbsoluteTolerance(1);
+    setAbsoluteTolerance(2);
     
     
     // rotateToTarget = new PIDController(0.00125, 0, 0);
@@ -50,7 +49,7 @@ public class VisionSubsystem extends PIDSubsystem {
 
   @Override
   protected void usePIDOutput(double output) {
-    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), -output, true); //TODO: may have to change back to positive output.
+    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), output, true); //TODO: may have to change back to positive output.
     // Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
   }
 }

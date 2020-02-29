@@ -53,8 +53,7 @@ public class RobotMap {
 
     public static final double climbBelowTrench = 150;
 
-    public static final double actualDistanceMultiplier = 1;
-
+    public static final double actualDistanceMultiplierHardWood = 7.236; //TODO: Need to change this to get the actual distance
     public static double inchesToMeters(double inches){
         return inches*2.54/100;
     }
