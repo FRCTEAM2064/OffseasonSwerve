@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.util.concurrent.TimeUnit;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.commands.rotateToCenter;
@@ -17,17 +15,12 @@ import frc.commands.raiseLift;
 import frc.commands.rotateToAngleGyro;
 import frc.commands.hoodDown;
 import frc.commands.hoodUp;
-import frc.commands.hoodDown;
 import frc.commands.lowerLift;
-import frc.commands.polarMotion;
 import frc.commands.positionControl;
 import frc.commands.shoot;
 import frc.commands.shootPower;
-// import frc.commands.testMoveSwerve;
 import frc.commands.toggleControlPanel;
-// import frc.commands.testMoveSwerve;
 import frc.commands.toggleIntakePanel;
-// import frc.commands.rotateToCenter;
 /**
  * Add your docs here.
  */
@@ -74,16 +67,17 @@ public class OI {
 
     public OI(){
         //rb1 is used to halve robot rotation
-        lb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
-        lb4.whenPressed(new rotateToAngleGyro(-90, true));
+        // lb4.whenPressed(new rotateToAngleGyro(-90, true));
         // lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12), 90)); //TODO: GET Multiplicative constant for carpet should drive forward
         
         rb2.whileHeld(new rotateToCenter());
         rb3.whenPressed(new toggleIntakePanel());
+        rb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
         
         ob1.whileHeld(new shoot());
         // ob1.whileHeld(new shootPower(-Robot.shooter.shooterLengthSpeed(Robot.shooter.shooterAreaLength(Robot.vision.firstLime.table.getEntry("ta").getDouble(15.0)))));
         // ob1.whileHeld(new shootPower(-(ojoy.getRawAxis(4) + 1)/2));
+        
         ob3.whenPressed(new hoodUp());
         ob4.whenPressed(new hoodDown());
         ob5.whileHeld(new raiseLift());

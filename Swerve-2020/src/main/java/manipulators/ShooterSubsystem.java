@@ -45,7 +45,7 @@ public class ShooterSubsystem extends Subsystem {
   }
 
   public double shooterPercentSpeed(double percent){
-    return percent * 4750;
+    return percent * 4500;
   }
   @Override
   protected void initDefaultCommand() {

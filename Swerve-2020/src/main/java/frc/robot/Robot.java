@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.RightSideAuto;
+import frc.autonomous.getOffLine;
 import frc.drive.SwerveDriveSubsystem;
 import frc.vision.VisionSubsystem;
 import frc.vision.drivers.Limelight.LedMode;
@@ -34,7 +35,7 @@ import manipulators.IntakeSubsystem;
  */
 import manipulators.ShooterSubsystem;
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
+  private static final String kDefaultAuto = "Get Off line";
   private static final String rightSide = "Right Side Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.setDefaultOption("Get Off line", kDefaultAuto);
     m_chooser.addOption("Right Side Auto", rightSide);
     SmartDashboard.putData("Auto choices", m_chooser);
     timerino = new Timer();
@@ -151,7 +152,8 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-      
+        getOffLine def = new getOffLine();
+        def.start();
         break;
     }
   }

@@ -34,7 +34,7 @@ public class VisionSubsystem extends PIDSubsystem {
   }
 
   public double returnRotationValue(){
-    return rotateToTarget.calculate(Robot.vision.firstLime.table.getEntry("tx").getDouble(126.0), 0);
+    return rotateToTarget.calculate(Robot.vision.firstLime.table.getEntry("tx").getDouble(15.0), 0);
   }
 
   @Override
@@ -44,7 +44,7 @@ public class VisionSubsystem extends PIDSubsystem {
 
   @Override
   protected double returnPIDInput() {
-    return firstLime.table.getEntry("tx").getDouble(0);
+    return firstLime.table.getEntry("tx").getDouble(15.0);
   }
 
   @Override
