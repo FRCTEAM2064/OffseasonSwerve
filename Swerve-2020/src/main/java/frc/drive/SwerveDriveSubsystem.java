@@ -213,43 +213,43 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// testMove.start();
 	}
 
-	public double rTFRDEncVal(double previous_driveenc){
-		if (mSwerveModules[0].readAngle() > Math.PI/2 && mSwerveModules[0].readAngle() < 1.5 * Math.PI){
-			trueFRDEnc -= previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
-		}
-		else{
-			trueFRDEnc += previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
-		}
-		return trueFRDEnc;
-	}
+	// public double rTFRDEncVal(double previous_driveenc){
+	// 	if (mSwerveModules[0].readAngle() > Math.PI/2 && mSwerveModules[0].readAngle() < 1.5 * Math.PI){
+	// 		trueFRDEnc -= previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
+	// 	}
+	// 	else{
+	// 		trueFRDEnc += previous_driveenc - mSwerveModules[0].getDriveEncoderVal();
+	// 	}
+	// 	return trueFRDEnc;
+	// }
 
-	public double rTFLDEncVal(double previous_driveenc){
-		if (mSwerveModules[1].readAngle() > Math.PI/2 && mSwerveModules[1].readAngle() < 1.5 * Math.PI){
-			trueFLDEnc -= previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
-		}
-		else{
-			trueFLDEnc += previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
-		}
-		return trueFLDEnc;
-	}
-	public double rTBRDEncVal(double previous_driveenc){
-		if (mSwerveModules[2].readAngle() > Math.PI/2 && mSwerveModules[2].readAngle() < 1.5 * Math.PI){
-			trueBRDEnc -= previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
-		}
-		else{
-			trueBRDEnc += previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
-		}
-		return trueBRDEnc;
-	}
-	public double rTBLDEncVal(double previous_driveenc){
-		if (mSwerveModules[3].readAngle() > Math.PI/2 && mSwerveModules[3].readAngle() < 1.5 * Math.PI){
-			trueBLDEnc -= previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
-		}
-		else{
-			trueBLDEnc += previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
-		}
-		return trueBLDEnc;
-	}
+	// public double rTFLDEncVal(double previous_driveenc){
+	// 	if (mSwerveModules[1].readAngle() > Math.PI/2 && mSwerveModules[1].readAngle() < 1.5 * Math.PI){
+	// 		trueFLDEnc -= previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
+	// 	}
+	// 	else{
+	// 		trueFLDEnc += previous_driveenc - mSwerveModules[1].getDriveEncoderVal();
+	// 	}
+	// 	return trueFLDEnc;
+	// }
+	// public double rTBRDEncVal(double previous_driveenc){
+	// 	if (mSwerveModules[2].readAngle() > Math.PI/2 && mSwerveModules[2].readAngle() < 1.5 * Math.PI){
+	// 		trueBRDEnc -= previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
+	// 	}
+	// 	else{
+	// 		trueBRDEnc += previous_driveenc - mSwerveModules[2].getDriveEncoderVal();
+	// 	}
+	// 	return trueBRDEnc;
+	// }
+	// public double rTBLDEncVal(double previous_driveenc){
+	// 	if (mSwerveModules[3].readAngle() > Math.PI/2 && mSwerveModules[3].readAngle() < 1.5 * Math.PI){
+	// 		trueBLDEnc -= previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
+	// 	}
+	// 	else{
+	// 		trueBLDEnc += previous_driveenc - mSwerveModules[3].getDriveEncoderVal();
+	// 	}
+	// 	return trueBLDEnc;
+	// }
 	
 	public void update(){
 		holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);

@@ -8,70 +8,48 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.common.drivers.Limelight.LedMode;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-
-public class shoot extends Command {
-  private double ball_count = 0;
-  private double ball_final = 0;
-  private double speed = 3500;
-  public shoot() {
+public class shootPower extends Command {
+  private double speed;
+  public shootPower(double speed) {
+    this.speed = speed;
     requires(Robot.shooter);
-  }
-
-  public shoot(double timeout){
-    setTimeout(timeout);
-  }
-
-  public shoot(int ball_final){
-    this.ball_final = ball_final;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.vision.firstLime.setLedMode(LedMode.ON);
-    Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
-    Robot.shooter.intakeTubingUpwards.set(0);
-    Robot.intake.intakeTubingInwards.set(0);
+    Robot.shooter.shooter_motor.set(speed);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
-    if (-Robot.shooter.shooter_encoder.getVelocity() < 3300){
-      ball_count++;
-      //Probably won't work; it'll try to add every 50ms and it doesn't take 50ms to bring the shooter up to this speed.
-    }
-    
-    if (-Robot.shooter.shooter_encoder.getVelocity() < speed){
-      Robot.intake.intakeTubingInwards.set(0);
-      Robot.shooter.intakeTubingUpwards.set(0);
-    }
-    else{
+    Robot.shooter.shooter_motor.set(speed);
+    if (-Robot.shooter.shooter_encoder.getVelocity() > Robot.shooter.shooterPercentSpeed(-speed) - 500){
       Robot.intake.intakeTubingInwards.set(RobotMap.maxTubingSpeed);
       Robot.shooter.intakeTubingUpwards.set(RobotMap.maxTubingSpeed);
+    }
+    else{
+      Robot.intake.intakeTubingInwards.set(0);
+      Robot.shooter.intakeTubingUpwards.set(0);
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (ball_final > 0) return ball_count >=ball_final;
-    return false || isTimedOut();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("Command Ended");
-    Robot.shooter.shooter_motor.set(0.0);
+    Robot.shooter.shooter_motor.set(0);
     Robot.shooter.intakeTubingUpwards.set(0);
     Robot.intake.intakeTubingInwards.set(0);
-    Robot.vision.firstLime.setLedMode(LedMode.OFF);
   }
 
   // Called when another command which requires one or more of the same
@@ -81,6 +59,5 @@ public class shoot extends Command {
     Robot.shooter.shooter_motor.set(0);
     Robot.shooter.intakeTubingUpwards.set(0);
     Robot.intake.intakeTubingInwards.set(0);
-    Robot.vision.firstLime.setLedMode(LedMode.OFF);
   }
 }

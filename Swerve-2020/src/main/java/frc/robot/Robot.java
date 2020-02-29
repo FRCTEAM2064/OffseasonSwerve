@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
     } 
     catch ( Exception e2){
 			System.out.println("Failed to connect on kMXP");
-	  }
+    }
   }
 
   /**
@@ -122,7 +122,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putString("Control Panel Color", controlPanel.readColorString(Robot.controlPanel.m_colorMatcher.matchClosestColor(Robot.controlPanel.colorSensor.getColor())));
     // driverCam = CameraServer.getInstance().startAutomaticCapture();
-    if (Robot.climb.getCurrentCommandName() == "")climb.winchControl.set( 0.01);
+    if (Robot.climb.getCurrentCommandName() == "")climb.winchControl.set(0.01);
+    if (Robot.vision.getCurrentCommandName() == "")vision.firstLime.setLedMode(LedMode.OFF);
+    else vision.firstLime.setLedMode(LedMode.ON);
   }
 
   /**
@@ -176,7 +178,6 @@ public class Robot extends TimedRobot {
     Robot.drive.testMotors();
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
-    // if (!drive.getCurrentCommandName().equals("polarMotion")) Robot.drive.update();
     if (vision.getCurrentCommandName().equals("rotateToCenter")){
 
     }
@@ -188,8 +189,9 @@ public class Robot extends TimedRobot {
     }
     else{
       Robot.drive.update();
-      
     }
+
+    
     // System.out.println(Robot.drive.mSwerveModules[1].readAngle());
     // System.out.println(Robot.climb.careful.getPosition());
     // System.out.println("tx " + vision.firstLime.table.getEntry("tx").getDouble(126.0));

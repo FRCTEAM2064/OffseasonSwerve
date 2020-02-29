@@ -22,6 +22,7 @@ import frc.commands.lowerLift;
 import frc.commands.polarMotion;
 import frc.commands.positionControl;
 import frc.commands.shoot;
+import frc.commands.shootPower;
 // import frc.commands.testMoveSwerve;
 import frc.commands.toggleControlPanel;
 // import frc.commands.testMoveSwerve;
@@ -70,16 +71,19 @@ public class OI {
     public static JoystickButton ob12 = new JoystickButton(ojoy, 12);
     public static JoystickButton ob13 = new JoystickButton(ojoy, 13);
 
+
     public OI(){
         //rb1 is used to halve robot rotation
-        // if(rb2.get()) new MoveForward2m();
-        lb4.whenPressed(new rotateToAngleGyro(-90,true));
-        lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12),120)); //TODO: GET Multiplicative constant
+        lb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
+        lb4.whenPressed(new rotateToAngleGyro(-90, true));
+        // lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12), 90)); //TODO: GET Multiplicative constant for carpet should drive forward
         
         rb2.whileHeld(new rotateToCenter());
         rb3.whenPressed(new toggleIntakePanel());
         
         ob1.whileHeld(new shoot());
+        // ob1.whileHeld(new shootPower(-Robot.shooter.shooterLengthSpeed(Robot.shooter.shooterAreaLength(Robot.vision.firstLime.table.getEntry("ta").getDouble(15.0)))));
+        // ob1.whileHeld(new shootPower(-(ojoy.getRawAxis(4) + 1)/2));
         ob3.whenPressed(new hoodUp());
         ob4.whenPressed(new hoodDown());
         ob5.whileHeld(new raiseLift());
@@ -93,7 +97,6 @@ public class OI {
             }
             else if (ob11.get()){ //Celebration button
                 Robot.arduino.write(new byte[] {0x9}, 1);
-                System.out.println("Send celebration");
             }
             else{ //Passive
                 Robot.arduino.write(new byte[] {0x12}, 1);
@@ -106,21 +109,21 @@ public class OI {
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */
     public static double getlYval(){
-        if (Math.abs(ljoy.getY()) < 0.05) return 0;
+        if (Math.abs(ljoy.getY()) < 0.02) return 0;
         else return -ljoy.getY();
     }
     /**
      * @return left joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getlXval(){
-        if (Math.abs(ljoy.getX()) < 0.05) return 0;
+        if (Math.abs(ljoy.getX()) < 0.02) return 0;
         else return ljoy.getX();
     }
     /**
      * @return right joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getrXval(){
-        if (Math.abs(rjoy.getX()) < 0.05) return 0;
+        if (Math.abs(rjoy.getX()) < 0.02) return 0;
         else{
             if (rb1.get()) return -rjoy.getX()/2;
             else return -rjoy.getX();
@@ -128,7 +131,7 @@ public class OI {
     }
 
     public static double getrYval(){
-        if (Math.abs(rjoy.getY()) < 0.05) return 0;
+        if (Math.abs(rjoy.getY()) < 0.02) return 0;
         else return rjoy.getY();
     }
 
