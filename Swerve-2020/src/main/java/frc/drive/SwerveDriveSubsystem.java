@@ -94,9 +94,10 @@ public class SwerveDriveSubsystem extends Subsystem{
 		new SwerveDriveModule(3, backRightAngle, backRightDrive, backRightAngleController, backRightDriveController, backRightAngleEncoder, RobotMap.backRightAngleOffset)
 	};
 
-	public AHRS mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
+	public AHRS mNavX;
 
 	public SwerveDriveSubsystem() {
+		mNavX = new AHRS(SPI.Port.kMXP, (byte) 200);
 		mNavX.zeroYaw();
 
 		mSwerveModules[0].getDriveMotor().setInverted(false);
@@ -252,7 +253,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 	// }
 	
 	public void update(){
-		holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
+		holonomicDrive(-OI.getlYval(), -OI.getlXval(), OI.getrXval(), true);
 		// previous_FRenc = rTFRDEncVal(trueFRDEnc);
 		// previous_FLenc = rTFLDEncVal(trueFLDEnc);
 		// previous_BLenc = rTBLDEncVal(trueBLDEnc);
@@ -269,8 +270,8 @@ public class SwerveDriveSubsystem extends Subsystem{
 		// backLeftAngle.set(backLeftAngleController.calculate(mSwerveModules[2].readAngle(), Math.toRadians(90)));
 		// backRightAngle.set(backRightAngleController.calculate(mSwerveModules[3].readAngle(), Math.toRadians(90)));
 
-		System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
-		System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
+		// System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
+		// System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
     	System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
     	System.out.println("back right " + Math.toDegrees(mSwerveModules[3].readAngle()));
 	}

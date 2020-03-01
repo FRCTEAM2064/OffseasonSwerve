@@ -13,6 +13,7 @@ import frc.robot.Robot;
 
 public class toggleControlPanel extends Command {
   public toggleControlPanel() {
+    Robot.controlPanel.isUp = false;
   }
 
   // Called just before this Command runs the first time

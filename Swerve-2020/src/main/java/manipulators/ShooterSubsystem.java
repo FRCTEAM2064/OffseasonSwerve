@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.RobotMap;
 
 /**
@@ -28,12 +29,14 @@ public class ShooterSubsystem extends Subsystem {
   public CANSparkMax shooter_motor;
   public CANEncoder shooter_encoder;
   public DoubleSolenoid variable_hood;
+  // public PIDController shooter_velocity;
   
   public ShooterSubsystem(){
     shooter_motor = new CANSparkMax(RobotMap.shooterID, MotorType.kBrushless);
     shooter_encoder = new CANEncoder(shooter_motor);
     intakeTubingUpwards = new VictorSP(RobotMap.intakeTubingUpwardsID);
     variable_hood = new DoubleSolenoid(4, 5);
+    // shooter_velocity = new PIDController, Ki, Kd);
   }
 
   public double shooterAreaLength(double area){

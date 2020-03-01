@@ -9,47 +9,31 @@ package frc.vision;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.vision.drivers.Limelight;
 import frc.vision.drivers.Limelight.CamMode;
-import frc.robot.OI;
-import frc.robot.Robot;
 
-public class VisionSubsystem extends PIDSubsystem {
+public class VisionSubsystem extends Subsystem {
 
   public Limelight firstLime;
   public PIDController rotateToTarget;
 
-  public VisionSubsystem() {
-    super("VisionSubsystem", 0.0075, 0, 0);
-    
+  public VisionSubsystem() {    
     firstLime = new Limelight(NetworkTableInstance.getDefault().getTable("limelight-first"));
     firstLime.setCamMode(CamMode.VISION);
     // firstLime.setLedMode(LedMode.ON);
     firstLime.setPipeline(0);
-    setAbsoluteTolerance(2);
     
-    
-    // rotateToTarget = new PIDController(0.00125, 0, 0);
+    rotateToTarget = new PIDController(0.0075, 0, 0);
+    rotateToTarget.setTolerance(2);
   }
 
   public double returnRotationValue(){
-    return rotateToTarget.calculate(Robot.vision.firstLime.table.getEntry("tx").getDouble(15.0), 0);
+    return rotateToTarget.calculate(firstLime.table.getEntry("tx").getDouble(15.0), 0);
   }
 
   @Override
   public void initDefaultCommand(){
 
-  }
-
-  @Override
-  protected double returnPIDInput() {
-    return firstLime.table.getEntry("tx").getDouble(15.0);
-  }
-
-  @Override
-  protected void usePIDOutput(double output) {
-    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), output, true); //TODO: may have to change back to positive output.
-    // Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
   }
 }

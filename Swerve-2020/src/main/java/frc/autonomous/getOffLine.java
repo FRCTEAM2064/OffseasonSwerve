@@ -8,17 +8,18 @@
 package frc.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.commands.bringClimbToDefault;
 import frc.commands.polarMotion;
 import frc.commands.rotateToCenter;
-import frc.commands.shoot;
 
 public class getOffLine extends CommandGroup {
   /**
    * Add your docs here.
    */
   public getOffLine() {
-    addSequential(new polarMotion(2, -90));
-    addSequential(new rotateToCenter(true, 3));
-    addSequential(new shoot(6.0));
+    addParallel(new bringClimbToDefault());
+    addSequential(new polarMotion(2, 90));
+    addSequential(new rotateToCenter(true, 3.0));
+    // addSequential(new shoot(6.0));69
   }
 }

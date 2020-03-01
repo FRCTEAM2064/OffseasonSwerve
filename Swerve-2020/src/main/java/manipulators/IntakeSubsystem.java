@@ -48,4 +48,10 @@ public class IntakeSubsystem extends Subsystem {
     intakeTubingRight.set(0);
     intakeTubingInwards.set(0);
   }
+
+  public void reverseMotors(){
+    intakeTubingLeft.set(-RobotMap.maxTubingSpeed);
+    intakeTubingRight.set(RobotMap.maxTubingSpeed);
+    intakeTubingInwards.set(-RobotMap.maxTubingSpeed);
+  }
 }

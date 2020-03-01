@@ -48,7 +48,7 @@ public class RobotMap {
 
     public static final double maxRaiseLiftSpeed = 1;
     public static final double maxLowerLiftSpeed = 0.5;
-    public static final double maxFlywheelSpeed = 1; //CHANGE THIS TO CHANGE SHOOT SPEED 
+    public static final double maxFlywheelSpeed = 0.85; //CHANGE THIS TO CHANGE SHOOT SPEED 
     public static final double maxTubingSpeed = 1;
 
     public static final double climbBelowTrench = 150;

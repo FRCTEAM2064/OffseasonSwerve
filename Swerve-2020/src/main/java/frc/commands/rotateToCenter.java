@@ -25,52 +25,58 @@ public class rotateToCenter extends Command {
     requires(Robot.drive);
     requires(Robot.vision);
   }
-  public rotateToCenter(boolean auto) {
+  public rotateToCenter(boolean auto, double timeout) {
     // Use addRequirements() here to declare subsystem dependencies.
     // this.setpoint = setpoint;  
     this.auto = auto;
+    setTimeout(timeout);
     requires(Robot.drive);
     requires(Robot.vision);
-  }
-  public rotateToCenter(boolean time, double timeout){
-    this.time = time;
-    setTimeout(timeout);
   }
 
   // Called when the command is initially scheduled.
   
   public void initialize(){
-    // System.out.println("Command Initialized");
     Robot.vision.firstLime.setLedMode(LedMode.ON);
-    Robot.vision.enable();
-    Robot.vision.setSetpoint(0);
+    if(auto){
+      Robot.drive.holonomicDrive(0, 0, Robot.vision.returnRotationValue(), true);
+    }
+    else{
+      Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), Robot.vision.returnRotationValue(), true);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // System.out.println("command executing");
+    if(auto){
+      Robot.drive.holonomicDrive(0, 0, Robot.vision.returnRotationValue(), true);
+    }
+    else{
+      Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), Robot.vision.returnRotationValue(), true);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end() {
-    Robot.vision.disable();
+    Robot.vision.rotateToTarget.close();
     Robot.vision.firstLime.setLedMode(LedMode.OFF);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (auto) return Robot.vision.onTarget();
-    if (time) return isTimedOut();
+    if (auto) return Robot.vision.rotateToTarget.atSetpoint() || isTimedOut();
     else return false;
     
   }
 
   @Override
   protected void interrupted() {
-    Robot.vision.disable();
+    Robot.vision.close();
+    Robot.vision.firstLime.setLedMode(LedMode.OFF);
     Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
   }
 }

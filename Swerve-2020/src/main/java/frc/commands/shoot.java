@@ -34,8 +34,8 @@ public class shoot extends Command {
   protected void initialize() {
     Robot.vision.firstLime.setLedMode(LedMode.ON);
     Robot.shooter.shooter_motor.set(-RobotMap.maxFlywheelSpeed);
-    Robot.shooter.intakeTubingUpwards.set(0);
-    Robot.intake.intakeTubingInwards.set(0);
+    // Robot.shooter.intakeTubingUpwards.set(0);
+    // Robot.intake.intakeTubingInwards.set(0);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -47,7 +47,7 @@ public class shoot extends Command {
       //Probably won't work; it'll try to add every 50ms and it doesn't take 50ms to bring the shooter up to this speed.
     }
     
-    if (-Robot.shooter.shooter_encoder.getVelocity() < speed){
+    if (-Robot.shooter.shooter_encoder.getVelocity() < 3000){
       Robot.intake.intakeTubingInwards.set(0);
       Robot.shooter.intakeTubingUpwards.set(0);
     }
@@ -68,10 +68,10 @@ public class shoot extends Command {
   @Override
   protected void end() {
     System.out.println("Command Ended");
+    Robot.vision.firstLime.setLedMode(LedMode.OFF);
     Robot.shooter.shooter_motor.set(0.0);
     Robot.shooter.intakeTubingUpwards.set(0);
     Robot.intake.intakeTubingInwards.set(0);
-    Robot.vision.firstLime.setLedMode(LedMode.OFF);
   }
 
   // Called when another command which requires one or more of the same
@@ -81,6 +81,5 @@ public class shoot extends Command {
     Robot.shooter.shooter_motor.set(0);
     Robot.shooter.intakeTubingUpwards.set(0);
     Robot.intake.intakeTubingInwards.set(0);
-    Robot.vision.firstLime.setLedMode(LedMode.OFF);
   }
 }

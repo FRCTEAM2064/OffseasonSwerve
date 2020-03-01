@@ -13,14 +13,17 @@ import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
 import frc.commands.raiseLift;
 import frc.commands.rotateToAngleGyro;
+import frc.commands.bringClimbToDefault;
 import frc.commands.hoodDown;
 import frc.commands.hoodUp;
 import frc.commands.lowerLift;
 import frc.commands.positionControl;
+import frc.commands.purgeBalls;
 import frc.commands.shoot;
 import frc.commands.shootPower;
 import frc.commands.toggleControlPanel;
 import frc.commands.toggleIntakePanel;
+import frc.commands.intakeTubingUpwards;
 /**
  * Add your docs here.
  */
@@ -70,54 +73,59 @@ public class OI {
         // lb4.whenPressed(new rotateToAngleGyro(-90, true));
         // lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12), 90)); //TODO: GET Multiplicative constant for carpet should drive forward
         
+
         rb2.whileHeld(new rotateToCenter());
         rb3.whenPressed(new toggleIntakePanel());
-        rb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
+        rb4.whileHeld(new purgeBalls());
+        // rb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
+        rb8.whenPressed(new bringClimbToDefault());
+        ob11.whileHeld(new intakeTubingUpwards());
+        ob9.whileHeld(new shootPower(-0.85));
         
         ob1.whileHeld(new shoot());
-        // ob1.whileHeld(new shootPower(-Robot.shooter.shooterLengthSpeed(Robot.shooter.shooterAreaLength(Robot.vision.firstLime.table.getEntry("ta").getDouble(15.0)))));
         // ob1.whileHeld(new shootPower(-(ojoy.getRawAxis(4) + 1)/2));
-        
         ob3.whenPressed(new hoodUp());
         ob4.whenPressed(new hoodDown());
         ob5.whileHeld(new raiseLift());
         ob6.whileHeld(new lowerLift());
         ob8.whileHeld(new positionControl());
+        // ob9.whileHeld(new shootPower(-Robot.shooter.shooterLengthSpeed(Robot.shooter.shooterAreaLength(Robot.vision.firstLime.table.getEntry("ta").getDouble(15.0)))));
         ob10.whenPressed(new toggleControlPanel());
         ob12.whileHeld(new rotationControl());
-        if(Robot.timerino.get() > 5){
-            if(ob1.get()){ //Shooter LEDs
-                Robot.arduino.write(new byte[] {0x7}, 1);
-            }
-            else if (ob11.get()){ //Celebration button
-                Robot.arduino.write(new byte[] {0x9}, 1);
-            }
-            else{ //Passive
-                Robot.arduino.write(new byte[] {0x12}, 1);
-            }
+        // if(Robot.timerino.get() > 5){
+        //     if(ob1.get()){ //Shooter LEDs
+        //         Robot.arduino.write(new byte[] {0x7}, 1);
+        //     }
+        //     else if (ob11.get()){ //Celebration button
+        //         Robot.arduino.write(new byte[] {0x9}, 1);
+        //     }
+        //     else{ //Passive
+        //         Robot.arduino.write(new byte[] {0x12}, 1);
+        //     }
 
-            Robot.timerino.reset();
-        }
+        //     Robot.timerino.reset();
+        // }
+        
     }
     /**
      * @return left joystick moving forward and backward axis val. Forward = 1; backward = -1
      */
     public static double getlYval(){
-        if (Math.abs(ljoy.getY()) < 0.02) return 0;
+        if (Math.abs(ljoy.getY()) < 0.05) return 0;
         else return -ljoy.getY();
     }
     /**
      * @return left joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getlXval(){
-        if (Math.abs(ljoy.getX()) < 0.02) return 0;
+        if (Math.abs(ljoy.getX()) < 0.05) return 0;
         else return ljoy.getX();
     }
     /**
      * @return right joystick moving right and left axis val. right = 1; left = -1
      */
     public static double getrXval(){
-        if (Math.abs(rjoy.getX()) < 0.02) return 0;
+        if (Math.abs(rjoy.getX()) < 0.05) return 0;
         else{
             if (rb1.get()) return -rjoy.getX()/2;
             else return -rjoy.getX();
@@ -125,7 +133,7 @@ public class OI {
     }
 
     public static double getrYval(){
-        if (Math.abs(rjoy.getY()) < 0.02) return 0;
+        if (Math.abs(rjoy.getY()) < 0.05) return 0;
         else return rjoy.getY();
     }
 
