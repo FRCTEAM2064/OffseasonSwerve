@@ -9,41 +9,43 @@ package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class lowerLiftBelowLimelight extends Command {
-  public lowerLiftBelowLimelight() {
-    requires(Robot.climb);
+public class rotateForTime extends Command {
+  private double power;
+  public rotateForTime(double power, double timeout) {
+    this.power = power;
+    setTimeout(timeout);
+    requires(Robot.drive);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.climb.winchControl.set(RobotMap.maxLowerLiftSpeed);
+    Robot.drive.holonomicDrive(0, 0, power, true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climb.winchControl.set(RobotMap.maxLowerLiftSpeed);
+    Robot.drive.holonomicDrive(0, 0, power, true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.climb.careful.getPosition() <-RobotMap.climbBelowTrench;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.climb.winchControl.set(0);
+    Robot.drive.holonomicDrive(0, 0, 0, true);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.climb.winchControl.set(0);
+    Robot.drive.holonomicDrive(0, 0, 0, true);
   }
 }

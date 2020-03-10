@@ -19,13 +19,19 @@ public class raiseLift extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.climb.winchControl.set(-RobotMap.maxRaiseLiftSpeed);
+    if (Robot.climb.careful.getPosition() < RobotMap.maxClimbEnc){
+      Robot.climb.winchControl.set(0);
+    }
+    else Robot.climb.winchControl.set(-RobotMap.maxRaiseLiftSpeed);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climb.winchControl.set(-RobotMap.maxRaiseLiftSpeed);
+    if (Robot.climb.careful.getPosition() < RobotMap.maxClimbEnc){
+      Robot.climb.winchControl.set(0);
+    }
+    else Robot.climb.winchControl.set(-RobotMap.maxRaiseLiftSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

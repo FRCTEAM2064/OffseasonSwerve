@@ -37,9 +37,10 @@ public class rotateToCenter extends Command {
   // Called when the command is initially scheduled.
   
   public void initialize(){
-    Robot.vision.firstLime.setLedMode(LedMode.ON);
+    Robot.vision.firstLime.setLedMode(frc.vision.drivers.Limelight.LedMode.ON);
     if(auto){
-      Robot.drive.holonomicDrive(0, 0, Robot.vision.returnRotationValue(), true);
+      if (Math.abs(Robot.vision.returnRotationValue()) > 1) Robot.drive.holonomicDrive(-0, -0, 0, true);
+      else Robot.drive.holonomicDrive(-0, -0, Robot.vision.returnRotationValue(), true);
     }
     else{
       Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), Robot.vision.returnRotationValue(), true);
@@ -51,7 +52,13 @@ public class rotateToCenter extends Command {
   public void execute() {
     // System.out.println("command executing");
     if(auto){
-      Robot.drive.holonomicDrive(0, 0, Robot.vision.returnRotationValue(), true);
+      System.out.println(Robot.vision.returnRotationValue());
+      if (Math.abs(Robot.vision.returnRotationValue()) > 1) {
+        Robot.drive.holonomicDrive(-0, -0, 0, true);
+        System.out.println("PID is greater than 1");
+      }
+      else Robot.drive.holonomicDrive(-0, -0, Robot.vision.returnRotationValue(), true);
+      System.out.println("Running this code");
     }
     else{
       Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), Robot.vision.returnRotationValue(), true);
@@ -63,6 +70,8 @@ public class rotateToCenter extends Command {
   public void end() {
     Robot.vision.rotateToTarget.close();
     Robot.vision.firstLime.setLedMode(LedMode.OFF);
+    if (auto){Robot.drive.holonomicDrive(0, 0, 0, true);}
+    else Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), OI.getrXval(), true);
   }
 
   // Returns true when the command should end.
@@ -77,6 +86,7 @@ public class rotateToCenter extends Command {
   protected void interrupted() {
     Robot.vision.close();
     Robot.vision.firstLime.setLedMode(LedMode.OFF);
-    Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), OI.getrXval(), true);
+    if (auto){Robot.drive.holonomicDrive(0, 0, 0, true);}
+    else Robot.drive.holonomicDrive(-OI.getlYval(), -OI.getlXval(), OI.getrXval(), true);
   }
 }

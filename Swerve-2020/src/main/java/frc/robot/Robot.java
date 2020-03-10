@@ -17,9 +17,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.autonomous.LeftSideAuto;
 import frc.autonomous.RightSideAuto;
 import frc.autonomous.getOffLine;
+import frc.commands.shoot;
 import frc.drive.SwerveDriveSubsystem;
+import frc.util.GyroRotation;
 import frc.vision.VisionSubsystem;
 import frc.vision.drivers.Limelight.LedMode;
 import manipulators.ClimbingSubsystem;
@@ -36,6 +39,7 @@ import manipulators.ShooterSubsystem;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Get Off line";
   private static final String rightSide = "Right Side Auto";
+  private static final String leftSide = "Left Side Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static OI oi;
@@ -45,6 +49,7 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooter;
   public static ControlPanelSubsystem controlPanel;
   public static ClimbingSubsystem climb;
+  public static GyroRotation gyro;
   public static SerialPort arduino;
   public static int numOfIterations = 0;
   public Compressor compressor;
@@ -53,6 +58,7 @@ public class Robot extends TimedRobot {
 
   public RightSideAuto rSide;
   public getOffLine def;
+  public LeftSideAuto lSide;
 
   public UsbCamera driverCam;
   
@@ -64,6 +70,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_chooser.setDefaultOption("Get Off line", kDefaultAuto);
     m_chooser.addOption("Right Side Auto", rightSide);
+    m_chooser.addOption("Left Side Auto", leftSide);
     SmartDashboard.putData("Auto choices", m_chooser);
     timerino = new Timer();
     timerino.start();
@@ -77,7 +84,7 @@ public class Robot extends TimedRobot {
     controlPanel = new ControlPanelSubsystem();
     climb = new ClimbingSubsystem();
     shooter = new ShooterSubsystem();
-    intake = new IntakeSubsystem();
+    // intake = new IntakeSubsystem();
     oi = new OI();
     compressor = new Compressor();
     chooser = new SendableChooser<String>();
@@ -155,11 +162,13 @@ public class Robot extends TimedRobot {
         rSide = new RightSideAuto();
         rSide.start();
         break;
-      case kDefaultAuto:
+      case leftSide:
+        lSide = new LeftSideAuto();
+        lSide.start();
+        break;
       default:
         def = new getOffLine();
         def.start();
-        
         break;
     }
   }
@@ -171,6 +180,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     System.out.println(def.isRunning());
+    // drive.testMotors();
   }
 
   @Override
@@ -184,22 +194,32 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    // Robot.drive.testMotors();
-    System.out.println(Robot.shooter.shooter_encoder.getVelocity());
+    
+    // drive.testMotors();
+    // System.out.println(Robot.shooter.shooter_encoder.getVelocity());
     // System.out.println(Robot.shooter.shooter_encoder.getVelocity()/360);
-    if (vision.getCurrentCommandName().equals("rotateToCenter")){
+    // if (vision.getCurrentCommandName().equals("rotateToCenter")){
 
-    }
-    else if(drive.getCurrentCommandName().equals("polarMotion")){
-      System.out.println("doesn't run drive");
-    }
-    else if (drive.getCurrentCommandName().equals("rotateToAngleGyro")){
+    // }
+    // else if(drive.getCurrentCommandName().equals("polarMotion")){
+    //   System.out.println("doesn't run drive");
+    // }
+    // else if (drive.getCurrentCommandName().equals("rotateToAngleGyro")){
 
-    }
-    else{
-      Robot.drive.update();
-    }
+    // }
+    // else{
+    //   drive.update();
+    // }
+    // // Robot.drive.testMotors();
     // System.out.println(climb.careful.getPosition());
+    // if (Robot.shooter.getCurrentCommandName().equals("shoot")){ shooter.update(); }
+    // else { shooter.reset(); }
+    // // Robot.shooter.shooter_motor.set(0.4);
+
+    // if (intake.isDown){
+    //   Robot.intake.activateMotors();
+    // }
+    Robot.shooter.hood_encoder.getPosition();
     
     // System.out.println(Robot.drive.mSwerveModules[1].readAngle());
     // System.out.println(Robot.climb.careful.getPosition());

@@ -10,11 +10,8 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
-// import frc.commands.testMoveSwerve;
 import frc.robot.RobotMap;
-import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
-import jaci.pathfinder.modifiers.SwerveModifier;
 
 public class SwerveDriveSubsystem extends Subsystem{
 	// private static final double WHEELBASE = 12.5;
@@ -192,7 +189,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 				
 				// mSwerveModules[i].setTargetAngle(angle + 180);
 				// mSwerveModules[i].setTargetAngle(angle);
-				mSwerveModules[i].setTargetSpeed(speeds[i]);
+				if (mSwerveModules[i].getAnglePIDController().getPositionError() < 10) mSwerveModules[i].setTargetSpeed(speeds[i]);
 		}
 	}
 	
@@ -272,7 +269,7 @@ public class SwerveDriveSubsystem extends Subsystem{
 
 		// System.out.println("front right " + Math.toDegrees(mSwerveModules[0].readAngle()));
 		// System.out.println("front left " + Math.toDegrees(mSwerveModules[1].readAngle()));
-    	System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
+    	// System.out.println("back left " + Math.toDegrees(mSwerveModules[2].readAngle()));
     	System.out.println("back right " + Math.toDegrees(mSwerveModules[3].readAngle()));
 	}
 

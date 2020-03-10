@@ -34,7 +34,7 @@ public class toggleIntakePanel extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -52,6 +52,5 @@ public class toggleIntakePanel extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.intake.deactivateMotors();
   }
 }

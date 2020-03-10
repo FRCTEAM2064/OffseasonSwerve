@@ -36,6 +36,8 @@ public class rotateToAngleGyro extends Command {
       Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), -0.5, true);
     }
     else Robot.drive.holonomicDrive(OI.getlYval(), OI.getlXval(), Robot.drive.rotationAngleController.calculate(Robot.drive.getGyroAngle(), setpoint), true);
+  
+    System.out.println(Robot.drive.getGyroAngle());
   }
 
   // Make this return true when this Command no longer needs to run execute()

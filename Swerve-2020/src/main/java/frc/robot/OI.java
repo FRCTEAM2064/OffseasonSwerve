@@ -12,15 +12,14 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.commands.rotateToCenter;
 import frc.commands.rotationControl;
 import frc.commands.raiseLift;
-import frc.commands.rotateToAngleGyro;
 import frc.commands.bringClimbToDefault;
 import frc.commands.hoodDown;
 import frc.commands.hoodUp;
 import frc.commands.lowerLift;
+import frc.commands.polarMotion;
 import frc.commands.positionControl;
 import frc.commands.purgeBalls;
 import frc.commands.shoot;
-import frc.commands.shootPower;
 import frc.commands.toggleControlPanel;
 import frc.commands.toggleIntakePanel;
 import frc.commands.intakeTubingUpwards;
@@ -71,21 +70,21 @@ public class OI {
     public OI(){
         //rb1 is used to halve robot rotation
         // lb4.whenPressed(new rotateToAngleGyro(-90, true));
-        // lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(12), 90)); //TODO: GET Multiplicative constant for carpet should drive forward
+        // lb7.whenPressed(new polarMotion(RobotMap.inchesToMeters(36), 90));
         
 
         rb2.whileHeld(new rotateToCenter());
-        rb3.whenPressed(new toggleIntakePanel());
-        rb4.whileHeld(new purgeBalls());
+        // rb3.whenPressed(new toggleIntakePanel());
+        // rb4.whileHeld(new purgeBalls());
         // rb4.whileHeld(new rotateToAngleGyro(-180+22.5, false));
         rb8.whenPressed(new bringClimbToDefault());
         ob11.whileHeld(new intakeTubingUpwards());
-        ob9.whileHeld(new shootPower(-0.85));
+        ob9.whileHeld(new shoot(-0.85));
         
-        ob1.whileHeld(new shoot());
+        ob1.whileHeld(new shoot(2000, true));
         // ob1.whileHeld(new shootPower(-(ojoy.getRawAxis(4) + 1)/2));
-        ob3.whenPressed(new hoodUp());
-        ob4.whenPressed(new hoodDown());
+        ob3.whileHeld(new hoodUp());
+        ob4.whileHeld(new hoodDown());
         ob5.whileHeld(new raiseLift());
         ob6.whileHeld(new lowerLift());
         ob8.whileHeld(new positionControl());

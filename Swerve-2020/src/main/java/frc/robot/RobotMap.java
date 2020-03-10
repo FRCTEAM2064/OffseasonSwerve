@@ -19,15 +19,15 @@ public class RobotMap {
     public static final int backLeftDriveID = 6;
     public static final int backRightAngleID = 7; 
     public static final int backRightDriveID = 8;
-    public static final int intakeTubingLeftID = 9;
-    public static final int intakeTubingRightID = 10;
+    public static final int intake1ID = 10;
+    // public static final int variable_hoodID = 10;
     public static final int shooterID = 13;
     public static final int winchControlID = 15;
     
     public static final int backRightEncoderID = 0;
-    public static final int frontRightEncoderID = 1;
-    public static final int backLeftEncoderID = 3;
-    public static final int frontLeftEncoderID = 2;
+    public static final int frontRightEncoderID = 3;
+    public static final int backLeftEncoderID = 2;
+    public static final int frontLeftEncoderID = 1;
     public static final int intakeTubingInwardsID = 4;
     public static final int intakeTubingUpwardsID = 5;
     public static final int controlPanelID = 6;
@@ -47,14 +47,16 @@ public class RobotMap {
     public static final double empirical_free_velocity = empirical_max_rpm * circumference_of_wheel * frictional_Coeff; //full speed
 
     public static final double maxRaiseLiftSpeed = 1;
-    public static final double maxLowerLiftSpeed = 0.5;
-    public static final double maxFlywheelSpeed = 0.85; //CHANGE THIS TO CHANGE SHOOT SPEED 
+    public static final double maxLowerLiftSpeed = 1;
+    public static final double default_power = 0.7;
     public static final double maxTubingSpeed = 1;
 
-    public static final double climbBelowTrench = 150;
+    public static final double climbBelowTrench = 175;
+    public static final double maxClimbEnc = -560;
 
-    public static final double actualDistanceMultiplierHardWood = 7.236; //TODO: Need to change this to get the actual distance
+    public static final double actualDistanceMultiplierHardWood = 7.236 * 4/3; //TODO: Need to change this to get the actual distance
     public static double inchesToMeters(double inches){
         return inches*2.54/100;
+
     }
 }

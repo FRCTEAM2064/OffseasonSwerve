@@ -11,7 +11,6 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -28,15 +27,25 @@ public class ShooterSubsystem extends Subsystem {
 
   public CANSparkMax shooter_motor;
   public CANEncoder shooter_encoder;
-  public DoubleSolenoid variable_hood;
-  // public PIDController shooter_velocity;
+  public CANSparkMax variable_hood;
+  public CANEncoder hood_encoder;
+  public PIDController shooter_velocity;
+  public PIDController hood_angle;
+  
+  public double previous_vel;
+  public double current_vel = 0;
+  public double error;
+  public double summation_of_vel = 0;
+  public double returned_output = 0;
   
   public ShooterSubsystem(){
     shooter_motor = new CANSparkMax(RobotMap.shooterID, MotorType.kBrushless);
     shooter_encoder = new CANEncoder(shooter_motor);
     intakeTubingUpwards = new VictorSP(RobotMap.intakeTubingUpwardsID);
-    variable_hood = new DoubleSolenoid(4, 5);
-    // shooter_velocity = new PIDController, Ki, Kd);
+    variable_hood = new CANSparkMax(RobotMap.intake1ID, MotorType.kBrushed);
+    hood_encoder = new CANEncoder(variable_hood);
+    hood_angle = new PIDController(0.002, 0, 0.0001);
+    shooter_velocity = new PIDController(0.001, 0.001, 0.001);
   }
 
   public double shooterAreaLength(double area){
@@ -53,6 +62,27 @@ public class ShooterSubsystem extends Subsystem {
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub
+  }
 
+  public void update(){
+    previous_vel = current_vel;
+    current_vel = shooter_encoder.getVelocity()/60;
+    error = shooter_velocity.getSetpoint() - current_vel;
+    summation_of_vel += 0.050 * current_vel;
+  }
+
+  public void reset(){
+    current_vel = 0;
+    shooter_velocity.setSetpoint(0);
+    summation_of_vel = 0;
+    returned_output = 0;
+  }
+
+  public double convert_encoder_to_angle(){
+    return hood_encoder.getPosition()/30;
+  }
+
+  public double hood_angle_power(double angle){
+    return hood_angle.calculate(convert_encoder_to_angle(), angle);
   }
 }

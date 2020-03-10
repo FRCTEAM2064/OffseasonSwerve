@@ -20,16 +20,14 @@ public class IntakeSubsystem extends Subsystem {
    * Creates a new IntakeSubsystem.
    */
   
-  public CANSparkMax intakeTubingLeft;
-  public CANSparkMax intakeTubingRight;
+  public CANSparkMax intake1;
   public VictorSP intakeTubingInwards;
 
   public DoubleSolenoid intakePiston;
   public boolean isDown = false;
   
   public IntakeSubsystem() {
-    intakeTubingLeft = new CANSparkMax(RobotMap.intakeTubingLeftID, MotorType.kBrushless);
-    intakeTubingRight = new CANSparkMax(RobotMap.intakeTubingRightID, MotorType.kBrushless);
+    intake1 = new CANSparkMax(RobotMap.intake1ID, MotorType.kBrushless);
     intakeTubingInwards = new VictorSP(RobotMap.intakeTubingInwardsID);
     intakePiston = new DoubleSolenoid(0, 1);
   }
@@ -38,20 +36,17 @@ public class IntakeSubsystem extends Subsystem {
   protected void initDefaultCommand() {}
 
   public void activateMotors(){
-    intakeTubingLeft.set(RobotMap.maxTubingSpeed);
-    intakeTubingRight.set(-RobotMap.maxTubingSpeed);
+    intake1.set(RobotMap.maxTubingSpeed);
     intakeTubingInwards.set(RobotMap.maxTubingSpeed);
   }
 
   public void deactivateMotors(){
-    intakeTubingLeft.set(0);
-    intakeTubingRight.set(0);
+    intake1.set(0);
     intakeTubingInwards.set(0);
   }
 
   public void reverseMotors(){
-    intakeTubingLeft.set(-RobotMap.maxTubingSpeed);
-    intakeTubingRight.set(RobotMap.maxTubingSpeed);
+    intake1.set(-RobotMap.maxTubingSpeed);
     intakeTubingInwards.set(-RobotMap.maxTubingSpeed);
   }
 }

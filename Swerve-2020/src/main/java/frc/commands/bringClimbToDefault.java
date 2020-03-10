@@ -9,6 +9,7 @@ package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class bringClimbToDefault extends Command {
   double initial;
@@ -40,7 +41,7 @@ public class bringClimbToDefault extends Command {
   @Override
   protected boolean isFinished() {
     current = Robot.climb.careful.getPosition();
-    return current >= 135;
+    return current >= RobotMap.climbBelowTrench - 10;
   }
 
   // Called once after isFinished returns true

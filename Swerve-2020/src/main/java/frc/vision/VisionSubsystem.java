@@ -24,14 +24,16 @@ public class VisionSubsystem extends Subsystem {
     // firstLime.setLedMode(LedMode.ON);
     firstLime.setPipeline(0);
     
-    rotateToTarget = new PIDController(0.0075, 0, 0);
-    rotateToTarget.setTolerance(2);
+    rotateToTarget = new PIDController(0.007, 0, 0.0005);
+    rotateToTarget.setTolerance(2.5);
   }
-
+//we see everything
   public double returnRotationValue(){
-    return rotateToTarget.calculate(firstLime.table.getEntry("tx").getDouble(15.0), 0);
+    if (firstLime.table.getEntry("tx").getDouble(100.0) == 100.0) return 0.2;
+    else if (Math.abs(firstLime.table.getEntry("tx").getDouble(100.0)) < 2.5) return 0;
+    else return rotateToTarget.calculate(firstLime.table.getEntry("tx").getDouble(100.0), 0);
   }
-
+//you cannot hide from us
   @Override
   public void initDefaultCommand(){
 
